@@ -2,12 +2,12 @@ import plugins from './plugins';
 import config  from './config';
 import Game from './Game';
 import ScreenManager from './screenManager/ScreenManager';
-import ParticleBuilderScreen from './game/screen/ParticleBuilderScreen';
+import PrototypeScreen from './game/screen/PrototypeScreen';
 
 
 
 PIXI.loader
-	.add('./assets/assets.json')
+	.add('./assets/Cupcake/cupcake.json')
 	.load(configGame);
 
 function configGame(){
@@ -17,13 +17,13 @@ function configGame(){
 	//create screen manager
 	let screenManager = new ScreenManager();
 	//add screens
-	let startScreen = new ParticleBuilderScreen('ParticleBuilderScreen');
+	let startScreen = new PrototypeScreen('PrototypeScreen');
 
 	game.stage.addChild(screenManager);
 
 	screenManager.addScreen(startScreen);
 	//change to init screen
-	screenManager.forceChange('ParticleBuilderScreen');	
+	screenManager.forceChange('PrototypeScreen');	
 
 	game.start();
 }
