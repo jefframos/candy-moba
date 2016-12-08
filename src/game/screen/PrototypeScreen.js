@@ -2,9 +2,9 @@ import PIXI from 'pixi.js';
 import TweenLite from 'gsap';
 import config  from '../../config';
 import utils  from '../../utils';
-import Screen from '../../screenManager/Screen'
-import InputManager from '../InputManager'
-import Cupcake from '../entity/Cupcake'
+import Screen from '../../screenManager/Screen';
+import InputManager from '../InputManager';
+import Cupcake from '../entity/Cupcake';
 
 export default class PrototypeScreen extends Screen{
 	constructor(label){
@@ -28,55 +28,31 @@ export default class PrototypeScreen extends Screen{
 	}
 	update ( delta ) {
 		super.update(delta)
+		this.inputManager.update();
+
+		//console.log(scale *0.3 + 0.2);
+		this.cupcake.setDistance(1-utils.distance(0,this.cupcake.y,0,config.height) / config.height);
+		// this.inputManager.gamep.update();
+
+		// console.log(this.inputManager.gamep.connectedGamepad);
 		//console.log(this);
 	}
 	updateKeyUp(key){
-		switch (key){
-			case 'left':{
-				this.cupcake.velocity.x =0;
-				this.cupcake.state = 0;
-			}
-			case 'right':{
-				this.cupcake.velocity.x = 0;
-				this.cupcake.state = 0;
-			}
-		}
+		this.updateKeyDown();
 	}
 	updateKeyDown(){
-	//console.log(this.inputManager.keys);		
 		for (var i = 0; i < this.inputManager.keys.length; i++) {
-			switch (this.inputManager.keys[i]){
-				case 'left':{
-					this.cupcake.velocity.x = -200;
-					this.cupcake.state = 1;
-				}
-				break;
-				case 'right':{
-					this.cupcake.velocity.x = 200;
-					this.cupcake.state = 1;
-				}
-				break;
+			if(this.inputManager.keys[i] == 'space'){
+				//console.log('space');
+				this.cupcake.attack();
 			}
 		}
+		this.cupcake.move(this.inputManager.leftAxes);
 	}
-	updateAction(type){
-		// switch (type){
-		// 	case 'left':{
-		// 		this.cupcake.velocity.x = -50;
-		// 		this.cupcake.state = 1;
-		// 	}
-		// 	break;
-		// 	case 'right':{
-		// 		this.cupcake.velocity.x = 50;
-		// 		this.cupcake.state = 1;
-		// 	}
-		// 	break;
-		// }
-	}
+	
 	stopAction(type){
 	}
 	transitionIn(){
-
 
 	}
 }

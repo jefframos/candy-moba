@@ -150,7 +150,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename></filename>
+                <filename>../../assets/Cupcake/cupcake.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -196,9 +196,175 @@
             <false/>
         </struct>
         <key>individualSpriteSettings</key>
-        <map type="IndividualSpriteSettingsMap"/>
+        <map type="IndividualSpriteSettingsMap">
+            <key type="filename">attack1/attack10001.png</key>
+            <key type="filename">attack1/attack10002.png</key>
+            <key type="filename">attack1/attack10003.png</key>
+            <key type="filename">attack1/attack10004.png</key>
+            <key type="filename">attack1/attack10005.png</key>
+            <key type="filename">attack1/attack10006.png</key>
+            <key type="filename">attack1/attack10007.png</key>
+            <key type="filename">attack1/attack10008.png</key>
+            <key type="filename">attack1/attack10009.png</key>
+            <key type="filename">attack1/attack10010.png</key>
+            <key type="filename">attack1/attack10011.png</key>
+            <key type="filename">attack1/attack10012.png</key>
+            <key type="filename">attack1/attack10013.png</key>
+            <key type="filename">attack1/attack10014.png</key>
+            <key type="filename">attack1/attack10015.png</key>
+            <key type="filename">attack1/attack10016.png</key>
+            <key type="filename">attack1/attack10017.png</key>
+            <key type="filename">attack1/attack10018.png</key>
+            <key type="filename">attack1/attack10019.png</key>
+            <key type="filename">attack1/attack10020.png</key>
+            <key type="filename">attack1/attack10021.png</key>
+            <key type="filename">attack1/attack10022.png</key>
+            <key type="filename">attack1/attack10023.png</key>
+            <key type="filename">attack1/attack10024.png</key>
+            <key type="filename">attack1/attack10025.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>65,58,130,116</rect>
+                <key>scale9Paddings</key>
+                <rect>65,58,130,116</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">idle/idle0001.png</key>
+            <key type="filename">idle/idle0002.png</key>
+            <key type="filename">idle/idle0003.png</key>
+            <key type="filename">idle/idle0004.png</key>
+            <key type="filename">idle/idle0005.png</key>
+            <key type="filename">idle/idle0006.png</key>
+            <key type="filename">idle/idle0007.png</key>
+            <key type="filename">idle/idle0008.png</key>
+            <key type="filename">idle/idle0009.png</key>
+            <key type="filename">idle/idle0010.png</key>
+            <key type="filename">idle/idle0011.png</key>
+            <key type="filename">idle/idle0012.png</key>
+            <key type="filename">idle/idle0013.png</key>
+            <key type="filename">idle/idle0014.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>46,58,93,117</rect>
+                <key>scale9Paddings</key>
+                <rect>46,58,93,117</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">run/run0001.png</key>
+            <key type="filename">run/run0002.png</key>
+            <key type="filename">run/run0003.png</key>
+            <key type="filename">run/run0004.png</key>
+            <key type="filename">run/run0005.png</key>
+            <key type="filename">run/run0006.png</key>
+            <key type="filename">run/run0007.png</key>
+            <key type="filename">run/run0008.png</key>
+            <key type="filename">run/run0009.png</key>
+            <key type="filename">run/run0010.png</key>
+            <key type="filename">run/run0011.png</key>
+            <key type="filename">run/run0012.png</key>
+            <key type="filename">run/run0013.png</key>
+            <key type="filename">run/run0014.png</key>
+            <key type="filename">run/run0015.png</key>
+            <key type="filename">run/run0016.png</key>
+            <key type="filename">run/run0017.png</key>
+            <key type="filename">run/run0018.png</key>
+            <key type="filename">run/run0019.png</key>
+            <key type="filename">run/run0020.png</key>
+            <key type="filename">run/run0021.png</key>
+            <key type="filename">run/run0022.png</key>
+            <key type="filename">run/run0023.png</key>
+            <key type="filename">run/run0024.png</key>
+            <key type="filename">run/run0025.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>58,65,116,129</rect>
+                <key>scale9Paddings</key>
+                <rect>58,65,116,129</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+        </map>
         <key>fileList</key>
-        <array/>
+        <array>
+            <filename>run/run0001.png</filename>
+            <filename>run/run0002.png</filename>
+            <filename>run/run0003.png</filename>
+            <filename>run/run0004.png</filename>
+            <filename>run/run0005.png</filename>
+            <filename>run/run0006.png</filename>
+            <filename>run/run0007.png</filename>
+            <filename>run/run0008.png</filename>
+            <filename>run/run0009.png</filename>
+            <filename>run/run0010.png</filename>
+            <filename>run/run0011.png</filename>
+            <filename>run/run0012.png</filename>
+            <filename>run/run0013.png</filename>
+            <filename>run/run0014.png</filename>
+            <filename>run/run0015.png</filename>
+            <filename>run/run0016.png</filename>
+            <filename>run/run0017.png</filename>
+            <filename>run/run0018.png</filename>
+            <filename>run/run0019.png</filename>
+            <filename>run/run0020.png</filename>
+            <filename>run/run0021.png</filename>
+            <filename>run/run0022.png</filename>
+            <filename>run/run0023.png</filename>
+            <filename>run/run0024.png</filename>
+            <filename>run/run0025.png</filename>
+            <filename>idle/idle0014.png</filename>
+            <filename>idle/idle0001.png</filename>
+            <filename>idle/idle0002.png</filename>
+            <filename>idle/idle0003.png</filename>
+            <filename>idle/idle0004.png</filename>
+            <filename>idle/idle0005.png</filename>
+            <filename>idle/idle0006.png</filename>
+            <filename>idle/idle0007.png</filename>
+            <filename>idle/idle0008.png</filename>
+            <filename>idle/idle0009.png</filename>
+            <filename>idle/idle0010.png</filename>
+            <filename>idle/idle0011.png</filename>
+            <filename>idle/idle0012.png</filename>
+            <filename>idle/idle0013.png</filename>
+            <filename>attack1/attack10013.png</filename>
+            <filename>attack1/attack10014.png</filename>
+            <filename>attack1/attack10015.png</filename>
+            <filename>attack1/attack10016.png</filename>
+            <filename>attack1/attack10017.png</filename>
+            <filename>attack1/attack10018.png</filename>
+            <filename>attack1/attack10019.png</filename>
+            <filename>attack1/attack10020.png</filename>
+            <filename>attack1/attack10021.png</filename>
+            <filename>attack1/attack10022.png</filename>
+            <filename>attack1/attack10023.png</filename>
+            <filename>attack1/attack10024.png</filename>
+            <filename>attack1/attack10025.png</filename>
+            <filename>attack1/attack10001.png</filename>
+            <filename>attack1/attack10002.png</filename>
+            <filename>attack1/attack10003.png</filename>
+            <filename>attack1/attack10004.png</filename>
+            <filename>attack1/attack10005.png</filename>
+            <filename>attack1/attack10006.png</filename>
+            <filename>attack1/attack10007.png</filename>
+            <filename>attack1/attack10008.png</filename>
+            <filename>attack1/attack10009.png</filename>
+            <filename>attack1/attack10010.png</filename>
+            <filename>attack1/attack10011.png</filename>
+            <filename>attack1/attack10012.png</filename>
+        </array>
         <key>ignoreFileList</key>
         <array/>
         <key>replaceList</key>
