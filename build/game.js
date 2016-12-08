@@ -36780,10 +36780,11 @@
 			value: function update() {
 				var id = navigator.getGamepads()[2] ? 2 : 1;
 	
+				//console.log(navigator.getGamepads()[id]);
+				//this.debugButtons(id)
 				if (!navigator.getGamepads()[id]) {
 					return;
 				}
-	
 				if (navigator.getGamepads()[id].buttons[11].value) {
 					this.useGamepad = true;
 				}
@@ -36802,7 +36803,7 @@
 				// vAxe *= 1.5;
 	
 				this.leftAxes = [hAxe, vAxe];
-				this.debugButtons(id);
+				//this.debugButtons(id)
 				//this.updateDpad(id);
 	
 				if (navigator.getGamepads()[id].buttons[4].value) {
@@ -37272,7 +37273,7 @@
 	        }
 	
 	        _this.entityModel = {
-	            speed: { x: 300, y: 300 }
+	            speed: { x: 300, y: 200 }
 	        };
 	        _this.side = 1;
 	
@@ -37391,8 +37392,8 @@
 	    }, {
 	        key: 'move',
 	        value: function move(value) {
-	            this.velocity.x = this.entityModel.speed.x * value[0] * this.speedFactor;
-	            this.velocity.y = this.entityModel.speed.y * value[1] * this.speedFactor;
+	            this.velocity.x = this.entityModel.speed.x * value[0] * (this.speedFactor * this.speedFactor);
+	            this.velocity.y = this.entityModel.speed.y * value[1] * (this.speedFactor * this.speedFactor);
 	
 	            if (Math.abs(this.velocity.x) + Math.abs(this.velocity.y) < 0.05) {
 	                this.stopMove();
@@ -37433,7 +37434,7 @@
 	        value: function update(delta) {
 	
 	            this.updateAnimations();
-	            // console.log(this.velocity);
+	            console.log(this.velocity.y);
 	            // this.timer -= delta;
 	
 	            // if(this.timer <= 0){

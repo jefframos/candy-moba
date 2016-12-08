@@ -55,10 +55,11 @@ export default class InputManager{
 	update(){
 		let id = navigator.getGamepads()[2]?2:1;
 
+		//console.log(navigator.getGamepads()[id]);
+		//this.debugButtons(id)
 		if(!navigator.getGamepads()[id]){
 			return;
 		}
-		
 		if(navigator.getGamepads()[id].buttons[11].value){
 			this.useGamepad = true;
 		}
@@ -77,7 +78,7 @@ export default class InputManager{
 		// vAxe *= 1.5;
 
 		this.leftAxes = [hAxe, vAxe];
-		this.debugButtons(id)
+		//this.debugButtons(id)
 		//this.updateDpad(id);
 
 		if(navigator.getGamepads()[id].buttons[4].value){

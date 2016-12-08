@@ -77,7 +77,7 @@ export default class Cupcake extends PIXI.Container {
 
 
         this.entityModel = {
-            speed:{x:300, y:300}
+            speed:{x:300, y:200}
         }
         this.side = 1;
 
@@ -175,8 +175,8 @@ export default class Cupcake extends PIXI.Container {
         this.changeState('idle');
     }
     move(value) {
-        this.velocity.x = this.entityModel.speed.x * (value[0]) * this.speedFactor;
-        this.velocity.y = this.entityModel.speed.y * (value[1]) * this.speedFactor;
+        this.velocity.x = this.entityModel.speed.x * (value[0]) * (this.speedFactor * this.speedFactor);
+        this.velocity.y = this.entityModel.speed.y * (value[1]) * (this.speedFactor * this.speedFactor);
 
         if(Math.abs(this.velocity.x) + Math.abs(this.velocity.y) < 0.05){
             this.stopMove();
@@ -212,7 +212,7 @@ export default class Cupcake extends PIXI.Container {
     update ( delta ) {
 
         this.updateAnimations();
-       // console.log(this.velocity);
+        console.log(this.velocity.y);
         // this.timer -= delta;
 
         // if(this.timer <= 0){
