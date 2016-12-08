@@ -18,7 +18,8 @@ export default class InputManager{
 	 	// window.gamep = this.gamep;
 	 	this.leftAxes = [0,0];
 	 	this.usingGamepad = false;
-		//document.body.on('keydown', this.getKey.bind(this));		
+		//document.body.on('keydown', this.getKey.bind(this));	
+		this.useGamepad = false;	
 	}
 	debugAxes(id){
 		let str = '';
@@ -58,6 +59,15 @@ export default class InputManager{
 			return;
 		}
 		
+		if(navigator.getGamepads()[id].buttons[11].value){
+			this.useGamepad = true;
+		}
+		if(navigator.getGamepads()[id].buttons[10].value){
+			this.useGamepad = false;
+		}
+		if(!this.useGamepad){
+			return;
+		}
 		//this.debugAxes(id);
 
 		let hAxe = navigator.getGamepads()[1].axes[0].toFixed(2);
@@ -67,8 +77,8 @@ export default class InputManager{
 		// vAxe *= 1.5;
 
 		this.leftAxes = [hAxe, vAxe];
-		//this.debugButtons(id)
-		this.updateDpad(id);
+		this.debugButtons(id)
+		//this.updateDpad(id);
 
 		if(navigator.getGamepads()[id].buttons[4].value){
 			this.act('space');
@@ -134,7 +144,9 @@ export default class InputManager{
 			this.leftAxes[1] = -1;
 			this.usingGamepad = false;
 		}
-
+		// if(!this.keys){
+		// 	this.usingGamepad = true;
+		// }
 		this.game.updateKeyDown()
     }
 

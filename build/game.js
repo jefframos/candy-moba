@@ -36736,7 +36736,8 @@
 			// window.gamep = this.gamep;
 			this.leftAxes = [0, 0];
 			this.usingGamepad = false;
-			//document.body.on('keydown', this.getKey.bind(this));		
+			//document.body.on('keydown', this.getKey.bind(this));	
+			this.useGamepad = false;
 		}
 	
 		_createClass(InputManager, [{
@@ -36783,6 +36784,15 @@
 					return;
 				}
 	
+				if (navigator.getGamepads()[id].buttons[11].value) {
+					this.useGamepad = true;
+				}
+				if (navigator.getGamepads()[id].buttons[10].value) {
+					this.useGamepad = false;
+				}
+				if (!this.useGamepad) {
+					return;
+				}
 				//this.debugAxes(id);
 	
 				var hAxe = navigator.getGamepads()[1].axes[0].toFixed(2);
@@ -36792,8 +36802,8 @@
 				// vAxe *= 1.5;
 	
 				this.leftAxes = [hAxe, vAxe];
-				//this.debugButtons(id)
-				this.updateDpad(id);
+				this.debugButtons(id);
+				//this.updateDpad(id);
 	
 				if (navigator.getGamepads()[id].buttons[4].value) {
 					this.act('space');
@@ -36864,7 +36874,9 @@
 					this.leftAxes[1] = -1;
 					this.usingGamepad = false;
 				}
-	
+				// if(!this.keys){
+				// 	this.usingGamepad = true;
+				// }
 				this.game.updateKeyDown();
 			}
 		}, {
@@ -37379,7 +37391,6 @@
 	    }, {
 	        key: 'move',
 	        value: function move(value) {
-	            ////console.log('val',value);
 	            this.velocity.x = this.entityModel.speed.x * value[0] * this.speedFactor;
 	            this.velocity.y = this.entityModel.speed.y * value[1] * this.speedFactor;
 	

@@ -175,7 +175,6 @@ export default class Cupcake extends PIXI.Container {
         this.changeState('idle');
     }
     move(value) {
-        ////console.log('val',value);
         this.velocity.x = this.entityModel.speed.x * (value[0]) * this.speedFactor;
         this.velocity.y = this.entityModel.speed.y * (value[1]) * this.speedFactor;
 
