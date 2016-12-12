@@ -23,6 +23,7 @@ export default class PrototypeScreen extends Screen{
 		this.updateable = true;
 	}
 	build(){
+		this.lastAction = null;
 		super.build();
 
 	}
@@ -39,12 +40,42 @@ export default class PrototypeScreen extends Screen{
 	}
 	updateKeyUp(key){
 		this.updateKeyDown();
+
+		if(key == 'action5'){
+			this.cupcake.speedNormal();
+		}
 	}
 	updateKeyDown(){
 		for (var i = 0; i < this.inputManager.keys.length; i++) {
-			if(this.inputManager.keys[i] == 'space'){
+			if(this.inputManager.keys[i] == 'action1'){
 				//console.log('space');
+				this.lastAction = this.inputManager.keys[i];
 				this.cupcake.attack();
+			}
+			if(this.inputManager.keys[i] == 'action2'){
+				//console.log('space');
+				this.lastAction = this.inputManager.keys[i];
+				this.cupcake.jump();
+			}
+			if(this.inputManager.keys[i] == 'action3'){
+				//console.log('space');
+				this.lastAction = this.inputManager.keys[i];
+				this.cupcake.rangeAttack();
+			}
+			if(this.inputManager.keys[i] == 'action4'){
+				//console.log('space');
+				this.lastAction = this.inputManager.keys[i];
+				this.cupcake.areaAttack();
+			}
+			if(this.inputManager.keys[i] == 'action5'){
+				//console.log('space');
+				this.lastAction = this.inputManager.keys[i];
+				this.cupcake.speedUp();
+			}
+			if(this.inputManager.keys[i] == 'action6'){
+				//console.log('space');
+				this.lastAction = this.inputManager.keys[i];
+				this.cupcake.die();
 			}
 		}
 		this.cupcake.move(this.inputManager.leftAxes);

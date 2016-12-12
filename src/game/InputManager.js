@@ -1,4 +1,4 @@
-import Gamepad from './Gamepad'
+// import Gamepad from './Gamepad'
 export default class InputManager{
 	constructor(game){
 		this.game = game;
@@ -82,11 +82,47 @@ export default class InputManager{
 		//this.updateDpad(id);
 
 		if(navigator.getGamepads()[id].buttons[4].value){
-			this.act('space');
+			this.act('action1');
 			this.usingGamepad = true;
 		}else{
-			this.stopAct('space');
+			this.stopAct('action1');
 		}
+
+		if(navigator.getGamepads()[id].buttons[1].value){
+			this.act('action2');
+			this.usingGamepad = true;
+		}else{
+			this.stopAct('action2');
+		}
+
+		if(navigator.getGamepads()[id].buttons[0].value){
+			this.act('action4');
+			this.usingGamepad = true;
+		}else{
+			this.stopAct('action4');
+		}
+
+		if(navigator.getGamepads()[id].buttons[3].value){
+			this.act('action3');
+			this.usingGamepad = true;
+		}else{
+			this.stopAct('action3');
+		}
+
+		if(navigator.getGamepads()[id].buttons[7].value){
+			this.act('action5');
+			this.usingGamepad = true;
+		}else{
+			this.stopAct('action5');
+		}
+
+		if(navigator.getGamepads()[id].buttons[6].value){
+			this.act('action6');
+			this.usingGamepad = true;
+		}else{
+			this.stopAct('action6');
+		}
+
 		if(this.leftAxes[0] < -0.1){
 			this.act('left');
 			this.usingGamepad = true;
@@ -123,6 +159,7 @@ export default class InputManager{
   //   	if(e.keyCode === 87 || e.keyCode === 38){
 			//// this.game.updateAction('up');
 		// }
+		console.log(e.keyCode);
 		if(e.keyCode === 83 || e.keyCode === 40){
 			this.addKey('down')
 			this.leftAxes[1] = 1;
@@ -138,11 +175,27 @@ export default class InputManager{
 			this.leftAxes[0] = 1;
 			this.usingGamepad = false;
 		}else if(e.keyCode === 32){
-			this.addKey('space')
+			this.addKey('action1')
 			this.usingGamepad = false;
 		}else if(e.keyCode === 87 || e.keyCode === 38){
 			this.addKey('up')
 			this.leftAxes[1] = -1;
+			this.usingGamepad = false;
+		}
+		else if(e.keyCode === 90){
+			this.addKey('action2')
+			this.usingGamepad = false;
+		}
+		else if(e.keyCode === 88){
+			this.addKey('action3')
+			this.usingGamepad = false;
+		}
+		else if(e.keyCode === 67){
+			this.addKey('action4')
+			this.usingGamepad = false;
+		}
+		else if(e.keyCode === 86){
+			this.addKey('action5')
 			this.usingGamepad = false;
 		}
 		// if(!this.keys){
@@ -188,28 +241,43 @@ export default class InputManager{
 			this.leftAxes[0] = 0;			
 			key = 'left';
 			this.usingGamepad = false;
-			// this.game.stopAction('left');
 		}
 		else if(e.keyCode === 68 || e.keyCode === 39){
 			this.removeKey('right')
 			this.leftAxes[0] = 0;
 			key = 'right';
 			this.usingGamepad = false;
-			// this.game.stopAction('right');
 		}
 		else if(e.keyCode === 32){
-			this.removeKey('space')
-			key = 'space';
+			this.removeKey('action1')
+			key = 'action1';
 			this.usingGamepad = false;
-			// this.game.stopAction('space');
 		}
 		else if(e.keyCode === 87 || e.keyCode === 38){
 			this.removeKey('up')
 			this.leftAxes[1] = 0;
 			this.usingGamepad = false;
-			//// this.game.updateAction('up');
 			key = 'up';
-			// this.game.stopAction('up');
+		}
+		else if(e.keyCode === 90){
+			this.removeKey('action2')
+			this.usingGamepad = false;
+			key = 'action2';
+		}
+		else if(e.keyCode === 88){
+			this.removeKey('action3')
+			this.usingGamepad = false;
+			key = 'action3';
+		}
+		else if(e.keyCode === 67){
+			this.removeKey('action4')
+			this.usingGamepad = false;
+			key = 'action4';
+		}
+		else if(e.keyCode === 86){
+			this.removeKey('action5')
+			this.usingGamepad = false;
+			key = 'action5';
 		}
 
 		this.game.updateKeyUp(key)

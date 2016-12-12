@@ -7,7 +7,9 @@ import PrototypeScreen from './game/screen/PrototypeScreen';
 
 
 PIXI.loader
-	.add('./assets/Cupcake/cupcake.json')
+	.add('./assets/Cupcake/cupcake0.json')
+	.add('./assets/Cupcake/cupcake1.json')
+	.add('./assets/Cupcake/cupcake2.json')
 	.load(configGame);
 
 function configGame(){
