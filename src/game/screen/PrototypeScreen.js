@@ -21,6 +21,11 @@ export default class PrototypeScreen extends Screen{
 		this.cupcake.y = 500
 
 		this.updateable = true;
+
+		var text = new PIXI.Text('HOLD Space to see attacks\nZ: Jump\nX: Range Attack\nJump + Attack: Range Attack',{fontFamily : 'Arial', fontSize: 12});
+		this.addChild(text);
+		text.x = 10
+		text.y = 10
 	}
 	build(){
 		this.lastAction = null;

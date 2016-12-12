@@ -28549,6 +28549,11 @@
 			_this.cupcake.y = 500;
 	
 			_this.updateable = true;
+	
+			var text = new _pixi2.default.Text('HOLD Space to see attacks\nZ: Jump\nX: Range Attack\nJump + Attack: Range Attack', { fontFamily: 'Arial', fontSize: 12 });
+			_this.addChild(text);
+			text.x = 10;
+			text.y = 10;
 			return _this;
 		}
 	
