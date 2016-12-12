@@ -1,5 +1,6 @@
 import PIXI from 'pixi.js';
 import utils  from '../../utils';
+import AnimationManager  from './utils/AnimationManager';
 export default class Cupcake extends PIXI.Container {
 
     constructor() {
@@ -202,35 +203,10 @@ export default class Cupcake extends PIXI.Container {
         });
 
 
-        for (var i = 0; i < this.animationModel.length; i++) {
-            let texturesList = [];
-            this.animationModel[i]
+        this.animationManager = new AnimationManager(this.animationModel, this.animationContainer)
+        this.animationManager.finishCallback = this.finishAnimation.bind(this);
+        this.animationManager.startCallback = this.startAnimation.bind(this);
 
-            for (let j = 0; j < this.animationModel[i].totalFrames; j++)
-            {
-                if(j+1 > 9){
-                    var texture = PIXI.Texture.fromFrame(this.animationModel[i].src+ (j+1) + '.png');
-                }else{
-                    var texture = PIXI.Texture.fromFrame(this.animationModel[i].src  +'0'+ (j+1) + '.png');
-                }
-
-                texturesList.push(texture);
-                texture.smooth = true;
-            }
-
-            this.animationModel[i].movieClip = new PIXI.MovieClip(texturesList);
-            if(this.animationModel[i].loop != undefined){
-                this.animationModel[i].movieClip.loop = this.animationModel[i].loop;
-                this.animationModel[i].movieClip.onComplete = this.animationFinished;
-            }
-            this.animationModel[i].movieClip.anchor.set(this.animationModel[i].anchor.x,this.animationModel[i].anchor.y);
-            this.animationModel[i].movieClip.x = this.animationModel[i].position.x;
-            this.animationModel[i].movieClip.y = this.animationModel[i].position.y;
-            this.animationModel[i].movieClip.animationSpeed = this.animationModel[i].animationSpeed;
-            this.animationModel[i].movieClip.gotoAndStop(this.animationModel[i].startFrame);
-            this.animationContainer.addChild(this.animationModel[i].movieClip);
-
-        }
 
 
         this.entityModel = {
@@ -252,9 +228,9 @@ export default class Cupcake extends PIXI.Container {
         // this.scale.set(1.5)
 
         //this.timer = 3.0;
-        //this.nextAction = this.changeState;
+        //this.nextAction = this.animationManager.changeState;
         // setTimeout(() => {
-        //     this.changeState();
+        //     this.animationManager.changeState();
         // }, 3000);
 
        // this.updateState();
@@ -262,15 +238,21 @@ export default class Cupcake extends PIXI.Container {
 
         this.comboStandardTimer = 0.9;
 
-        this.ableToChangeAnimation = true;
+        this.animationManager.ableToChangeAnimation = true;
         this.rangeAttacking = false;
         this.attacking = false;
         this.jumping = false;
         this.jumpingOut = false;
         this.updateable = true;
-        this.hideAll();
-        this.stopAll();
-        this.changeState('idle');
+        
+
+
+
+
+        this.animationManager.hideAll();
+        this.animationManager.stopAll();
+        this.animationManager.changeState('idle');
+
 
         this.standardTimeJump = 0.7;
         this.timeJump = 0;
@@ -288,7 +270,7 @@ export default class Cupcake extends PIXI.Container {
         this.base.alpha = 1;
         this.respawning = false;
         this.currentMeleeCombo = 0;
-        this.ableToChangeAnimation = true;
+        this.animationManager.ableToChangeAnimation = true;
         this.rangeAttacking = false;
         this.attacking = false;
         this.jumping = false;
@@ -298,7 +280,7 @@ export default class Cupcake extends PIXI.Container {
     }
 
     die() {
-        if(this.changeState('killBack')){
+        if(this.animationManager.changeState('killBack')){
             this.animationContainer.y = 0;
         }
         this.dying = true;
@@ -306,12 +288,12 @@ export default class Cupcake extends PIXI.Container {
     }
     speedNormal() {
         this.speedFactor = 1;
-        let animModel = this.getAnimation('run');
+        let animModel = this.animationManager.getAnimation('run');
         animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
     }
     speedUp() {
         this.speedFactor = 1.5;
-        let animModel = this.getAnimation('run');
+        let animModel = this.animationManager.getAnimation('run');
         animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
     }
     areaAttack() {
@@ -319,7 +301,7 @@ export default class Cupcake extends PIXI.Container {
             return;
         }
         if(this.jumping){
-            if(this.changeState('areaAttack')){
+            if(this.animationManager.changeState('areaAttack')){
                 this.animationContainer.y = 0;
                 this.timeJump = 0;
             }
@@ -333,7 +315,7 @@ export default class Cupcake extends PIXI.Container {
         if(this.jumping){
             return
         }
-        if(this.changeState('jumpIn')){
+        if(this.animationManager.changeState('jumpIn')){
             this.jumping = true;
             this.timeJump = this.standardTimeJump;
         }
@@ -350,7 +332,7 @@ export default class Cupcake extends PIXI.Container {
         if(this.jumping || this.jumpOut){
             return;
         }
-        if(this.changeState('rangeAttack')){
+        if(this.animationManager.changeState('rangeAttack')){
             this.rangeAttacking = true;
         }
         
@@ -371,7 +353,7 @@ export default class Cupcake extends PIXI.Container {
             this.currentMeleeCombo = 0;
         }
 
-        if(this.changeState(this.meleeComboList[this.currentMeleeCombo])){
+        if(this.animationManager.changeState(this.meleeComboList[this.currentMeleeCombo])){
             this.attacking = true;
             this.velocity.x = 0;
             this.velocity.y = 0;
@@ -384,13 +366,13 @@ export default class Cupcake extends PIXI.Container {
     }
     isMeleeCombo() {
         for (var i = 0; i < this.meleeComboList.length; i++) {
-            if(this.state == this.meleeComboList[i]){
+            if(this.animationManager.state == this.meleeComboList[i]){
                 return true
             }
         }
         return false
     }
-    initAnimation() {
+    startAnimation() {
     }
     finishJump() {
         if(this.dying){
@@ -399,14 +381,14 @@ export default class Cupcake extends PIXI.Container {
         this.jumpingOut = false;
         if(this.jumping){
             this.jumpingOut = true;
-            this.changeState('jumpOut');
+            this.animationManager.changeState('jumpOut');
         }
         this.animationContainer.y = 0;
         this.jumping = false;
     }
 
     respaw() {
-        this.changeState('revive');
+        this.animationManager.changeState('revive');
         this.reset();
     }
     startRespaw() {
@@ -417,14 +399,9 @@ export default class Cupcake extends PIXI.Container {
         TweenLite.to(this.animationContainer, 1, {alpha:0, delay:1, onComplete:this.respaw.bind(this)})
     }
     finishAnimation() {
+        this.animationManager.ableToChangeAnimation = true;
 
-
-
-
-        this.ableToChangeAnimation = true;
-
-        ////console.log(this.state);
-        if(this.state == 'revive'){
+        if(this.animationManager.state == 'revive'){
             console.log('REVIVE');
             this.dying = false;
         }
@@ -440,12 +417,12 @@ export default class Cupcake extends PIXI.Container {
         if(this.jumping){
             return
         }
-        if(this.state == 'rangeAttackEnd'){
+        if(this.animationManager.state == 'rangeAttackEnd'){
             this.rangeAttacking = false;
         }
         if(this.rangeAttacking){
             ////console.log('RANGING');
-            this.changeState('rangeAttackEnd');
+            this.animationManager.changeState('rangeAttackEnd');
             return;
         }
         this.jumpingOut = false;
@@ -454,57 +431,7 @@ export default class Cupcake extends PIXI.Container {
             this.attacking = false;
         }
     }
-    stopCurrent() {
-        let current = this.animationModel[this.getAnimationID(this.state)];current.movieClip.gotoAndStop(current.startFrame);
-    }
-    hideCurrent() {
-        this.animationModel[this.getAnimationID(this.state)].movieClip.visible = false;
-    }
-    hideAll() {
-        for (var i = 0; i < this.animationModel.length; i++) {
-            let animData = this.animationModel[i];
-            animData.movieClip.visible = false;
-        }
-    }
-    stopAll() {
-        for (var i = 0; i < this.animationModel.length; i++) {
-            let animData = this.animationModel[i];
-            if(!animData.movieClip.playing){
-                animData.movieClip.stop();
-            }
-        }
-    }
-    playMovieclip(id, forcePlay) {
-        let animData = this.animationModel[id];
-        if(animData.haveCallback){
-            this.ableToChangeAnimation = false;
-        }else{
-            this.ableToChangeAnimation = true;
-        }
-        if(!animData.movieClip.playing || forcePlay){
-            this.initAnimation();
-            animData.movieClip.gotoAndPlay( animData.startFrame);
-            animData.movieClip.visible = true;
-        }
-    }
-
-    getAnimation(label) {
-        for (var i = 0; i < this.animationModel.length; i++) {
-            if(this.animationModel[i].label == label){
-                return this.animationModel[i]
-            }            
-        }
-        return null;
-    }
-
-    getAnimationID(label) {
-        for (var i = 0; i < this.animationModel.length; i++) {
-            if(this.animationModel[i].label == label){
-                return i
-            }            
-        }
-        return -1;
-    }
+   
     setDistance(value) {
         this.standardScale = value * 0.3 + 0.2;
 
@@ -521,7 +448,7 @@ export default class Cupcake extends PIXI.Container {
         }
         this.velocity.x =0;
         this.velocity.y =0;
-        this.changeState('idle');
+        this.animationManager.changeState('idle');
     }
     move(value) {
         if(this.dying){
@@ -533,40 +460,15 @@ export default class Cupcake extends PIXI.Container {
             this.stopMove();
         }else{
             if(!this.jumping){
-                this.changeState('run');
+                this.animationManager.changeState('run');
             }
         }
     }
-    changeState(state){
-        if(this.state == state || !this.ableToChangeAnimation){
-            return false;
-        }
-
-        //console.log(state);
-
-        if(this.state){
-            this.stopCurrent()
-            this.hideCurrent()
-        }
-        this.state = state;
-        this.updateState();
-        return true;
-    }
-    updateState() {
-        this.playMovieclip(this.getAnimationID(this.state));
-    }
-    updateAnimations(){
-         if(this.state && 
-            this.animationModel[this.getAnimationID(this.state)].haveCallback && 
-            !this.animationModel[this.getAnimationID(this.state)].movieClip.playing)
-        {
-            this.finishAnimation();
-        }
-    }
+  
     update ( delta ) {
         ////console.log(this.jumping);
         ////console.log(this.jumpingOut);
-        this.updateAnimations();
+        this.animationManager.updateAnimations();
 
         if(this.dying){
             return;
@@ -591,9 +493,9 @@ export default class Cupcake extends PIXI.Container {
             //// console.log(this.timeJump / this.standardTimeJump);
             this.animationContainer.y = -jumpFactor * this.jumpForce;
             if(this.timeJump / this.standardTimeJump > 0.5){
-                this.changeState('jumpIn')
+                this.animationManager.changeState('jumpIn')
             }else{
-                this.changeState('jumpFalling')
+                this.animationManager.changeState('jumpFalling')
             }
 
             if(this.timeJump <= 0){

@@ -2,36 +2,12 @@ import PIXI from 'pixi.js';
 
 export default class Cupcake extends PIXI.Container {
 
-    constructor() {
+    constructor(animationModel, animationContainer) {
 
     	super();
 
-        this.animationContainer = new PIXI.Container();
-        this.addChild(this.animationContainer);
-
-        this.animationModel = [];
-        this.animationModel.push({
-            label:'idle',
-            src:'idle00',
-            totalFrames:14,
-            startFrame:0,
-            animationSpeed:0.4,
-            movieClip:null,
-            position:{x:0,y:0},
-            anchor:{x:0.5,y:1}
-        });
-
-        this.animationModel.push({
-            label:'run',
-            src:'run00',
-            totalFrames:24,
-            startFrame:8,
-            animationSpeed:0.5,
-            movieClip:null,
-            position:{x:-15,y:4},
-            anchor:{x:0.5,y:1}
-        });
-
+        this.animationModel = animationModel;
+        this.animationContainer = animationContainer;
 
         for (var i = 0; i < this.animationModel.length; i++) {
             let texturesList = [];
@@ -50,6 +26,10 @@ export default class Cupcake extends PIXI.Container {
             }
 
             this.animationModel[i].movieClip = new PIXI.MovieClip(texturesList);
+            if(this.animationModel[i].loop != undefined){
+                this.animationModel[i].movieClip.loop = this.animationModel[i].loop;
+                this.animationModel[i].movieClip.onComplete = this.animationFinished;
+            }
             this.animationModel[i].movieClip.anchor.set(this.animationModel[i].anchor.x,this.animationModel[i].anchor.y);
             this.animationModel[i].movieClip.x = this.animationModel[i].position.x;
             this.animationModel[i].movieClip.y = this.animationModel[i].position.y;
@@ -59,35 +39,16 @@ export default class Cupcake extends PIXI.Container {
 
         }
 
+        this.ableToChangeAnimation = true;
 
-        this.entityModel = {
-            speed:{x:200, y:200}
-        }
-        this.side = 1;
-
-        this.standardScale = 0.4;
-        this.scale.set(this.standardScale)
-
-        // this.updateState();
-       
-        // this.scale.set(1.5)
-
-        //this.timer = 3.0;
-        //this.nextAction = this.changeState;
-        // setTimeout(() => {
-        //     this.changeState();
-        // }, 3000);
-
-       // this.updateState();
-        this.velocity = {x:0, y:0};
-
-        this.updateable = true;
-        this.hideAll();
-        this.stopAll();
-        this.changeState('idle');
+        this.startCallback = null;
+        this.finishCallback = null;
+        // this.hideAll();
+        // this.stopAll();
+        // this.changeState('idle');
     }
     stopCurrent() {
-        this.animationModel[this.getAnimationID(this.state)].movieClip.stop();
+        let current = this.animationModel[this.getAnimationID(this.state)];current.movieClip.gotoAndStop(current.startFrame);
     }
     hideCurrent() {
         this.animationModel[this.getAnimationID(this.state)].movieClip.visible = false;
@@ -107,12 +68,27 @@ export default class Cupcake extends PIXI.Container {
         }
     }
     playMovieclip(id, forcePlay) {
-        console.log('play', this.state);
         let animData = this.animationModel[id];
+        if(animData.haveCallback){
+            this.ableToChangeAnimation = false;
+        }else{
+            this.ableToChangeAnimation = true;
+        }
         if(!animData.movieClip.playing || forcePlay){
+            this.startCallback();
             animData.movieClip.gotoAndPlay( animData.startFrame);
             animData.movieClip.visible = true;
+            //console.log('q',animData.movieClip);
         }
+    }
+
+    getAnimation(label) {
+        for (var i = 0; i < this.animationModel.length; i++) {
+            if(this.animationModel[i].label == label){
+                return this.animationModel[i]
+            }            
+        }
+        return null;
     }
 
     getAnimationID(label) {
@@ -123,50 +99,34 @@ export default class Cupcake extends PIXI.Container {
         }
         return -1;
     }
-
-
-
-    stopMove() {
-        this.velocity.x =0;
-        this.changeState('idle');
-    }
-    moveRight() {
-        this.velocity.x = this.entityModel.speed.x;
-        this.changeState('run');
-    }
-    moveLeft() {
-        this.velocity.x = -this.entityModel.speed.x;
-        this.changeState('run');
-    }
     changeState(state){
-        if(this.state == state){
-            return;
+        //console.log(state);
+        if(this.state == state || !this.ableToChangeAnimation){
+            return false;
         }
+
+        //console.log(state);
+
         if(this.state){
             this.stopCurrent()
             this.hideCurrent()
         }
         this.state = state;
         this.updateState();
+        return true;
     }
     updateState() {
+        // console.log('updateState');
         this.playMovieclip(this.getAnimationID(this.state));
     }
-    update ( delta ) {
-
-        // this.timer -= delta;
-
-        // if(this.timer <= 0){
-        //     this.timer = 999999;
-        //     this.nextAction();
-        // }
-       
-        if(this.velocity.x < 0){
-            this.scale.x = (this.standardScale * -1)
-        }else if(this.velocity.x > 0){
-            this.scale.x = (this.standardScale)
+    updateAnimations(){
+        //console.log(this.state, this.getAnimationID(this.state),  this.animationModel[this.getAnimationID(this.state)].haveCallback, this.animationModel[this.getAnimationID(this.state)].movieClip.playing);
+         if(this.state && 
+            this.animationModel[this.getAnimationID(this.state)].haveCallback && 
+            !this.animationModel[this.getAnimationID(this.state)].movieClip.playing)
+        {
+            //console.log(this.finishCallback);
+            this.finishCallback();
         }
-        this.x += this.velocity.x * delta;
-    	this.y += this.velocity.y * delta;
-    }	
+    }
 }

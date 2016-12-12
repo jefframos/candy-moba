@@ -36979,7 +36979,6 @@
 				//   	if(e.keyCode === 87 || e.keyCode === 38){
 				//// this.game.updateAction('up');
 				// }
-				console.log(e.keyCode);
 				if (e.keyCode === 83 || e.keyCode === 40) {
 					this.addKey('down');
 					this.leftAxes[1] = 1;
@@ -37120,6 +37119,10 @@
 	var _utils = __webpack_require__(144);
 	
 	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(149);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -37328,6 +37331,383 @@
 	            haveCallback: true
 	        });
 	
+	        _this.animationManager = new _AnimationManager2.default(_this.animationModel, _this.animationContainer);
+	        _this.animationManager.finishCallback = _this.finishAnimation.bind(_this);
+	        _this.animationManager.startCallback = _this.startAnimation.bind(_this);
+	
+	        _this.entityModel = {
+	            speed: { x: 350, y: 250 }
+	        };
+	        _this.side = 1;
+	        _this.speedFactor = 1;
+	
+	        _this.starterScale = 0.5;
+	        _this.standardScale = _this.starterScale;
+	        _this.speedFactor = 1;
+	        _this.scale.set(_this.standardScale);
+	
+	        _this.meleeComboList = ['meleeAttack1', 'meleeAttack2', 'meleeAttack3', 'meleeAttack4'];
+	        _this.currentMeleeCombo = 0;
+	        // this.updateState();
+	
+	        // this.scale.set(1.5)
+	
+	        //this.timer = 3.0;
+	        //this.nextAction = this.animationManager.changeState;
+	        // setTimeout(() => {
+	        //     this.animationManager.changeState();
+	        // }, 3000);
+	
+	        // this.updateState();
+	        _this.velocity = { x: 0, y: 0 };
+	
+	        _this.comboStandardTimer = 0.9;
+	
+	        _this.animationManager.ableToChangeAnimation = true;
+	        _this.rangeAttacking = false;
+	        _this.attacking = false;
+	        _this.jumping = false;
+	        _this.jumpingOut = false;
+	        _this.updateable = true;
+	
+	        _this.animationManager.hideAll();
+	        _this.animationManager.stopAll();
+	        _this.animationManager.changeState('idle');
+	
+	        _this.standardTimeJump = 0.7;
+	        _this.timeJump = 0;
+	        _this.dying = false;
+	        _this.respawning = false;
+	        _this.jumpForce = 200;
+	        _this.reset();
+	
+	        return _this;
+	    }
+	
+	    _createClass(Cupcake, [{
+	        key: 'reset',
+	        value: function reset() {
+	            this.timeJump = 0;
+	            this.animationContainer.alpha = 1;
+	            this.base.alpha = 1;
+	            this.respawning = false;
+	            this.currentMeleeCombo = 0;
+	            this.animationManager.ableToChangeAnimation = true;
+	            this.rangeAttacking = false;
+	            this.attacking = false;
+	            this.jumping = false;
+	            this.jumpingOut = false;
+	            this.updateable = true;
+	            this.comboTimer = 0;
+	        }
+	    }, {
+	        key: 'die',
+	        value: function die() {
+	            if (this.animationManager.changeState('killBack')) {
+	                this.animationContainer.y = 0;
+	            }
+	            this.dying = true;
+	            TweenLite.to(this.base, 0.5, { alpha: 0 });
+	        }
+	    }, {
+	        key: 'speedNormal',
+	        value: function speedNormal() {
+	            this.speedFactor = 1;
+	            var animModel = this.animationManager.getAnimation('run');
+	            animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
+	        }
+	    }, {
+	        key: 'speedUp',
+	        value: function speedUp() {
+	            this.speedFactor = 1.5;
+	            var animModel = this.animationManager.getAnimation('run');
+	            animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
+	        }
+	    }, {
+	        key: 'areaAttack',
+	        value: function areaAttack() {
+	            if (this.dying) {
+	                return;
+	            }
+	            if (this.jumping) {
+	                if (this.animationManager.changeState('areaAttack')) {
+	                    this.animationContainer.y = 0;
+	                    this.timeJump = 0;
+	                }
+	                return;
+	            }
+	        }
+	    }, {
+	        key: 'jump',
+	        value: function jump() {
+	            if (this.dying) {
+	                return;
+	            }
+	            if (this.jumping) {
+	                return;
+	            }
+	            if (this.animationManager.changeState('jumpIn')) {
+	                this.jumping = true;
+	                this.timeJump = this.standardTimeJump;
+	            }
+	            this.velocity.x = 0;
+	            this.velocity.y = 0;
+	        }
+	    }, {
+	        key: 'rangeAttack',
+	        value: function rangeAttack() {
+	            if (this.dying) {
+	                return;
+	            }
+	            if (this.rangeAttacking) {
+	                return;
+	            }
+	            if (this.jumping || this.jumpOut) {
+	                return;
+	            }
+	            if (this.animationManager.changeState('rangeAttack')) {
+	                this.rangeAttacking = true;
+	            }
+	
+	            this.velocity.x = 0;
+	            this.velocity.y = 0;
+	        }
+	    }, {
+	        key: 'attack',
+	        value: function attack() {
+	            if (this.dying) {
+	                return;
+	            }
+	            if (this.jumping || this.attacking) {
+	                return;
+	            }
+	
+	            if (this.canCombo()) {
+	                this.currentMeleeCombo++;
+	            } else {
+	                this.currentMeleeCombo = 0;
+	            }
+	
+	            if (this.animationManager.changeState(this.meleeComboList[this.currentMeleeCombo])) {
+	                this.attacking = true;
+	                this.velocity.x = 0;
+	                this.velocity.y = 0;
+	                this.comboTimer = this.comboStandardTimer;
+	            }
+	        }
+	    }, {
+	        key: 'canCombo',
+	        value: function canCombo() {
+	            console.log(this.comboTimer);
+	            return this.comboTimer > 0 && this.currentMeleeCombo < this.meleeComboList.length - 1;
+	        }
+	    }, {
+	        key: 'isMeleeCombo',
+	        value: function isMeleeCombo() {
+	            for (var i = 0; i < this.meleeComboList.length; i++) {
+	                if (this.animationManager.state == this.meleeComboList[i]) {
+	                    return true;
+	                }
+	            }
+	            return false;
+	        }
+	    }, {
+	        key: 'startAnimation',
+	        value: function startAnimation() {}
+	    }, {
+	        key: 'finishJump',
+	        value: function finishJump() {
+	            if (this.dying) {
+	                return;
+	            }
+	            this.jumpingOut = false;
+	            if (this.jumping) {
+	                this.jumpingOut = true;
+	                this.animationManager.changeState('jumpOut');
+	            }
+	            this.animationContainer.y = 0;
+	            this.jumping = false;
+	        }
+	    }, {
+	        key: 'respaw',
+	        value: function respaw() {
+	            this.animationManager.changeState('revive');
+	            this.reset();
+	        }
+	    }, {
+	        key: 'startRespaw',
+	        value: function startRespaw() {
+	            if (this.respawning) {
+	                return;
+	            }
+	            this.respawning = true;
+	            TweenLite.to(this.animationContainer, 1, { alpha: 0, delay: 1, onComplete: this.respaw.bind(this) });
+	        }
+	    }, {
+	        key: 'finishAnimation',
+	        value: function finishAnimation() {
+	            this.animationManager.ableToChangeAnimation = true;
+	
+	            if (this.animationManager.state == 'revive') {
+	                console.log('REVIVE');
+	                this.dying = false;
+	            }
+	
+	            if (this.dying) {
+	
+	                this.startRespaw();
+	                //respaw
+	                return;
+	            }
+	
+	            if (this.jumping) {
+	                return;
+	            }
+	            if (this.animationManager.state == 'rangeAttackEnd') {
+	                this.rangeAttacking = false;
+	            }
+	            if (this.rangeAttacking) {
+	                ////console.log('RANGING');
+	                this.animationManager.changeState('rangeAttackEnd');
+	                return;
+	            }
+	            this.jumpingOut = false;
+	
+	            if (this.isMeleeCombo()) {
+	                this.attacking = false;
+	            }
+	        }
+	    }, {
+	        key: 'setDistance',
+	        value: function setDistance(value) {
+	            this.standardScale = value * 0.3 + 0.2;
+	
+	            this.speedScale = this.standardScale / this.starterScale;
+	        }
+	    }, {
+	        key: 'stopMove',
+	        value: function stopMove() {
+	            if (this.dying) {
+	                return;
+	            }
+	            if (this.jumping || this.jumpingOut) {
+	                return;
+	            }
+	            this.velocity.x = 0;
+	            this.velocity.y = 0;
+	            this.animationManager.changeState('idle');
+	        }
+	    }, {
+	        key: 'move',
+	        value: function move(value) {
+	            if (this.dying) {
+	                return;
+	            }
+	            this.velocity.x = this.entityModel.speed.x * value[0] * (this.speedScale * this.speedScale) * this.speedFactor;
+	            this.velocity.y = this.entityModel.speed.y * value[1] * (this.speedScale * this.speedScale) * this.speedFactor;
+	            if (Math.abs(this.velocity.x) + Math.abs(this.velocity.y) < 0.05) {
+	                this.stopMove();
+	            } else {
+	                if (!this.jumping) {
+	                    this.animationManager.changeState('run');
+	                }
+	            }
+	        }
+	    }, {
+	        key: 'update',
+	        value: function update(delta) {
+	            ////console.log(this.jumping);
+	            ////console.log(this.jumpingOut);
+	            this.animationManager.updateAnimations();
+	
+	            if (this.dying) {
+	                return;
+	            }
+	            ////console.log(this.velocity.y);
+	            // this.timer -= delta;
+	            if (this.comboTimer > 0) {
+	                this.comboTimer -= delta;
+	            } else {
+	                this.comboTimer = 0;
+	                this.currentMeleeCombo = 0;
+	            }
+	
+	            // if(this.timer <= 0){
+	            //     this.timer = 999999;
+	            //     this.nextAction();
+	            // }
+	            if (this.jumping) {
+	                this.timeJump -= delta;
+	                var jumpFactor = 0.5 - _utils2.default.distance(_utils2.default.linear(this.timeJump / this.standardTimeJump), 0, 0.5, 0);
+	                // let jumpFactor = 0.5 - utils.distance(utils.easeInQuad(this.timeJump / this.standardTimeJump),0,0.5,0);
+	                //// console.log(this.timeJump / this.standardTimeJump);
+	                this.animationContainer.y = -jumpFactor * this.jumpForce;
+	                if (this.timeJump / this.standardTimeJump > 0.5) {
+	                    this.animationManager.changeState('jumpIn');
+	                } else {
+	                    this.animationManager.changeState('jumpFalling');
+	                }
+	
+	                if (this.timeJump <= 0) {
+	                    this.finishJump();
+	                }
+	            }
+	
+	            if (this.velocity.x < 0) {
+	                this.side = -1;
+	            } else if (this.velocity.x > 0) {
+	                this.side = 1;
+	            }
+	            this.scale.x = this.standardScale * this.side;
+	            this.scale.y = this.standardScale;
+	            if (this.attacking || this.jumpingOut || this.rangeAttacking) {
+	                return;
+	            }
+	            this.x += this.velocity.x * delta;
+	            this.y += this.velocity.y * delta;
+	        }
+	    }]);
+	
+	    return Cupcake;
+	}(_pixi2.default.Container);
+	
+	exports.default = Cupcake;
+
+/***/ },
+/* 149 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Cupcake = function (_PIXI$Container) {
+	    _inherits(Cupcake, _PIXI$Container);
+	
+	    function Cupcake(animationModel, animationContainer) {
+	        _classCallCheck(this, Cupcake);
+	
+	        var _this = _possibleConstructorReturn(this, (Cupcake.__proto__ || Object.getPrototypeOf(Cupcake)).call(this));
+	
+	        _this.animationModel = animationModel;
+	        _this.animationContainer = animationContainer;
+	
 	        for (var i = 0; i < _this.animationModel.length; i++) {
 	            var texturesList = [];
 	            _this.animationModel[i];
@@ -37356,250 +37736,17 @@
 	            _this.animationContainer.addChild(_this.animationModel[i].movieClip);
 	        }
 	
-	        _this.entityModel = {
-	            speed: { x: 350, y: 250 }
-	        };
-	        _this.side = 1;
-	        _this.speedFactor = 1;
-	
-	        _this.starterScale = 0.5;
-	        _this.standardScale = _this.starterScale;
-	        _this.speedFactor = 1;
-	        _this.scale.set(_this.standardScale);
-	
-	        _this.meleeComboList = ['meleeAttack1', 'meleeAttack2', 'meleeAttack3', 'meleeAttack4'];
-	        _this.currentMeleeCombo = 0;
-	        // this.updateState();
-	
-	        // this.scale.set(1.5)
-	
-	        //this.timer = 3.0;
-	        //this.nextAction = this.changeState;
-	        // setTimeout(() => {
-	        //     this.changeState();
-	        // }, 3000);
-	
-	        // this.updateState();
-	        _this.velocity = { x: 0, y: 0 };
-	
-	        _this.comboStandardTimer = 0.9;
-	
 	        _this.ableToChangeAnimation = true;
-	        _this.rangeAttacking = false;
-	        _this.attacking = false;
-	        _this.jumping = false;
-	        _this.jumpingOut = false;
-	        _this.updateable = true;
-	        _this.hideAll();
-	        _this.stopAll();
-	        _this.changeState('idle');
 	
-	        _this.standardTimeJump = 0.7;
-	        _this.timeJump = 0;
-	        _this.dying = false;
-	        _this.respawning = false;
-	        _this.jumpForce = 200;
-	        _this.reset();
-	
+	        _this.startCallback = null;
+	        _this.finishCallback = null;
+	        // this.hideAll();
+	        // this.stopAll();
+	        // this.changeState('idle');
 	        return _this;
 	    }
 	
 	    _createClass(Cupcake, [{
-	        key: 'reset',
-	        value: function reset() {
-	            this.timeJump = 0;
-	            this.animationContainer.alpha = 1;
-	            this.base.alpha = 1;
-	            this.respawning = false;
-	            this.currentMeleeCombo = 0;
-	            this.ableToChangeAnimation = true;
-	            this.rangeAttacking = false;
-	            this.attacking = false;
-	            this.jumping = false;
-	            this.jumpingOut = false;
-	            this.updateable = true;
-	            this.comboTimer = 0;
-	        }
-	    }, {
-	        key: 'die',
-	        value: function die() {
-	            if (this.changeState('killBack')) {
-	                this.animationContainer.y = 0;
-	            }
-	            this.dying = true;
-	            TweenLite.to(this.base, 0.5, { alpha: 0 });
-	        }
-	    }, {
-	        key: 'speedNormal',
-	        value: function speedNormal() {
-	            this.speedFactor = 1;
-	            var animModel = this.getAnimation('run');
-	            animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
-	        }
-	    }, {
-	        key: 'speedUp',
-	        value: function speedUp() {
-	            this.speedFactor = 1.5;
-	            var animModel = this.getAnimation('run');
-	            animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
-	        }
-	    }, {
-	        key: 'areaAttack',
-	        value: function areaAttack() {
-	            if (this.dying) {
-	                return;
-	            }
-	            if (this.jumping) {
-	                if (this.changeState('areaAttack')) {
-	                    this.animationContainer.y = 0;
-	                    this.timeJump = 0;
-	                }
-	                return;
-	            }
-	        }
-	    }, {
-	        key: 'jump',
-	        value: function jump() {
-	            if (this.dying) {
-	                return;
-	            }
-	            if (this.jumping) {
-	                return;
-	            }
-	            if (this.changeState('jumpIn')) {
-	                this.jumping = true;
-	                this.timeJump = this.standardTimeJump;
-	            }
-	            this.velocity.x = 0;
-	            this.velocity.y = 0;
-	        }
-	    }, {
-	        key: 'rangeAttack',
-	        value: function rangeAttack() {
-	            if (this.dying) {
-	                return;
-	            }
-	            if (this.rangeAttacking) {
-	                return;
-	            }
-	            if (this.jumping || this.jumpOut) {
-	                return;
-	            }
-	            if (this.changeState('rangeAttack')) {
-	                this.rangeAttacking = true;
-	            }
-	
-	            this.velocity.x = 0;
-	            this.velocity.y = 0;
-	        }
-	    }, {
-	        key: 'attack',
-	        value: function attack() {
-	            if (this.dying) {
-	                return;
-	            }
-	            if (this.jumping || this.attacking) {
-	                return;
-	            }
-	
-	            if (this.canCombo()) {
-	                this.currentMeleeCombo++;
-	            } else {
-	                this.currentMeleeCombo = 0;
-	            }
-	
-	            if (this.changeState(this.meleeComboList[this.currentMeleeCombo])) {
-	                this.attacking = true;
-	                this.velocity.x = 0;
-	                this.velocity.y = 0;
-	                this.comboTimer = this.comboStandardTimer;
-	            }
-	        }
-	    }, {
-	        key: 'canCombo',
-	        value: function canCombo() {
-	            console.log(this.comboTimer);
-	            return this.comboTimer > 0 && this.currentMeleeCombo < this.meleeComboList.length - 1;
-	        }
-	    }, {
-	        key: 'isMeleeCombo',
-	        value: function isMeleeCombo() {
-	            for (var i = 0; i < this.meleeComboList.length; i++) {
-	                if (this.state == this.meleeComboList[i]) {
-	                    return true;
-	                }
-	            }
-	            return false;
-	        }
-	    }, {
-	        key: 'initAnimation',
-	        value: function initAnimation() {}
-	    }, {
-	        key: 'finishJump',
-	        value: function finishJump() {
-	            if (this.dying) {
-	                return;
-	            }
-	            this.jumpingOut = false;
-	            if (this.jumping) {
-	                this.jumpingOut = true;
-	                this.changeState('jumpOut');
-	            }
-	            this.animationContainer.y = 0;
-	            this.jumping = false;
-	        }
-	    }, {
-	        key: 'respaw',
-	        value: function respaw() {
-	            this.changeState('revive');
-	            this.reset();
-	        }
-	    }, {
-	        key: 'startRespaw',
-	        value: function startRespaw() {
-	            if (this.respawning) {
-	                return;
-	            }
-	            this.respawning = true;
-	            TweenLite.to(this.animationContainer, 1, { alpha: 0, delay: 1, onComplete: this.respaw.bind(this) });
-	        }
-	    }, {
-	        key: 'finishAnimation',
-	        value: function finishAnimation() {
-	
-	            this.ableToChangeAnimation = true;
-	
-	            ////console.log(this.state);
-	            if (this.state == 'revive') {
-	                console.log('REVIVE');
-	                this.dying = false;
-	            }
-	
-	            if (this.dying) {
-	
-	                this.startRespaw();
-	                //respaw
-	                return;
-	            }
-	
-	            if (this.jumping) {
-	                return;
-	            }
-	            if (this.state == 'rangeAttackEnd') {
-	                this.rangeAttacking = false;
-	            }
-	            if (this.rangeAttacking) {
-	                ////console.log('RANGING');
-	                this.changeState('rangeAttackEnd');
-	                return;
-	            }
-	            this.jumpingOut = false;
-	
-	            if (this.isMeleeCombo()) {
-	                this.attacking = false;
-	            }
-	        }
-	    }, {
 	        key: 'stopCurrent',
 	        value: function stopCurrent() {
 	            var current = this.animationModel[this.getAnimationID(this.state)];current.movieClip.gotoAndStop(current.startFrame);
@@ -37637,9 +37784,10 @@
 	                this.ableToChangeAnimation = true;
 	            }
 	            if (!animData.movieClip.playing || forcePlay) {
-	                this.initAnimation();
+	                this.startCallback();
 	                animData.movieClip.gotoAndPlay(animData.startFrame);
 	                animData.movieClip.visible = true;
+	                //console.log('q',animData.movieClip);
 	            }
 	        }
 	    }, {
@@ -37663,44 +37811,9 @@
 	            return -1;
 	        }
 	    }, {
-	        key: 'setDistance',
-	        value: function setDistance(value) {
-	            this.standardScale = value * 0.3 + 0.2;
-	
-	            this.speedScale = this.standardScale / this.starterScale;
-	        }
-	    }, {
-	        key: 'stopMove',
-	        value: function stopMove() {
-	            if (this.dying) {
-	                return;
-	            }
-	            if (this.jumping || this.jumpingOut) {
-	                return;
-	            }
-	            this.velocity.x = 0;
-	            this.velocity.y = 0;
-	            this.changeState('idle');
-	        }
-	    }, {
-	        key: 'move',
-	        value: function move(value) {
-	            if (this.dying) {
-	                return;
-	            }
-	            this.velocity.x = this.entityModel.speed.x * value[0] * (this.speedScale * this.speedScale) * this.speedFactor;
-	            this.velocity.y = this.entityModel.speed.y * value[1] * (this.speedScale * this.speedScale) * this.speedFactor;
-	            if (Math.abs(this.velocity.x) + Math.abs(this.velocity.y) < 0.05) {
-	                this.stopMove();
-	            } else {
-	                if (!this.jumping) {
-	                    this.changeState('run');
-	                }
-	            }
-	        }
-	    }, {
 	        key: 'changeState',
 	        value: function changeState(state) {
+	            //console.log(state);
 	            if (this.state == state || !this.ableToChangeAnimation) {
 	                return false;
 	            }
@@ -37718,67 +37831,17 @@
 	    }, {
 	        key: 'updateState',
 	        value: function updateState() {
+	            // console.log('updateState');
 	            this.playMovieclip(this.getAnimationID(this.state));
 	        }
 	    }, {
 	        key: 'updateAnimations',
 	        value: function updateAnimations() {
+	            //console.log(this.state, this.getAnimationID(this.state),  this.animationModel[this.getAnimationID(this.state)].haveCallback, this.animationModel[this.getAnimationID(this.state)].movieClip.playing);
 	            if (this.state && this.animationModel[this.getAnimationID(this.state)].haveCallback && !this.animationModel[this.getAnimationID(this.state)].movieClip.playing) {
-	                this.finishAnimation();
+	                //console.log(this.finishCallback);
+	                this.finishCallback();
 	            }
-	        }
-	    }, {
-	        key: 'update',
-	        value: function update(delta) {
-	            ////console.log(this.jumping);
-	            ////console.log(this.jumpingOut);
-	            this.updateAnimations();
-	
-	            if (this.dying) {
-	                return;
-	            }
-	            ////console.log(this.velocity.y);
-	            // this.timer -= delta;
-	            if (this.comboTimer > 0) {
-	                this.comboTimer -= delta;
-	            } else {
-	                this.comboTimer = 0;
-	                this.currentMeleeCombo = 0;
-	            }
-	
-	            // if(this.timer <= 0){
-	            //     this.timer = 999999;
-	            //     this.nextAction();
-	            // }
-	            if (this.jumping) {
-	                this.timeJump -= delta;
-	                var jumpFactor = 0.5 - _utils2.default.distance(_utils2.default.linear(this.timeJump / this.standardTimeJump), 0, 0.5, 0);
-	                // let jumpFactor = 0.5 - utils.distance(utils.easeInQuad(this.timeJump / this.standardTimeJump),0,0.5,0);
-	                //// console.log(this.timeJump / this.standardTimeJump);
-	                this.animationContainer.y = -jumpFactor * this.jumpForce;
-	                if (this.timeJump / this.standardTimeJump > 0.5) {
-	                    this.changeState('jumpIn');
-	                } else {
-	                    this.changeState('jumpFalling');
-	                }
-	
-	                if (this.timeJump <= 0) {
-	                    this.finishJump();
-	                }
-	            }
-	
-	            if (this.velocity.x < 0) {
-	                this.side = -1;
-	            } else if (this.velocity.x > 0) {
-	                this.side = 1;
-	            }
-	            this.scale.x = this.standardScale * this.side;
-	            this.scale.y = this.standardScale;
-	            if (this.attacking || this.jumpingOut || this.rangeAttacking) {
-	                return;
-	            }
-	            this.x += this.velocity.x * delta;
-	            this.y += this.velocity.y * delta;
 	        }
 	    }]);
 	

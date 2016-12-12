@@ -159,7 +159,6 @@ export default class InputManager{
   //   	if(e.keyCode === 87 || e.keyCode === 38){
 			//// this.game.updateAction('up');
 		// }
-		console.log(e.keyCode);
 		if(e.keyCode === 83 || e.keyCode === 40){
 			this.addKey('down')
 			this.leftAxes[1] = 1;
