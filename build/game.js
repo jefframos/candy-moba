@@ -37433,6 +37433,7 @@
 	                if (this.animationManager.changeState('areaAttack')) {
 	                    this.animationContainer.y = 0;
 	                    this.timeJump = 0;
+	                    //this.jumping = false;
 	                }
 	                return;
 	            }
@@ -37478,7 +37479,11 @@
 	            if (this.dying) {
 	                return;
 	            }
-	            if (this.jumping || this.attacking) {
+	            if (this.attacking) {
+	                return;
+	            }
+	            if (this.jumping) {
+	                this.areaAttack();
 	                return;
 	            }
 	

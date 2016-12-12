@@ -304,6 +304,7 @@ export default class Cupcake extends PIXI.Container {
             if(this.animationManager.changeState('areaAttack')){
                 this.animationContainer.y = 0;
                 this.timeJump = 0;
+                //this.jumping = false;
             }
             return;
         }
@@ -343,7 +344,11 @@ export default class Cupcake extends PIXI.Container {
         if(this.dying){
             return;
         }
-        if(this.jumping || this.attacking){
+        if(this.attacking){
+            return;
+        }
+        if(this.jumping){
+            this.areaAttack();
             return;
         }
 
