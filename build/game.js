@@ -36871,6 +36871,8 @@
 				//console.log(navigator.getGamepads()[id]);
 				//this.debugButtons(id)
 				if (!navigator.getGamepads()[id]) {
+					this.game.updateKeyDown();
+					this.game.updateKeyUp();
 					return;
 				}
 				if (navigator.getGamepads()[id].buttons[11].value) {
@@ -37554,7 +37556,6 @@
 	            this.animationManager.ableToChangeAnimation = true;
 	
 	            if (this.animationManager.state == 'revive') {
-	                console.log('REVIVE');
 	                this.dying = false;
 	            }
 	
@@ -37581,6 +37582,8 @@
 	            if (this.isMeleeCombo()) {
 	                this.attacking = false;
 	            }
+	
+	            this.animationManager.changeState('idle');
 	        }
 	    }, {
 	        key: 'setDistance',

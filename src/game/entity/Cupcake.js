@@ -407,7 +407,6 @@ export default class Cupcake extends PIXI.Container {
         this.animationManager.ableToChangeAnimation = true;
 
         if(this.animationManager.state == 'revive'){
-            console.log('REVIVE');
             this.dying = false;
         }
         
@@ -435,6 +434,8 @@ export default class Cupcake extends PIXI.Container {
         if(this.isMeleeCombo()){            
             this.attacking = false;
         }
+
+        this.animationManager.changeState('idle');
     }
    
     setDistance(value) {

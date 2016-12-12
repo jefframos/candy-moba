@@ -58,6 +58,8 @@ export default class InputManager{
 		//console.log(navigator.getGamepads()[id]);
 		//this.debugButtons(id)
 		if(!navigator.getGamepads()[id]){
+			this.game.updateKeyDown()
+			this.game.updateKeyUp();
 			return;
 		}
 		if(navigator.getGamepads()[id].buttons[11].value){
