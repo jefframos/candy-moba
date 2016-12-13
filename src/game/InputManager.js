@@ -19,7 +19,7 @@ export default class InputManager{
 	 	this.leftAxes = [0,0];
 	 	this.usingGamepad = false;
 		//document.body.on('keydown', this.getKey.bind(this));	
-		this.useGamepad = false;	
+		// this.usingGamepad = false;	
 	}
 	debugAxes(id){
 		let str = '';
@@ -55,20 +55,21 @@ export default class InputManager{
 	update(){
 		let id = navigator.getGamepads()[2]?2:1;
 
+		this.leftAxes = [0, 0];
 		//console.log(navigator.getGamepads()[id]);
 		//this.debugButtons(id)
 		if(!navigator.getGamepads()[id]){
-			this.game.updateKeyDown()
-			this.game.updateKeyUp();
+			//this.game.updateKeyDown()
+			//this.game.updateKeyUp();
 			return;
 		}
 		if(navigator.getGamepads()[id].buttons[11].value){
-			this.useGamepad = true;
+			this.usingGamepad = true;
 		}
 		if(navigator.getGamepads()[id].buttons[10].value){
-			this.useGamepad = false;
+			this.usingGamepad = false;
 		}
-		if(!this.useGamepad){
+		if(!this.usingGamepad){
 			return;
 		}
 		//this.debugAxes(id);

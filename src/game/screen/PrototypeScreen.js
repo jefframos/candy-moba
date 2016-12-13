@@ -13,10 +13,8 @@ export default class PrototypeScreen extends Screen{
 		this.inputManager = new InputManager(this);
 
 		this.cupcake = new Cupcake();
-
 		this.addChild(this.cupcake)
 		this.addOnUpdateList(this.cupcake)
-
 		this.cupcake.x = 500
 		this.cupcake.y = 500
 
@@ -83,6 +81,8 @@ export default class PrototypeScreen extends Screen{
 				this.cupcake.die();
 			}
 		}
+
+		console.log('axes',this.inputManager.leftAxes);
 		this.cupcake.move(this.inputManager.leftAxes);
 	}
 	

@@ -28541,10 +28541,8 @@
 			_this.inputManager = new _InputManager2.default(_this);
 	
 			_this.cupcake = new _Cupcake2.default();
-	
 			_this.addChild(_this.cupcake);
 			_this.addOnUpdateList(_this.cupcake);
-	
 			_this.cupcake.x = 500;
 			_this.cupcake.y = 500;
 	
@@ -28620,6 +28618,8 @@
 						this.cupcake.die();
 					}
 				}
+	
+				console.log('axes', this.inputManager.leftAxes);
 				this.cupcake.move(this.inputManager.leftAxes);
 			}
 		}, {
@@ -36830,7 +36830,7 @@
 			this.leftAxes = [0, 0];
 			this.usingGamepad = false;
 			//document.body.on('keydown', this.getKey.bind(this));	
-			this.useGamepad = false;
+			// this.usingGamepad = false;	
 		}
 	
 		_createClass(InputManager, [{
@@ -36873,20 +36873,21 @@
 			value: function update() {
 				var id = navigator.getGamepads()[2] ? 2 : 1;
 	
+				this.leftAxes = [0, 0];
 				//console.log(navigator.getGamepads()[id]);
 				//this.debugButtons(id)
 				if (!navigator.getGamepads()[id]) {
-					this.game.updateKeyDown();
-					this.game.updateKeyUp();
+					//this.game.updateKeyDown()
+					//this.game.updateKeyUp();
 					return;
 				}
 				if (navigator.getGamepads()[id].buttons[11].value) {
-					this.useGamepad = true;
+					this.usingGamepad = true;
 				}
 				if (navigator.getGamepads()[id].buttons[10].value) {
-					this.useGamepad = false;
+					this.usingGamepad = false;
 				}
-				if (!this.useGamepad) {
+				if (!this.usingGamepad) {
 					return;
 				}
 				//this.debugAxes(id);
@@ -37346,13 +37347,6 @@
 	            speed: { x: 350, y: 250 }
 	        };
 	        _this.side = 1;
-	        _this.speedFactor = 1;
-	
-	        _this.starterScale = 0.5;
-	        _this.standardScale = _this.starterScale;
-	        _this.speedFactor = 1;
-	        _this.scale.set(_this.standardScale);
-	
 	        _this.meleeComboList = ['meleeAttack1', 'meleeAttack2', 'meleeAttack3', 'meleeAttack4'];
 	        _this.currentMeleeCombo = 0;
 	        // this.updateState();
@@ -37394,6 +37388,7 @@
 	    _createClass(Cupcake, [{
 	        key: 'reset',
 	        value: function reset() {
+	            console.log('RESET');
 	            this.timeJump = 0;
 	            this.animationContainer.alpha = 1;
 	            this.base.alpha = 1;
@@ -37406,6 +37401,10 @@
 	            this.jumpingOut = false;
 	            this.updateable = true;
 	            this.comboTimer = 0;
+	            this.starterScale = 0.5;
+	            this.standardScale = this.starterScale;
+	            this.speedFactor = 1;
+	            this.scale.set(this.standardScale);
 	        }
 	    }, {
 	        key: 'die',
@@ -37448,6 +37447,7 @@
 	    }, {
 	        key: 'jump',
 	        value: function jump() {
+	            console.log('jump');
 	            if (this.dying) {
 	                return;
 	            }
@@ -37510,7 +37510,7 @@
 	    }, {
 	        key: 'canCombo',
 	        value: function canCombo() {
-	            console.log(this.comboTimer);
+	            // console.log(this.comboTimer);
 	            return this.comboTimer > 0 && this.currentMeleeCombo < this.meleeComboList.length - 1;
 	        }
 	    }, {
@@ -37593,8 +37593,8 @@
 	    }, {
 	        key: 'setDistance',
 	        value: function setDistance(value) {
+	            // console.log(value, this.standardScale, this.starterScale);
 	            this.standardScale = value * 0.3 + 0.2;
-	
 	            this.speedScale = this.standardScale / this.starterScale;
 	        }
 	    }, {
@@ -37616,6 +37616,7 @@
 	            if (this.dying) {
 	                return;
 	            }
+	            // console.log(value, this.entityModel.speed, this.speedScale, this.speedFactor);
 	            this.velocity.x = this.entityModel.speed.x * value[0] * (this.speedScale * this.speedScale) * this.speedFactor;
 	            this.velocity.y = this.entityModel.speed.y * value[1] * (this.speedScale * this.speedScale) * this.speedFactor;
 	            if (Math.abs(this.velocity.x) + Math.abs(this.velocity.y) < 0.05) {
@@ -37631,6 +37632,7 @@
 	        value: function update(delta) {
 	            ////console.log(this.jumping);
 	            ////console.log(this.jumpingOut);
+	            //console.log(this.scale);
 	            this.animationManager.updateAnimations();
 	
 	            if (this.dying) {
@@ -37649,6 +37651,9 @@
 	            //     this.timer = 999999;
 	            //     this.nextAction();
 	            // }
+	
+	            // console.log(this.velocity, delta);
+	
 	            if (this.jumping) {
 	                this.timeJump -= delta;
 	                var jumpFactor = 0.5 - _utils2.default.distance(_utils2.default.linear(this.timeJump / this.standardTimeJump), 0, 0.5, 0);
@@ -37673,6 +37678,9 @@
 	            }
 	            this.scale.x = this.standardScale * this.side;
 	            this.scale.y = this.standardScale;
+	
+	            // console.log(this.velocity, this.scale);
+	
 	            if (this.attacking || this.jumpingOut || this.rangeAttacking) {
 	                return;
 	            }

@@ -212,15 +212,7 @@ export default class Cupcake extends PIXI.Container {
         this.entityModel = {
             speed:{x:350, y:250}
         }
-        this.side = 1;
-        this.speedFactor = 1;
-
-        this.starterScale = 0.5;
-        this.standardScale = this.starterScale;
-        this.speedFactor = 1;
-        this.scale.set(this.standardScale)
-
-
+        this.side = 1; 
         this.meleeComboList = ['meleeAttack1','meleeAttack2','meleeAttack3','meleeAttack4']
         this.currentMeleeCombo = 0;
         // this.updateState();
@@ -244,9 +236,6 @@ export default class Cupcake extends PIXI.Container {
         this.jumping = false;
         this.jumpingOut = false;
         this.updateable = true;
-        
-
-
 
 
         this.animationManager.hideAll();
@@ -265,6 +254,7 @@ export default class Cupcake extends PIXI.Container {
     }
 
     reset() {
+        console.log('RESET');
         this.timeJump = 0;
         this.animationContainer.alpha = 1;
         this.base.alpha = 1;
@@ -277,6 +267,11 @@ export default class Cupcake extends PIXI.Container {
         this.jumpingOut = false;
         this.updateable = true;
         this.comboTimer = 0;
+        this.starterScale = 0.5;
+        this.standardScale = this.starterScale;
+        this.speedFactor = 1;
+        this.scale.set(this.standardScale)
+
     }
 
     die() {
@@ -310,6 +305,7 @@ export default class Cupcake extends PIXI.Container {
         }
     }
     jump() {
+        console.log('jump');
         if(this.dying){
             return;
         }
@@ -366,7 +362,7 @@ export default class Cupcake extends PIXI.Container {
         }
     }
     canCombo() {
-        console.log(this.comboTimer);
+        // console.log(this.comboTimer);
         return this.comboTimer > 0 && this.currentMeleeCombo < this.meleeComboList.length - 1;
     }
     isMeleeCombo() {
@@ -439,9 +435,10 @@ export default class Cupcake extends PIXI.Container {
     }
    
     setDistance(value) {
+        // console.log(value, this.standardScale, this.starterScale);
         this.standardScale = value * 0.3 + 0.2;
-
         this.speedScale = this.standardScale / this.starterScale;
+
     }
 
 
@@ -460,6 +457,7 @@ export default class Cupcake extends PIXI.Container {
         if(this.dying){
             return;
         }
+        // console.log(value, this.entityModel.speed, this.speedScale, this.speedFactor);
         this.velocity.x = this.entityModel.speed.x * (value[0]) * (this.speedScale * this.speedScale) * this.speedFactor;
         this.velocity.y = this.entityModel.speed.y * (value[1]) * (this.speedScale * this.speedScale) * this.speedFactor;
         if(Math.abs(this.velocity.x) + Math.abs(this.velocity.y) < 0.05){
@@ -474,6 +472,7 @@ export default class Cupcake extends PIXI.Container {
     update ( delta ) {
         ////console.log(this.jumping);
         ////console.log(this.jumpingOut);
+        //console.log(this.scale);
         this.animationManager.updateAnimations();
 
         if(this.dying){
@@ -492,6 +491,9 @@ export default class Cupcake extends PIXI.Container {
         //     this.timer = 999999;
         //     this.nextAction();
         // }
+
+        // console.log(this.velocity, delta);
+
         if(this.jumping){
             this.timeJump -= delta;
             let jumpFactor = 0.5 - utils.distance(utils.linear(this.timeJump / this.standardTimeJump),0,0.5,0);
@@ -516,6 +518,9 @@ export default class Cupcake extends PIXI.Container {
         }
         this.scale.x = (this.standardScale) * this.side;
         this.scale.y = this.standardScale
+
+        // console.log(this.velocity, this.scale);
+
         if(this.attacking || this.jumpingOut || this.rangeAttacking){
             return
         }
