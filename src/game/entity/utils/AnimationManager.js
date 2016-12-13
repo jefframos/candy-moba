@@ -12,17 +12,22 @@ export default class Cupcake extends PIXI.Container {
         for (var i = 0; i < this.animationModel.length; i++) {
             let texturesList = [];
             this.animationModel[i]
-
-            for (let j = 0; j < this.animationModel[i].totalFrames; j++)
-            {
-                if(j+1 > 9){
-                    var texture = PIXI.Texture.fromFrame(this.animationModel[i].src+ (j+1) + '.png');
-                }else{
-                    var texture = PIXI.Texture.fromFrame(this.animationModel[i].src  +'0'+ (j+1) + '.png');
-                }
-
+            if(this.animationModel[i].singleFrame){
+                var texture = PIXI.Texture.fromFrame(this.animationModel[i].src+'.png');
                 texturesList.push(texture);
                 texture.smooth = true;
+            }else{
+                for (let j = 0; j < this.animationModel[i].totalFrames; j++)
+                {
+                    if(j+1 > 9){
+                        var texture = PIXI.Texture.fromFrame(this.animationModel[i].src+ (j+1) + '.png');
+                    }else{
+                        var texture = PIXI.Texture.fromFrame(this.animationModel[i].src  +'0'+ (j+1) + '.png');
+                    }
+
+                    texturesList.push(texture);
+                    texture.smooth = true;
+                }
             }
 
             this.animationModel[i].movieClip = new PIXI.MovieClip(texturesList);
@@ -41,8 +46,8 @@ export default class Cupcake extends PIXI.Container {
 
         this.ableToChangeAnimation = true;
 
-        this.startCallback = null;
-        this.finishCallback = null;
+        this.startCallback = function(){};
+        this.finishCallback = function(){};
         // this.hideAll();
         // this.stopAll();
         // this.changeState('idle');

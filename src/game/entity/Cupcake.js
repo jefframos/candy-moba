@@ -1,18 +1,20 @@
 import PIXI from 'pixi.js';
 import utils  from '../../utils';
 import AnimationManager  from './utils/AnimationManager';
-export default class Cupcake extends PIXI.Container {
+import Entity  from './Entity';
+export default class Cupcake extends Entity {
 
-    constructor() {
+    constructor(game) {
 
     	super();
 
+        this.game = game;
 
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
         this.roundBase.beginFill(0);
         this.roundBase.drawCircle(0,0,100,100);
-        this.roundBase.scale.y = 0.5
+        this.roundBase.scale.y = 0.4
         this.roundBase.alpha = 0.1;
         this.roundBase.x = 0;
         this.base.addChild(this.roundBase);
@@ -79,7 +81,7 @@ export default class Cupcake extends PIXI.Container {
             startFrame:10,
             animationSpeed:0.6,
             movieClip:null,
-            position:{x:93,y:0},
+            position:{x:83,y:0},
             anchor:{x:0.5,y:1},
             loop:false,
             haveCallback:true,
@@ -89,7 +91,7 @@ export default class Cupcake extends PIXI.Container {
             label:'meleeAttack4',
             src:'meleeAttack400',
             totalFrames:38,
-            startFrame:16,
+            startFrame:0,
             animationSpeed:0.6,
             movieClip:null,
             position:{x:50,y:5},
@@ -170,7 +172,7 @@ export default class Cupcake extends PIXI.Container {
             startFrame:0,
             animationSpeed:0.65,
             movieClip:null,
-            position:{x:-8,y:6},
+            position:{x:-15,y:36},
             anchor:{x:0.5,y:1},
             loop:false,
             haveCallback:true,
@@ -196,7 +198,7 @@ export default class Cupcake extends PIXI.Container {
             startFrame:23,
             animationSpeed:0.65,
             movieClip:null,
-            position:{x:-8,y:6},
+            position:{x:-15,y:36},
             anchor:{x:0.5,y:1},
             loop:false,
             haveCallback:true,
@@ -210,7 +212,9 @@ export default class Cupcake extends PIXI.Container {
 
 
         this.entityModel = {
-            speed:{x:350, y:250}
+            speed:{x:350, y:250},
+            standardTimeJump:0.7,
+            jumpForce:300
         }
         this.side = 1; 
         this.meleeComboList = ['meleeAttack1','meleeAttack2','meleeAttack3','meleeAttack4']
@@ -242,17 +246,33 @@ export default class Cupcake extends PIXI.Container {
         this.animationManager.stopAll();
         this.animationManager.changeState('idle');
 
+        // this.showJust(['idle','revive'])
 
-        this.standardTimeJump = 0.7;
+        // this.entityModel.standardTimeJump = 0.7;
         this.timeJump = 0;
         this.dying = false;
         this.respawning = false;
-        this.jumpForce = 200;
         this.reset();
+
+
+        this.radius = 100;
+        this.externalRadius = 160;
+        this.debugCollision();
        
 
     }
 
+    showJust(list) {
+        this.animationManager.hideAll();
+        for (var i = 0; i < list.length; i++) {
+            for (var j = 0; j < this.animationManager.animationModel.length; j++) {
+                if(this.animationManager.animationModel[j].label == list[i])
+                {
+                    this.animationManager.animationModel[j].movieClip.visible = true
+                }
+            }
+        }
+    }
     reset() {
         console.log('RESET');
         this.timeJump = 0;
@@ -270,7 +290,7 @@ export default class Cupcake extends PIXI.Container {
         this.starterScale = 0.5;
         this.standardScale = this.starterScale;
         this.speedFactor = 1;
-        this.scale.set(this.standardScale)
+        //this.scale.set(this.standardScale)
 
     }
 
@@ -305,7 +325,6 @@ export default class Cupcake extends PIXI.Container {
         }
     }
     jump() {
-        console.log('jump');
         if(this.dying){
             return;
         }
@@ -314,7 +333,7 @@ export default class Cupcake extends PIXI.Container {
         }
         if(this.animationManager.changeState('jumpIn')){
             this.jumping = true;
-            this.timeJump = this.standardTimeJump;
+            this.timeJump = this.entityModel.standardTimeJump;
         }
         this.velocity.x = 0;
         this.velocity.y = 0;
@@ -417,11 +436,14 @@ export default class Cupcake extends PIXI.Container {
         if(this.jumping){
             return
         }
+        
         if(this.animationManager.state == 'rangeAttackEnd'){
             this.rangeAttacking = false;
         }
         if(this.rangeAttacking){
             ////console.log('RANGING');
+            let bulletPosition = {x:this.position.x + (150  * this.side) * Math.abs(this.scale.x), y: this.position.y};
+            this.game.addBullet(bulletPosition, {x:800 * this.side, y:0}, 0.1);
             this.animationManager.changeState('rangeAttackEnd');
             return;
         }
@@ -433,14 +455,6 @@ export default class Cupcake extends PIXI.Container {
 
         this.animationManager.changeState('idle');
     }
-   
-    setDistance(value) {
-        // console.log(value, this.standardScale, this.starterScale);
-        this.standardScale = value * 0.3 + 0.2;
-        this.speedScale = this.standardScale / this.starterScale;
-
-    }
-
 
     stopMove() {
         if(this.dying){
@@ -496,11 +510,11 @@ export default class Cupcake extends PIXI.Container {
 
         if(this.jumping){
             this.timeJump -= delta;
-            let jumpFactor = 0.5 - utils.distance(utils.linear(this.timeJump / this.standardTimeJump),0,0.5,0);
-            // let jumpFactor = 0.5 - utils.distance(utils.easeInQuad(this.timeJump / this.standardTimeJump),0,0.5,0);
-            //// console.log(this.timeJump / this.standardTimeJump);
-            this.animationContainer.y = -jumpFactor * this.jumpForce;
-            if(this.timeJump / this.standardTimeJump > 0.5){
+            let jumpFactor = 0.5 - utils.distance(utils.linear(this.timeJump / this.entityModel.standardTimeJump),0,0.5,0);
+            // let jumpFactor = 0.5 - utils.distance(utils.easeInQuad(this.timeJump / this.entityModel.standardTimeJump),0,0.5,0);
+            //// console.log(this.timeJump / this.entityModel.standardTimeJump);
+            this.animationContainer.y = -jumpFactor * this.entityModel.jumpForce;
+            if(this.timeJump / this.entityModel.standardTimeJump > 0.5){
                 this.animationManager.changeState('jumpIn')
             }else{
                 this.animationManager.changeState('jumpFalling')
@@ -516,8 +530,7 @@ export default class Cupcake extends PIXI.Container {
         }else if(this.velocity.x > 0){
             this.side = 1;
         }
-        this.scale.x = (this.standardScale) * this.side;
-        this.scale.y = this.standardScale
+        
 
         // console.log(this.velocity, this.scale);
 

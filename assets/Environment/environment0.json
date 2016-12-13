@@ -1,0 +1,30 @@
+{"frames": {
+
+"rock10001.png":
+{
+	"frame": {"x":1,"y":1,"w":112,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":112,"h":98},
+	"sourceSize": {"w":112,"h":98},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"rock10002.png":
+{
+	"frame": {"x":1,"y":101,"w":106,"h":66},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":31,"w":106,"h":66},
+	"sourceSize": {"w":112,"h":98},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "environment0.png",
+	"format": "RGBA8888",
+	"size": {"w":114,"h":168},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:33ede075ab41896951a0402e1bb15f63:5b73126b8a2a4d492d81a88e4dbbb45f:0f12dd70b15c3e8f15744d6145c983c1$"
+}
+}

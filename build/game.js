@@ -28211,25 +28211,25 @@
 	
 	var _plugins2 = _interopRequireDefault(_plugins);
 	
-	var _config = __webpack_require__(138);
+	var _config = __webpack_require__(137);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _Game = __webpack_require__(139);
+	var _Game = __webpack_require__(138);
 	
 	var _Game2 = _interopRequireDefault(_Game);
 	
-	var _ScreenManager = __webpack_require__(140);
+	var _ScreenManager = __webpack_require__(139);
 	
 	var _ScreenManager2 = _interopRequireDefault(_ScreenManager);
 	
-	var _PrototypeScreen = __webpack_require__(141);
+	var _PrototypeScreen = __webpack_require__(140);
 	
 	var _PrototypeScreen2 = _interopRequireDefault(_PrototypeScreen);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	PIXI.loader.add('./assets/Cupcake/cupcake0.json').add('./assets/Cupcake/cupcake1.json').add('./assets/Cupcake/cupcake2.json').load(configGame);
+	PIXI.loader.add('./assets/Cupcake/cupcake0.json').add('./assets/Cupcake/cupcake1.json').add('./assets/Cupcake/cupcake2.json').add('./assets/Environment/environment0.json').load(configGame);
 	
 	function configGame() {
 	
@@ -28263,7 +28263,7 @@
 	
 	var _pixi2 = _interopRequireDefault(_pixi);
 	
-	var _pixiAnimationloop = __webpack_require__(137);
+	var _pixiAnimationloop = __webpack_require__(136);
 	
 	var _pixiAnimationloop2 = _interopRequireDefault(_pixiAnimationloop);
 	
@@ -28276,15 +28276,14 @@
 	// import jQuery from 'jquery';
 
 /***/ },
-/* 136 */,
-/* 137 */
+/* 136 */
 /***/ function(module, exports) {
 
 	!function(e){function t(i){if(n[i])return n[i].exports;var o=n[i]={exports:{},id:i,loaded:!1};return e[i].call(o.exports,o,o.exports,t),o.loaded=!0,o.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){e.exports=n(3)},function(e,t){e.exports=PIXI},function(e,t,n){"use strict";function i(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}function s(){return"undefined"!=typeof document.hidden?"visibilitychange":"undefined"!=typeof document.webkitHidden?"webkitvisibilitychange":"undefined"!=typeof document.mozHidden?"mozvisibilitychange":"undefined"!=typeof document.msHidden?"msvisibilitychange":void 0}var u=function(){function e(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(t,n,i){return n&&e(t.prototype,n),i&&e(t,i),t}}();Object.defineProperty(t,"__esModule",{value:!0});var d=n(1),f=i(d),l=function(e){function t(e){var n=arguments.length<=1||void 0===arguments[1]?new f["default"].Container:arguments[1];o(this,t);var i=r(this,Object.getPrototypeOf(t).call(this));return i._animate=function(){if(i.raf=window.requestAnimationFrame(i._animate),i.stage){var e=Date.now();i.time+=Math.min((e-i._last)/1e3,i.maxFrame)*i.speed,i.delta=i.time-i._lastTime,i.deltaMS=1e3*i.delta,i._lastTime=i.time,i._last=e,i.emit("prerender"),i.renderer.render(i.stage),i.emit("postrender")}},i._onVisibilityChange=function(){var e=!!(document.hidden||document.webkitHidden||document.mozHidden||document.msHidden);e?i.stop():i.start(),i.emit("visibilitychange",e)},i.renderer=e,i.stage=n,i.isRunning=!1,i._stopOnVisibilityChange=!1,i._firstDate=0,i.speed=1,i._last=0,i.delta=0,i.deltaMS=0,i.time=0,i._lastTime=0,i.maxFrame=.035,i.raf=null,i}return a(t,e),u(t,[{key:"start",value:function(){if(!this.isRunning){this.isRunning=!0;var e=Date.now();this._last=e,0===this._firstDate&&(this._firstDate=e),this.emit("start"),this._animate()}}},{key:"stop",value:function(){this.isRunning&&(this.isRunning=!1,window.cancelAnimationFrame(this.raf),this.emit("stop"))}},{key:"realTime",get:function(){return this._firstDate>0?(Date.now()-this._firstDate)/1e3:0}},{key:"stopOnVisibilityChange",get:function(){return this._stopOnVisibilityChange},set:function(e){if(e!==this._stopOnVisibilityChange){this._stopOnVisibilityChange=e;var t=s();e?document.addEventListener(t,this._onVisibilityChange):document.removeEventListener(t,this._onVisibilityChange)}}}]),t}(f["default"].utils.EventEmitter);t["default"]=l},function(e,t,n){"use strict";function i(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var o=n(1),r=i(o),a=n(2),s=i(a);r["default"].AnimationLoop||(r["default"].AnimationLoop=s["default"]),t["default"]=r["default"].AnimationLoop}]);
 	//# sourceMappingURL=pixi-animationloop.js.map
 
 /***/ },
-/* 138 */
+/* 137 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28306,7 +28305,7 @@
 	};
 
 /***/ },
-/* 139 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28389,7 +28388,7 @@
 	exports.default = Game;
 
 /***/ },
-/* 140 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28481,7 +28480,7 @@
 	exports.default = ScreenManager;
 
 /***/ },
-/* 141 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28498,29 +28497,37 @@
 	
 	var _pixi2 = _interopRequireDefault(_pixi);
 	
-	var _gsap = __webpack_require__(142);
+	var _gsap = __webpack_require__(141);
 	
 	var _gsap2 = _interopRequireDefault(_gsap);
 	
-	var _config = __webpack_require__(138);
+	var _config = __webpack_require__(137);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
-	var _utils = __webpack_require__(144);
+	var _utils = __webpack_require__(143);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _Screen2 = __webpack_require__(145);
+	var _Screen2 = __webpack_require__(144);
 	
 	var _Screen3 = _interopRequireDefault(_Screen2);
 	
-	var _InputManager = __webpack_require__(146);
+	var _InputManager = __webpack_require__(145);
 	
 	var _InputManager2 = _interopRequireDefault(_InputManager);
 	
-	var _Cupcake = __webpack_require__(148);
+	var _Cupcake = __webpack_require__(146);
 	
 	var _Cupcake2 = _interopRequireDefault(_Cupcake);
+	
+	var _StandardBullet = __webpack_require__(148);
+	
+	var _StandardBullet2 = _interopRequireDefault(_StandardBullet);
+	
+	var _StandardEnvironmentEntity = __webpack_require__(150);
+	
+	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28540,11 +28547,23 @@
 	
 			_this.inputManager = new _InputManager2.default(_this);
 	
-			_this.cupcake = new _Cupcake2.default();
-			_this.addChild(_this.cupcake);
+			_this.entityContainer = new _pixi2.default.Container();
+			_this.addChild(_this.entityContainer);
+	
+			_this.cupcake = new _Cupcake2.default(_this);
+			_this.entityContainer.addChild(_this.cupcake);
 			_this.addOnUpdateList(_this.cupcake);
 			_this.cupcake.x = 500;
 			_this.cupcake.y = 500;
+	
+			for (var i = 0; i < 20; i++) {
+				var rock = new _StandardEnvironmentEntity2.default(_this);
+				_this.entityContainer.addChild(rock);
+				_this.addOnUpdateList(rock);
+				rock.x = Math.random() * _config2.default.width;
+				rock.y = Math.random() * (_config2.default.height * 0.8) + _config2.default.height * 0.2;
+				_this.setScales(rock);
+			}
 	
 			_this.updateable = true;
 	
@@ -28552,6 +28571,8 @@
 			_this.addChild(text);
 			text.x = 10;
 			text.y = 10;
+	
+			_this.bulletList = [];
 			return _this;
 		}
 	
@@ -28567,12 +28588,52 @@
 				_get(PrototypeScreen.prototype.__proto__ || Object.getPrototypeOf(PrototypeScreen.prototype), 'update', this).call(this, delta);
 				this.inputManager.update();
 	
+				//let scaleFactor = 
+	
+				for (var i = 0; i < this.bulletList.length; i++) {
+					this.setScales(this.bulletList[i]);
+				}
 				//console.log(scale *0.3 + 0.2);
-				this.cupcake.setDistance(1 - _utils2.default.distance(0, this.cupcake.y, 0, _config2.default.height) / _config2.default.height);
+				this.setScales(this.cupcake);
+				//this.cupcake.setDistance(1-utils.distance(0,this.cupcake.y,0,config.height) / config.height);
 				// this.inputManager.gamep.update();
 	
 				// console.log(this.inputManager.gamep.connectedGamepad);
 				//console.log(this);
+	
+				this.entityContainer.children.sort(this.depthCompare);
+			}
+		}, {
+			key: 'depthCompare',
+			value: function depthCompare(a, b) {
+				var yA = a.y;
+				var yB = b.y;
+				if (yA === yB) {
+					return 0;
+				}
+				if (a.noDepth || b.noDepth) {
+					return 0;
+				}
+				if (yA < yB) {
+					return -1;
+				}
+				if (yA > yB) {
+					return 1;
+				}
+				return 0;
+			}
+		}, {
+			key: 'setScales',
+			value: function setScales(entity) {
+	
+				if (!entity.setDistance) {
+					return;
+				}
+	
+				// console.log(entity, 1-utils.distance(0,entity.y,0,config.height) / config.height);
+				//console.log('2'+entity);
+	
+				entity.setDistance(1 - _utils2.default.distance(0, entity.y, 0, _config2.default.height) / _config2.default.height);
 			}
 		}, {
 			key: 'updateKeyUp',
@@ -28584,11 +28645,25 @@
 				}
 			}
 		}, {
+			key: 'addBullet',
+			value: function addBullet(pos, vel, life) {
+				var bullet = new _StandardBullet2.default(vel, life);
+				this.entityContainer.addChild(bullet);
+				this.addOnUpdateList(bullet);
+				bullet.position.x = pos.x;
+				bullet.position.y = pos.y;
+	
+				this.bulletList.push(bullet);
+	
+				this.setScales(bullet);
+			}
+		}, {
 			key: 'updateKeyDown',
 			value: function updateKeyDown() {
 				for (var i = 0; i < this.inputManager.keys.length; i++) {
 					if (this.inputManager.keys[i] == 'action1') {
 						//console.log('space');
+	
 						this.lastAction = this.inputManager.keys[i];
 						this.cupcake.attack();
 					}
@@ -28619,7 +28694,7 @@
 					}
 				}
 	
-				console.log('axes', this.inputManager.leftAxes);
+				// console.log('axes',this.inputManager.leftAxes);
 				this.cupcake.move(this.inputManager.leftAxes);
 			}
 		}, {
@@ -28636,7 +28711,7 @@
 	exports.default = PrototypeScreen;
 
 /***/ },
-/* 142 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -34628,7 +34703,7 @@
 							if (global) {
 								_globals[n] = _exports[n] = cl; //provides a way to avoid global namespace pollution. By default, the main classes like TweenLite, Power1, Strong, etc. are added to window unless a GreenSockGlobals is defined. So if you want to have things added to a custom object instead, just do something like window.GreenSockGlobals = {} before loading any GreenSock files. You can even set up an alias like window.GreenSockGlobals = windows.gs = {} so that you can access everything like gs.TweenLite. Also remember that ALL classes are added to the window.com.greensock object (in their respective packages, like com.greensock.easing.Power1, com.greensock.TweenLite, etc.)
 								hasModule = (typeof(module) !== "undefined" && module.exports);
-								if (!hasModule && "function" === "function" && __webpack_require__(143)){ //AMD
+								if (!hasModule && "function" === "function" && __webpack_require__(142)){ //AMD
 									!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() { return cl; }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 								} else if (hasModule){ //node
 									if (ns === moduleName) {
@@ -36442,7 +36517,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 143 */
+/* 142 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -36450,7 +36525,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ },
-/* 144 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36459,7 +36534,7 @@
 	    value: true
 	});
 	
-	var _config = __webpack_require__(138);
+	var _config = __webpack_require__(137);
 	
 	var _config2 = _interopRequireDefault(_config);
 	
@@ -36660,7 +36735,7 @@
 	};
 
 /***/ },
-/* 145 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36792,7 +36867,7 @@
 	exports.default = Screen;
 
 /***/ },
-/* 146 */
+/* 145 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36829,6 +36904,8 @@
 			// window.gamep = this.gamep;
 			this.leftAxes = [0, 0];
 			this.usingGamepad = false;
+	
+			this.currentGamepad = -1;
 			//document.body.on('keydown', this.getKey.bind(this));	
 			// this.usingGamepad = false;	
 		}
@@ -36837,54 +36914,80 @@
 			key: 'debugAxes',
 			value: function debugAxes(id) {
 				var str = '';
-				for (var i = 2; i < navigator.getGamepads()[id].axes.length; i++) {
-					str += i + ':' + navigator.getGamepads()[id].axes[i] + ' ';
+				for (var i = 2; i < navigator.getGamepads()[this.currentGamepad].axes.length; i++) {
+					str += i + ':' + navigator.getGamepads()[this.currentGamepad].axes[i] + ' ';
 				}
-				// console.log(navigator.getGamepads()[id].buttons[4]);
+				// console.log(navigator.getGamepads()[this.currentGamepad].buttons[4]);
 				console.log(str);
 			}
 		}, {
 			key: 'debugButtons',
 			value: function debugButtons(id) {
 				var str = '';
-				for (var i = 0; i < navigator.getGamepads()[id].buttons.length; i++) {
-					str += i + ':' + navigator.getGamepads()[id].buttons[i].value + ' ';
+				for (var i = 0; i < navigator.getGamepads()[this.currentGamepad].buttons.length; i++) {
+					str += i + ':' + navigator.getGamepads()[this.currentGamepad].buttons[i].value + ' ';
 				}
-				// console.log(navigator.getGamepads()[id].buttons[4]);
+				// console.log(navigator.getGamepads()[this.currentGamepad].buttons[4]);
 				console.log(str);
 			}
 		}, {
 			key: 'updateDpad',
 			value: function updateDpad(id) {
-				if (navigator.getGamepads()[id].axes[4] == 1) {
+				if (navigator.getGamepads()[this.currentGamepad].axes[4] == 1) {
 					this.leftAxes[0] = 1;
-				} else if (navigator.getGamepads()[id].axes[9] <= 0.75 && navigator.getGamepads()[id].axes[9] > 0.15) {
+				} else if (navigator.getGamepads()[this.currentGamepad].axes[9] <= 0.75 && navigator.getGamepads()[this.currentGamepad].axes[9] > 0.15) {
 					this.leftAxes[0] = -1;
 				}
-				if (navigator.getGamepads()[id].axes[9] == -1) {
+				if (navigator.getGamepads()[this.currentGamepad].axes[9] == -1) {
 					this.leftAxes[1] = -1;
-				} else if (navigator.getGamepads()[id].axes[9] <= 0.15 && navigator.getGamepads()[id].axes[9] > 0) {
+				} else if (navigator.getGamepads()[this.currentGamepad].axes[9] <= 0.15 && navigator.getGamepads()[this.currentGamepad].axes[9] > 0) {
 					this.leftAxes[1] = 1;
 				}
-				//console.log(navigator.getGamepads()[id].axes[9])
+				//console.log(navigator.getGamepads()[this.currentGamepad].axes[9])
 			}
 		}, {
 			key: 'update',
 			value: function update() {
-				var id = navigator.getGamepads()[2] ? 2 : 1;
 	
+				if (this.currentGamepad < 0) {
+	
+					var gamepadList = navigator.getGamepads();
+	
+					for (var i = 0; i < gamepadList.length; i++) {
+						if (gamepadList[i] && gamepadList[i].buttons && gamepadList[i].buttons.length > 11) {
+							if (gamepadList[i].buttons[11].value) {
+								console.log('achou');
+								this.currentGamepad = i; //gamepadList[i];
+								window.currentGamepad = i;
+								break;
+							}
+							// for (var j = 0; j < gamepadList[i].buttons.length; j++) {
+							// 	if(gamepadList[j].buttons[11].value){
+							// 		navigator.getGamepads()[this.currentGamepad] = gamepadList[i];
+							// 	}
+							// }
+						}
+					}
+	
+					// console.log(navigator.getGamepads()[this.currentGamepad]);
+				}
+				//let id = navigator.getGamepads()[2]?2:1;
+	
+				//console.log(id);
 				this.leftAxes = [0, 0];
-				//console.log(navigator.getGamepads()[id]);
+				//console.log(navigator.getGamepads()[this.currentGamepad]);
 				//this.debugButtons(id)
-				if (!navigator.getGamepads()[id]) {
+				if (this.currentGamepad < 0) {
 					//this.game.updateKeyDown()
 					//this.game.updateKeyUp();
 					return;
 				}
-				if (navigator.getGamepads()[id].buttons[11].value) {
+				// console.log(navigator.getGamepads()[this.currentGamepad].axes);
+	
+				if (navigator.getGamepads()[this.currentGamepad].buttons[11].value) {
 					this.usingGamepad = true;
 				}
-				if (navigator.getGamepads()[id].buttons[10].value) {
+				if (navigator.getGamepads()[this.currentGamepad].buttons[10].value) {
 					this.usingGamepad = false;
 				}
 				if (!this.usingGamepad) {
@@ -36892,52 +36995,57 @@
 				}
 				//this.debugAxes(id);
 	
-				var hAxe = navigator.getGamepads()[1].axes[0].toFixed(2);
-				var vAxe = navigator.getGamepads()[1].axes[1].toFixed(2);
+				// console.log(this.usingGamepad);
+				var hAxe = navigator.getGamepads()[this.currentGamepad].axes[0].toFixed(2);
+				var vAxe = navigator.getGamepads()[this.currentGamepad].axes[1].toFixed(2);
+	
+				//console.log(navigator.getGamepads()[this.currentGamepad].axes);
 	
 				// hAxe *= 1.5;		
 				// vAxe *= 1.5;
 	
 				this.leftAxes = [hAxe, vAxe];
-				//this.debugButtons(id)
+	
+				// console.log(this.leftAxes);
+				// this.debugButtons()
 				//this.updateDpad(id);
 	
-				if (navigator.getGamepads()[id].buttons[4].value) {
+				if (navigator.getGamepads()[this.currentGamepad].buttons[4].value) {
 					this.act('action1');
 					this.usingGamepad = true;
 				} else {
 					this.stopAct('action1');
 				}
 	
-				if (navigator.getGamepads()[id].buttons[1].value) {
+				if (navigator.getGamepads()[this.currentGamepad].buttons[1].value) {
 					this.act('action2');
 					this.usingGamepad = true;
 				} else {
 					this.stopAct('action2');
 				}
 	
-				if (navigator.getGamepads()[id].buttons[0].value) {
+				if (navigator.getGamepads()[this.currentGamepad].buttons[0].value) {
 					this.act('action4');
 					this.usingGamepad = true;
 				} else {
 					this.stopAct('action4');
 				}
 	
-				if (navigator.getGamepads()[id].buttons[3].value) {
+				if (navigator.getGamepads()[this.currentGamepad].buttons[3].value) {
 					this.act('action3');
 					this.usingGamepad = true;
 				} else {
 					this.stopAct('action3');
 				}
 	
-				if (navigator.getGamepads()[id].buttons[7].value) {
+				if (navigator.getGamepads()[this.currentGamepad].buttons[7].value) {
 					this.act('action5');
 					this.usingGamepad = true;
 				} else {
 					this.stopAct('action5');
 				}
 	
-				if (navigator.getGamepads()[id].buttons[6].value) {
+				if (navigator.getGamepads()[this.currentGamepad].buttons[6].value) {
 					this.act('action6');
 					this.usingGamepad = true;
 				} else {
@@ -37022,7 +37130,29 @@
 				// if(!this.keys){
 				// 	this.usingGamepad = true;
 				// }
+				this.updateKeyboardInput();
 				this.game.updateKeyDown();
+			}
+		}, {
+			key: 'updateKeyboardInput',
+			value: function updateKeyboardInput() {
+				for (var i = 0; i < this.keys.length; i++) {
+					switch (this.keys[i]) {
+						case 'up':
+							this.leftAxes[1] = -1;
+							break;
+						case 'down':
+							this.leftAxes[1] = 1;
+							break;
+						case 'left':
+							this.leftAxes[0] = -1;
+							break;
+						case 'right':
+							this.leftAxes[0] = 1;
+							break;
+					}
+				}
+				console.log(this.keys);
 			}
 		}, {
 			key: 'removeKey',
@@ -37098,6 +37228,7 @@
 					key = 'action5';
 				}
 	
+				this.updateKeyboardInput();
 				this.game.updateKeyUp(key);
 			}
 		}]);
@@ -37108,8 +37239,7 @@
 	exports.default = InputManager;
 
 /***/ },
-/* 147 */,
-/* 148 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37124,13 +37254,17 @@
 	
 	var _pixi2 = _interopRequireDefault(_pixi);
 	
-	var _utils = __webpack_require__(144);
+	var _utils = __webpack_require__(143);
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _AnimationManager = __webpack_require__(149);
+	var _AnimationManager = __webpack_require__(147);
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _Entity2 = __webpack_require__(149);
+	
+	var _Entity3 = _interopRequireDefault(_Entity2);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -37140,19 +37274,21 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var Cupcake = function (_PIXI$Container) {
-	    _inherits(Cupcake, _PIXI$Container);
+	var Cupcake = function (_Entity) {
+	    _inherits(Cupcake, _Entity);
 	
-	    function Cupcake() {
+	    function Cupcake(game) {
 	        _classCallCheck(this, Cupcake);
 	
 	        var _this = _possibleConstructorReturn(this, (Cupcake.__proto__ || Object.getPrototypeOf(Cupcake)).call(this));
+	
+	        _this.game = game;
 	
 	        _this.base = new _pixi2.default.Container();
 	        _this.roundBase = new _pixi2.default.Graphics();
 	        _this.roundBase.beginFill(0);
 	        _this.roundBase.drawCircle(0, 0, 100, 100);
-	        _this.roundBase.scale.y = 0.5;
+	        _this.roundBase.scale.y = 0.4;
 	        _this.roundBase.alpha = 0.1;
 	        _this.roundBase.x = 0;
 	        _this.base.addChild(_this.roundBase);
@@ -37218,7 +37354,7 @@
 	            startFrame: 10,
 	            animationSpeed: 0.6,
 	            movieClip: null,
-	            position: { x: 93, y: 0 },
+	            position: { x: 83, y: 0 },
 	            anchor: { x: 0.5, y: 1 },
 	            loop: false,
 	            haveCallback: true
@@ -37228,7 +37364,7 @@
 	            label: 'meleeAttack4',
 	            src: 'meleeAttack400',
 	            totalFrames: 38,
-	            startFrame: 16,
+	            startFrame: 0,
 	            animationSpeed: 0.6,
 	            movieClip: null,
 	            position: { x: 50, y: 5 },
@@ -37307,7 +37443,7 @@
 	            startFrame: 0,
 	            animationSpeed: 0.65,
 	            movieClip: null,
-	            position: { x: -8, y: 6 },
+	            position: { x: -15, y: 36 },
 	            anchor: { x: 0.5, y: 1 },
 	            loop: false,
 	            haveCallback: true
@@ -37333,7 +37469,7 @@
 	            startFrame: 23,
 	            animationSpeed: 0.65,
 	            movieClip: null,
-	            position: { x: -8, y: 6 },
+	            position: { x: -15, y: 36 },
 	            anchor: { x: 0.5, y: 1 },
 	            loop: false,
 	            haveCallback: true
@@ -37344,7 +37480,9 @@
 	        _this.animationManager.startCallback = _this.startAnimation.bind(_this);
 	
 	        _this.entityModel = {
-	            speed: { x: 350, y: 250 }
+	            speed: { x: 350, y: 250 },
+	            standardTimeJump: 0.7,
+	            jumpForce: 300
 	        };
 	        _this.side = 1;
 	        _this.meleeComboList = ['meleeAttack1', 'meleeAttack2', 'meleeAttack3', 'meleeAttack4'];
@@ -37375,17 +37513,34 @@
 	        _this.animationManager.stopAll();
 	        _this.animationManager.changeState('idle');
 	
-	        _this.standardTimeJump = 0.7;
+	        // this.showJust(['idle','revive'])
+	
+	        // this.entityModel.standardTimeJump = 0.7;
 	        _this.timeJump = 0;
 	        _this.dying = false;
 	        _this.respawning = false;
-	        _this.jumpForce = 200;
 	        _this.reset();
+	
+	        _this.radius = 100;
+	        _this.externalRadius = 160;
+	        _this.debugCollision();
 	
 	        return _this;
 	    }
 	
 	    _createClass(Cupcake, [{
+	        key: 'showJust',
+	        value: function showJust(list) {
+	            this.animationManager.hideAll();
+	            for (var i = 0; i < list.length; i++) {
+	                for (var j = 0; j < this.animationManager.animationModel.length; j++) {
+	                    if (this.animationManager.animationModel[j].label == list[i]) {
+	                        this.animationManager.animationModel[j].movieClip.visible = true;
+	                    }
+	                }
+	            }
+	        }
+	    }, {
 	        key: 'reset',
 	        value: function reset() {
 	            console.log('RESET');
@@ -37404,7 +37559,7 @@
 	            this.starterScale = 0.5;
 	            this.standardScale = this.starterScale;
 	            this.speedFactor = 1;
-	            this.scale.set(this.standardScale);
+	            //this.scale.set(this.standardScale)
 	        }
 	    }, {
 	        key: 'die',
@@ -37447,7 +37602,6 @@
 	    }, {
 	        key: 'jump',
 	        value: function jump() {
-	            console.log('jump');
 	            if (this.dying) {
 	                return;
 	            }
@@ -37456,7 +37610,7 @@
 	            }
 	            if (this.animationManager.changeState('jumpIn')) {
 	                this.jumping = true;
-	                this.timeJump = this.standardTimeJump;
+	                this.timeJump = this.entityModel.standardTimeJump;
 	            }
 	            this.velocity.x = 0;
 	            this.velocity.y = 0;
@@ -37574,11 +37728,14 @@
 	            if (this.jumping) {
 	                return;
 	            }
+	
 	            if (this.animationManager.state == 'rangeAttackEnd') {
 	                this.rangeAttacking = false;
 	            }
 	            if (this.rangeAttacking) {
 	                ////console.log('RANGING');
+	                var bulletPosition = { x: this.position.x + 150 * this.side * Math.abs(this.scale.x), y: this.position.y };
+	                this.game.addBullet(bulletPosition, { x: 800 * this.side, y: 0 }, 0.1);
 	                this.animationManager.changeState('rangeAttackEnd');
 	                return;
 	            }
@@ -37589,13 +37746,6 @@
 	            }
 	
 	            this.animationManager.changeState('idle');
-	        }
-	    }, {
-	        key: 'setDistance',
-	        value: function setDistance(value) {
-	            // console.log(value, this.standardScale, this.starterScale);
-	            this.standardScale = value * 0.3 + 0.2;
-	            this.speedScale = this.standardScale / this.starterScale;
 	        }
 	    }, {
 	        key: 'stopMove',
@@ -37656,11 +37806,11 @@
 	
 	            if (this.jumping) {
 	                this.timeJump -= delta;
-	                var jumpFactor = 0.5 - _utils2.default.distance(_utils2.default.linear(this.timeJump / this.standardTimeJump), 0, 0.5, 0);
-	                // let jumpFactor = 0.5 - utils.distance(utils.easeInQuad(this.timeJump / this.standardTimeJump),0,0.5,0);
-	                //// console.log(this.timeJump / this.standardTimeJump);
-	                this.animationContainer.y = -jumpFactor * this.jumpForce;
-	                if (this.timeJump / this.standardTimeJump > 0.5) {
+	                var jumpFactor = 0.5 - _utils2.default.distance(_utils2.default.linear(this.timeJump / this.entityModel.standardTimeJump), 0, 0.5, 0);
+	                // let jumpFactor = 0.5 - utils.distance(utils.easeInQuad(this.timeJump / this.entityModel.standardTimeJump),0,0.5,0);
+	                //// console.log(this.timeJump / this.entityModel.standardTimeJump);
+	                this.animationContainer.y = -jumpFactor * this.entityModel.jumpForce;
+	                if (this.timeJump / this.entityModel.standardTimeJump > 0.5) {
 	                    this.animationManager.changeState('jumpIn');
 	                } else {
 	                    this.animationManager.changeState('jumpFalling');
@@ -37676,8 +37826,6 @@
 	            } else if (this.velocity.x > 0) {
 	                this.side = 1;
 	            }
-	            this.scale.x = this.standardScale * this.side;
-	            this.scale.y = this.standardScale;
 	
 	            // console.log(this.velocity, this.scale);
 	
@@ -37690,12 +37838,12 @@
 	    }]);
 	
 	    return Cupcake;
-	}(_pixi2.default.Container);
+	}(_Entity3.default);
 	
 	exports.default = Cupcake;
 
 /***/ },
-/* 149 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37732,16 +37880,21 @@
 	        for (var i = 0; i < _this.animationModel.length; i++) {
 	            var texturesList = [];
 	            _this.animationModel[i];
-	
-	            for (var j = 0; j < _this.animationModel[i].totalFrames; j++) {
-	                if (j + 1 > 9) {
-	                    var texture = _pixi2.default.Texture.fromFrame(_this.animationModel[i].src + (j + 1) + '.png');
-	                } else {
-	                    var texture = _pixi2.default.Texture.fromFrame(_this.animationModel[i].src + '0' + (j + 1) + '.png');
-	                }
-	
+	            if (_this.animationModel[i].singleFrame) {
+	                var texture = _pixi2.default.Texture.fromFrame(_this.animationModel[i].src + '.png');
 	                texturesList.push(texture);
 	                texture.smooth = true;
+	            } else {
+	                for (var j = 0; j < _this.animationModel[i].totalFrames; j++) {
+	                    if (j + 1 > 9) {
+	                        var texture = _pixi2.default.Texture.fromFrame(_this.animationModel[i].src + (j + 1) + '.png');
+	                    } else {
+	                        var texture = _pixi2.default.Texture.fromFrame(_this.animationModel[i].src + '0' + (j + 1) + '.png');
+	                    }
+	
+	                    texturesList.push(texture);
+	                    texture.smooth = true;
+	                }
 	            }
 	
 	            _this.animationModel[i].movieClip = new _pixi2.default.MovieClip(texturesList);
@@ -37759,8 +37912,8 @@
 	
 	        _this.ableToChangeAnimation = true;
 	
-	        _this.startCallback = null;
-	        _this.finishCallback = null;
+	        _this.startCallback = function () {};
+	        _this.finishCallback = function () {};
 	        // this.hideAll();
 	        // this.stopAll();
 	        // this.changeState('idle');
@@ -37870,6 +38023,369 @@
 	}(_pixi2.default.Container);
 	
 	exports.default = Cupcake;
+
+/***/ },
+/* 148 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	        value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(147);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _Entity2 = __webpack_require__(149);
+	
+	var _Entity3 = _interopRequireDefault(_Entity2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var StandardBullet = function (_Entity) {
+	        _inherits(StandardBullet, _Entity);
+	
+	        function StandardBullet(velocity, lifeTime) {
+	                _classCallCheck(this, StandardBullet);
+	
+	                var _this = _possibleConstructorReturn(this, (StandardBullet.__proto__ || Object.getPrototypeOf(StandardBullet)).call(this));
+	
+	                _this.lifeTime = lifeTime;
+	                _this.base = new _pixi2.default.Container();
+	                _this.roundBase = new _pixi2.default.Graphics();
+	                _this.roundBase.beginFill(0);
+	                _this.roundBase.drawCircle(0, 0, 20);
+	                _this.roundBase.scale.y = 0.4;
+	                _this.roundBase.alpha = 0.1;
+	                _this.roundBase.x = 0;
+	                _this.base.addChild(_this.roundBase);
+	
+	                _this.addChild(_this.base);
+	                _this.animationContainer = new _pixi2.default.Container();
+	                _this.animationContainer.x = 0;
+	                _this.animationContainer.y = -135;
+	                _this.addChild(_this.animationContainer);
+	
+	                // this.sprite = new PIXI.Sprite(PIXI.Texture.fromFrame('cherry.png'))    
+	                // this.sprite.anchor.set(0.6);
+	
+	                var idCherry = Math.floor(Math.random() * 2) + 1;
+	
+	                _this.animationModel = [];
+	                _this.animationModel.push({
+	                        label: 'idle',
+	                        src: 'cherryBullet' + idCherry + '00',
+	                        totalFrames: 1,
+	                        startFrame: 0,
+	                        animationSpeed: 0.4,
+	                        movieClip: null,
+	                        position: { x: 0, y: 0 },
+	                        anchor: { x: 0.5, y: 0.5 },
+	                        loop: false
+	                });
+	
+	                _this.animationModel.push({
+	                        label: 'explode',
+	                        src: 'cherryBullet' + idCherry + '00',
+	                        totalFrames: 6,
+	                        startFrame: 0,
+	                        animationSpeed: 0.4,
+	                        movieClip: null,
+	                        position: { x: 0, y: 0 },
+	                        anchor: { x: 0.5, y: 0.5 },
+	                        loop: false
+	                });
+	
+	                _this.animationManager = new _AnimationManager2.default(_this.animationModel, _this.animationContainer);
+	
+	                // this.animationContainer.addChild(this.sprite);
+	
+	                _this.velocity = velocity;
+	                _this.spriteVelocity = { x: 0, y: 0 };
+	
+	                _this.standardScale = 1;
+	                _this.speedScale = 1;
+	                _this.starterScale = 0.5;
+	                _this.gravity = 15;
+	                // this.scale.set(0);
+	                _this.kill2 = false;
+	
+	                _this.animationManager.hideAll();
+	                _this.animationManager.stopAll();
+	                _this.animationManager.changeState('idle');
+	
+	                _this.radius = 30;
+	                _this.externalRadius = 0;
+	                _this.debugCollision();
+	
+	                // this.sprite.scale.set(this.starterScale)
+	                return _this;
+	        }
+	
+	        _createClass(StandardBullet, [{
+	                key: 'update',
+	                value: function update(delta) {
+	                        if (this.kill2) {
+	                                return;
+	                        }
+	
+	                        if (this.lifeTime <= 0) {
+	                                this.spriteVelocity.y += this.gravity;
+	                                this.animationContainer.y += this.spriteVelocity.y * delta;
+	
+	                                if (this.animationContainer.y >= 0) {
+	                                        this.animationContainer.rotation = 0;
+	                                        this.animationManager.changeState('explode');
+	                                        this.base.visible = false;
+	                                        this.kill2 = true;
+	                                }
+	                        } else {
+	                                this.lifeTime -= delta;
+	                        }
+	
+	                        this.animationContainer.rotation += delta * 10;
+	
+	                        this.x += this.velocity.x * delta * this.speedScale;
+	                        this.y += this.velocity.y * delta * this.speedScale;
+	                }
+	        }]);
+	
+	        return StandardBullet;
+	}(_Entity3.default);
+	
+	exports.default = StandardBullet;
+
+/***/ },
+/* 149 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Entity = function (_PIXI$Container) {
+	    _inherits(Entity, _PIXI$Container);
+	
+	    function Entity(debug) {
+	        _classCallCheck(this, Entity);
+	
+	        var _this = _possibleConstructorReturn(this, (Entity.__proto__ || Object.getPrototypeOf(Entity)).call(this));
+	
+	        _this.velocity = { x: 0, y: 0 };
+	        _this.standardScale = 1;
+	        _this.speedScale = 1;
+	        _this.starterScale = 0.5;
+	        _this.radius = 50;
+	        _this.externalRadius = 100;
+	        _this.static = false;
+	        _this.side = 1;
+	        return _this;
+	    }
+	
+	    _createClass(Entity, [{
+	        key: 'debugCollision',
+	        value: function debugCollision() {
+	            this.colisionCircle = new _pixi2.default.Graphics();
+	            this.colisionCircle.lineStyle(1, 0xFF0000);
+	            this.colisionCircle.drawCircle(0, 0, this.radius);
+	            this.colisionCircle.alpha = 0.8;
+	            this.addChild(this.colisionCircle);
+	
+	            if (!this.externalRadius) {
+	                return;
+	            }
+	            this.externalColisionCircle = new _pixi2.default.Graphics();
+	            this.externalColisionCircle.lineStyle(1, 0x00FF00);
+	            this.externalColisionCircle.drawCircle(0, 0, this.externalRadius);
+	            this.externalColisionCircle.alpha = 0.8;
+	            this.addChild(this.externalColisionCircle);
+	        }
+	    }, {
+	        key: 'setDistance',
+	        value: function setDistance(value) {
+	            this.standardScale = value * 0.3 + 0.2;
+	            this.speedScale = this.standardScale / this.starterScale;
+	            this.updateScale();
+	        }
+	    }, {
+	        key: 'updateScale',
+	        value: function updateScale() {
+	            this.scale.x = this.standardScale * this.side;
+	            this.scale.y = this.standardScale;
+	        }
+	    }, {
+	        key: 'update',
+	        value: function update(delta) {}
+	    }]);
+	
+	    return Entity;
+	}(_pixi2.default.Container);
+	
+	exports.default = Entity;
+
+/***/ },
+/* 150 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	        value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(147);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _Entity2 = __webpack_require__(149);
+	
+	var _Entity3 = _interopRequireDefault(_Entity2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var StandardEnvironmentEntity = function (_Entity) {
+	        _inherits(StandardEnvironmentEntity, _Entity);
+	
+	        function StandardEnvironmentEntity(velocity, lifeTime) {
+	                _classCallCheck(this, StandardEnvironmentEntity);
+	
+	                var _this = _possibleConstructorReturn(this, (StandardEnvironmentEntity.__proto__ || Object.getPrototypeOf(StandardEnvironmentEntity)).call(this));
+	
+	                _this.lifeTime = lifeTime;
+	                _this.base = new _pixi2.default.Container();
+	                _this.roundBase = new _pixi2.default.Graphics();
+	                _this.roundBase.beginFill(0);
+	                _this.roundBase.drawCircle(0, 0, 20);
+	                _this.roundBase.scale.y = 0.4;
+	                _this.roundBase.alpha = 0.1;
+	                _this.roundBase.x = 0;
+	                _this.base.addChild(_this.roundBase);
+	
+	                _this.addChild(_this.base);
+	                _this.animationContainer = new _pixi2.default.Container();
+	                _this.animationContainer.x = 0;
+	                _this.animationContainer.y = 0;
+	                _this.addChild(_this.animationContainer);
+	
+	                var idRock = Math.floor(Math.random() * 2) + 1;
+	
+	                _this.animationModel = [];
+	                _this.animationModel.push({
+	                        label: 'rock',
+	                        src: 'rock1000' + idRock,
+	                        totalFrames: 1,
+	                        startFrame: 0,
+	                        animationSpeed: 0.4,
+	                        movieClip: null,
+	                        position: { x: 0, y: 0 },
+	                        anchor: { x: 0.5, y: 0.8 },
+	                        loop: false,
+	                        singleFrame: true
+	                });
+	
+	                _this.animationManager = new _AnimationManager2.default(_this.animationModel, _this.animationContainer);
+	                // this.scale.set(0);
+	                _this.kill2 = false;
+	
+	                _this.animationManager.hideAll();
+	                _this.animationManager.stopAll();
+	                _this.animationManager.changeState('rock');
+	
+	                _this.radius = 30;
+	                _this.externalRadius = 0;
+	                _this.debugCollision();
+	
+	                _this.static = true;
+	
+	                // this.sprite.scale.set(this.starterScale)
+	                return _this;
+	        }
+	
+	        _createClass(StandardEnvironmentEntity, [{
+	                key: 'update',
+	                value: function update(delta) {
+	                        //if(this.static){
+	                        return;
+	                        //}
+	
+	                        if (this.lifeTime <= 0) {
+	                                this.spriteVelocity.y += this.gravity;
+	                                this.animationContainer.y += this.spriteVelocity.y * delta;
+	
+	                                if (this.animationContainer.y >= 0) {
+	                                        this.animationContainer.rotation = 0;
+	                                        this.animationManager.changeState('explode');
+	                                        this.base.visible = false;
+	                                        this.kill2 = true;
+	                                }
+	                        } else {
+	                                this.lifeTime -= delta;
+	                        }
+	
+	                        this.animationContainer.rotation += delta * 10;
+	
+	                        this.scale.x = this.standardScale;
+	                        this.scale.y = this.standardScale;
+	
+	                        this.x += this.velocity.x * delta * this.speedScale;
+	                        this.y += this.velocity.y * delta * this.speedScale;
+	                }
+	        }]);
+	
+	        return StandardEnvironmentEntity;
+	}(_Entity3.default);
+	
+	exports.default = StandardEnvironmentEntity;
 
 /***/ }
 /******/ ]);

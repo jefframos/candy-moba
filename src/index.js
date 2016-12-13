@@ -10,6 +10,7 @@ PIXI.loader
 	.add('./assets/Cupcake/cupcake0.json')
 	.add('./assets/Cupcake/cupcake1.json')
 	.add('./assets/Cupcake/cupcake2.json')
+	.add('./assets/Environment/environment0.json')
 	.load(configGame);
 
 function configGame(){

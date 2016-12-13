@@ -18,55 +18,83 @@ export default class InputManager{
 	 	// window.gamep = this.gamep;
 	 	this.leftAxes = [0,0];
 	 	this.usingGamepad = false;
+
+	 	this.currentGamepad = -1;
 		//document.body.on('keydown', this.getKey.bind(this));	
 		// this.usingGamepad = false;	
 	}
 	debugAxes(id){
 		let str = '';
-		for (var i = 2; i < navigator.getGamepads()[id].axes.length; i++) {
-			str += (i+':'+navigator.getGamepads()[id].axes[i]+' ');
+		for (var i = 2; i < navigator.getGamepads()[this.currentGamepad].axes.length; i++) {
+			str += (i+':'+navigator.getGamepads()[this.currentGamepad].axes[i]+' ');
 		}
-		// console.log(navigator.getGamepads()[id].buttons[4]);
+		// console.log(navigator.getGamepads()[this.currentGamepad].buttons[4]);
 		console.log(str);
 	}
 	debugButtons(id){
 		let str = '';
-		for (var i = 0; i < navigator.getGamepads()[id].buttons.length; i++) {
-			str += (i+':'+navigator.getGamepads()[id].buttons[i].value+' ');
+		for (var i = 0; i < navigator.getGamepads()[this.currentGamepad].buttons.length; i++) {
+			str += (i+':'+navigator.getGamepads()[this.currentGamepad].buttons[i].value+' ');
 		}
-		// console.log(navigator.getGamepads()[id].buttons[4]);
+		// console.log(navigator.getGamepads()[this.currentGamepad].buttons[4]);
 		console.log(str);
 	}
 	updateDpad(id){
-		if(navigator.getGamepads()[id].axes[4] == 1){
+		if(navigator.getGamepads()[this.currentGamepad].axes[4] == 1){
 			this.leftAxes[0] = 1;
 		}
-		else if(navigator.getGamepads()[id].axes[9] <= 0.75 && navigator.getGamepads()[id].axes[9] > 0.15){
+		else if(navigator.getGamepads()[this.currentGamepad].axes[9] <= 0.75 && navigator.getGamepads()[this.currentGamepad].axes[9] > 0.15){
 			this.leftAxes[0] = -1;
 		}
-		if(navigator.getGamepads()[id].axes[9] == -1){
+		if(navigator.getGamepads()[this.currentGamepad].axes[9] == -1){
 			this.leftAxes[1] = -1;
 		}
-		else if(navigator.getGamepads()[id].axes[9] <= 0.15 && navigator.getGamepads()[id].axes[9] > 0){
+		else if(navigator.getGamepads()[this.currentGamepad].axes[9] <= 0.15 && navigator.getGamepads()[this.currentGamepad].axes[9] > 0){
 			this.leftAxes[1] = 1;
 		}
-		//console.log(navigator.getGamepads()[id].axes[9])
+		//console.log(navigator.getGamepads()[this.currentGamepad].axes[9])
 	}
 	update(){
-		let id = navigator.getGamepads()[2]?2:1;
 
+		if(this.currentGamepad < 0){
+
+			let gamepadList = navigator.getGamepads();
+
+			for (var i = 0; i < gamepadList.length; i++) {
+				if(gamepadList[i] && gamepadList[i].buttons && gamepadList[i].buttons.length > 11){
+					if(gamepadList[i].buttons[11].value){
+						console.log('achou');
+						this.currentGamepad = i//gamepadList[i];
+						window.currentGamepad = i;
+						break
+					}
+					// for (var j = 0; j < gamepadList[i].buttons.length; j++) {
+					// 	if(gamepadList[j].buttons[11].value){
+					// 		navigator.getGamepads()[this.currentGamepad] = gamepadList[i];
+					// 	}
+					// }
+				}
+			}
+
+			// console.log(navigator.getGamepads()[this.currentGamepad]);
+		}
+		//let id = navigator.getGamepads()[2]?2:1;
+
+		//console.log(id);
 		this.leftAxes = [0, 0];
-		//console.log(navigator.getGamepads()[id]);
+		//console.log(navigator.getGamepads()[this.currentGamepad]);
 		//this.debugButtons(id)
-		if(!navigator.getGamepads()[id]){
+		if(this.currentGamepad < 0){
 			//this.game.updateKeyDown()
 			//this.game.updateKeyUp();
 			return;
 		}
-		if(navigator.getGamepads()[id].buttons[11].value){
+		// console.log(navigator.getGamepads()[this.currentGamepad].axes);
+
+		if(navigator.getGamepads()[this.currentGamepad].buttons[11].value){
 			this.usingGamepad = true;
 		}
-		if(navigator.getGamepads()[id].buttons[10].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[10].value){
 			this.usingGamepad = false;
 		}
 		if(!this.usingGamepad){
@@ -74,52 +102,57 @@ export default class InputManager{
 		}
 		//this.debugAxes(id);
 
-		let hAxe = navigator.getGamepads()[1].axes[0].toFixed(2);
-		let vAxe = navigator.getGamepads()[1].axes[1].toFixed(2);
+		// console.log(this.usingGamepad);
+		let hAxe = navigator.getGamepads()[this.currentGamepad].axes[0].toFixed(2);
+		let vAxe = navigator.getGamepads()[this.currentGamepad].axes[1].toFixed(2);
+
+		//console.log(navigator.getGamepads()[this.currentGamepad].axes);
 
 		// hAxe *= 1.5;		
 		// vAxe *= 1.5;
 
 		this.leftAxes = [hAxe, vAxe];
-		//this.debugButtons(id)
+
+		// console.log(this.leftAxes);
+		// this.debugButtons()
 		//this.updateDpad(id);
 
-		if(navigator.getGamepads()[id].buttons[4].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[4].value){
 			this.act('action1');
 			this.usingGamepad = true;
 		}else{
 			this.stopAct('action1');
 		}
 
-		if(navigator.getGamepads()[id].buttons[1].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[1].value){
 			this.act('action2');
 			this.usingGamepad = true;
 		}else{
 			this.stopAct('action2');
 		}
 
-		if(navigator.getGamepads()[id].buttons[0].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[0].value){
 			this.act('action4');
 			this.usingGamepad = true;
 		}else{
 			this.stopAct('action4');
 		}
 
-		if(navigator.getGamepads()[id].buttons[3].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[3].value){
 			this.act('action3');
 			this.usingGamepad = true;
 		}else{
 			this.stopAct('action3');
 		}
 
-		if(navigator.getGamepads()[id].buttons[7].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[7].value){
 			this.act('action5');
 			this.usingGamepad = true;
 		}else{
 			this.stopAct('action5');
 		}
 
-		if(navigator.getGamepads()[id].buttons[6].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[6].value){
 			this.act('action6');
 			this.usingGamepad = true;
 		}else{
@@ -203,9 +236,29 @@ export default class InputManager{
 		// if(!this.keys){
 		// 	this.usingGamepad = true;
 		// }
+		this.updateKeyboardInput()
 		this.game.updateKeyDown()
     }
 
+    updateKeyboardInput(){
+    	for (var i = 0; i < this.keys.length; i++) {
+    		switch(this.keys[i]){
+    			case 'up':
+					this.leftAxes[1] = -1;
+    			break;
+    			case 'down':
+					this.leftAxes[1] = 1;
+    			break;
+    			case 'left':
+					this.leftAxes[0] = -1;
+    			break;
+    			case 'right':
+					this.leftAxes[0] = 1;
+    			break;			
+    		}
+    	}
+    	console.log(this.keys);
+    }
     removeKey(key){
     	for (var i = 0; i < this.keys.length; i++) {
     		if(this.keys[i] == key){
@@ -282,6 +335,7 @@ export default class InputManager{
 			key = 'action5';
 		}
 
+		this.updateKeyboardInput();
 		this.game.updateKeyUp(key)
     }
 }
