@@ -8,16 +8,16 @@ export default class StandardEnvironmentEntity extends Entity {
 
     	super();
         this.game = game;
-        this.base = new PIXI.Container();
-        this.roundBase = new PIXI.Graphics();
-        this.roundBase.beginFill(0);
-        this.roundBase.drawCircle(0,0,20);
-        this.roundBase.scale.y = 0.4
-        this.roundBase.alpha = 0.1;
-        this.roundBase.x = 0;
-        this.base.addChild(this.roundBase);
+        // this.base = new PIXI.Container();
+        // this.roundBase = new PIXI.Graphics();
+        // this.roundBase.beginFill(0);
+        // this.roundBase.drawCircle(0,0,20);
+        // this.roundBase.scale.y = 0.4
+        // this.roundBase.alpha = 0.1;
+        // this.roundBase.x = 0;
+        // this.base.addChild(this.roundBase);
 
-        this.addChild(this.base);
+        // this.addChild(this.base);
 
 
         this.animationContainer = new PIXI.Container();
@@ -77,8 +77,12 @@ export default class StandardEnvironmentEntity extends Entity {
             this.waitingNext -= delta;
 
             let sin = Math.sin(this.sinScale += delta*4);
-            this.animationContainer.scale.y = (-sin * 0.02) + 1;
-            this.animationContainer.scale.x = (sin * 0.02) + 1;
+            let cos = Math.cos(this.sinScale += delta*4);
+
+            this.animationContainer.scale.y = (-sin * 0.03) + 1;
+            this.animationContainer.scale.x = (sin * 0.03) + 1;
+
+            this.animationContainer.rotation = cos * 0.01;
             
         }
 

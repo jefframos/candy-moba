@@ -18,7 +18,40 @@ export default {
         }
         return value
     },
-
+    distCompare(a,b) {
+        var yA = a.dist;
+        var yB = b.dist;
+        if(yA === yB){
+            return 0;
+        }
+        if(a.noDepth || b.noDepth){
+            return 0;
+        }
+        if (yA < yB){
+            return -1;
+        }
+        if (yA > yB){
+            return 1;
+        }
+        return 0;
+    },
+    depthCompare(a,b) {
+        var yA = a.y;
+        var yB = b.y;
+        if(yA === yB){
+            return 0;
+        }
+        if(a.noDepth || b.noDepth){
+            return 0;
+        }
+        if (yA < yB){
+            return -1;
+        }
+        if (yA > yB){
+            return 1;
+        }
+        return 0;
+    },
     createNoiseTexture(config) {
 
     	var params = config?config:{};

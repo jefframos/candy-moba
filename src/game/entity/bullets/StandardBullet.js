@@ -4,10 +4,11 @@ import AnimationManager  from './../utils/AnimationManager';
 import Entity  from './../Entity';
 export default class StandardBullet extends Entity {
 
-    constructor(velocity, lifeTime) {
+    constructor(game, velocity, lifeTime) {
 
     	super();
 
+        this.game = game;
         this.lifeTime = lifeTime;
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
@@ -72,16 +73,53 @@ export default class StandardBullet extends Entity {
         this.animationManager.stopAll();
         this.animationManager.changeState('idle');
 
-        this.radius = 30;
+        this.radius = 10;
         this.externalRadius = 0;
-        //this.debugCollision();
+        // this.debugCollision();
 
         // this.sprite.scale.set(this.starterScale)
     }
 
+    bulletAttackCollision() {
+        let collisionList = this.game.getColisionList(this,'enemy');
+        if(collisionList){
+            for (var i = 0; i < collisionList.length; i++) {
+                if((collisionList[i].trueLeft && this.velocity.x > 0)||
+                    (collisionList[i].trueRight && this.velocity.x < 0)){
+                    if(collisionList[i].ableToHit){
+                        if(collisionList[i].entity.hit(1, collisionList[i].trueLeft ? -1 : 1)){
+                            return true
+                        }
+                    }
+                }
+            }
+        }
+        return false
+    }
+
     update ( delta ) {
+
+        if(this.killTimer){
+            this.killTimer -= delta;
+            this.velocity.x *= 0.7;
+            if(this.killTimer <= 0){
+                this.dead();
+            }
+        }
+
         if(this.kill2){
             return;
+        }
+
+
+        if(!this.killTimer && this.bulletAttackCollision()){
+            this.animationContainer.rotation = 3.14/2;
+            this.animationManager.changeState('explode');
+            this.base.visible = false;
+            this.collidable = false;
+            
+            //this.kill2 = true;
+            this.killTimer = 0.2;
         }
 
         if(this.lifeTime <= 0){
@@ -98,7 +136,9 @@ export default class StandardBullet extends Entity {
             this.lifeTime -= delta;
         }
 
-        this.animationContainer.rotation += delta * 10;
+        if(!this.killTimer){
+            this.animationContainer.rotation += delta * 10;
+        }
 
 
         this.x += this.velocity.x * delta * this.speedScale;

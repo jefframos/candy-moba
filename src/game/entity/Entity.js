@@ -11,8 +11,20 @@ export default class Entity extends PIXI.Container {
         this.externalRadius = 100;
         this.static = false;
         this.side = 1;
+        this.life = 5;
+        this.collidable = true;
     }
 
+    hit(power) {
+        this.life -= power;
+        if(this.life <= 0){
+            this.dead();
+        }
+        return true
+    }
+    dead() {
+        this.kill = true;
+    }
     debugCollision() {
         this.colisionCircle = new PIXI.Graphics();
         this.colisionCircle.lineStyle(1,0xFF0000);
@@ -31,11 +43,17 @@ export default class Entity extends PIXI.Container {
         this.addChild(this.externalColisionCircle);
     }
 
+    getRadius() {
+        return this.standardScale * this.radius;
+    }
+    getExternalRadius() {
+        return this.standardScale * this.externalRadius;
+    }
     setDistance(value) {
-        this.standardScale = value * 0.3 + 0.2;
+        this.standardScale = value * 0.35 + 0.15;
         this.speedScale = this.standardScale / this.starterScale;
         this.updateScale();
-        this.updateTint(value);
+        // this.updateTint(value);
     }
     updateTint(value) {
         this.animationContainer.alpha = value * 0.4 + 0.6;//0xff0000

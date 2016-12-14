@@ -24,7 +24,7 @@ export default class Rock extends StandardEnvironmentEntity {
             animationSpeed:0.3,
             movieClip:null,
             position:{x:0,y:0},
-            anchor:{x:0.5,y:0.8},
+            anchor:{x:0.5,y:0.95},
             loop:false,
             haveCallback:true,
         });
@@ -36,7 +36,7 @@ export default class Rock extends StandardEnvironmentEntity {
             animationSpeed:0.3,
             movieClip:null,
             position:{x:0,y:0},
-            anchor:{x:0.5,y:0.8},
+            anchor:{x:0.5,y:0.95},
             loop:false,
             haveCallback:false,
         });

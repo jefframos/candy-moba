@@ -52,8 +52,8 @@ export default class Cupcake extends Entity {
             label:'meleeAttack1',
             src:'meleeAttack100',
             totalFrames:16,
-            startFrame:1,
-            animationSpeed:0.6,
+            startFrame:7,
+            animationSpeed:0.65,
             movieClip:null,
             position:{x:43,y:0},
             anchor:{x:0.5,y:1},
@@ -65,8 +65,8 @@ export default class Cupcake extends Entity {
             label:'meleeAttack2',
             src:'meleeAttack200',
             totalFrames:16,
-            startFrame:1,
-            animationSpeed:0.6,
+            startFrame:7,
+            animationSpeed:0.65,
             movieClip:null,
             position:{x:43,y:0},
             anchor:{x:0.5,y:1},
@@ -78,8 +78,8 @@ export default class Cupcake extends Entity {
             label:'meleeAttack3',
             src:'meleeAttack300',
             totalFrames:28,
-            startFrame:10,
-            animationSpeed:0.6,
+            startFrame:12,
+            animationSpeed:0.65,
             movieClip:null,
             position:{x:83,y:0},
             anchor:{x:0.5,y:1},
@@ -91,8 +91,8 @@ export default class Cupcake extends Entity {
             label:'meleeAttack4',
             src:'meleeAttack400',
             totalFrames:38,
-            startFrame:0,
-            animationSpeed:0.6,
+            startFrame:16,
+            animationSpeed:0.7,
             movieClip:null,
             position:{x:50,y:5},
             anchor:{x:0.5,y:1},
@@ -144,7 +144,7 @@ export default class Cupcake extends Entity {
             src:'rangeAttack100',
             totalFrames:15,
             startFrame:0,
-            animationSpeed:0.6,
+            animationSpeed:0.65,
             movieClip:null,
             position:{x:4,y:2},
             anchor:{x:0.5,y:1},
@@ -204,6 +204,32 @@ export default class Cupcake extends Entity {
             haveCallback:true,
         });
 
+        this.animationModel.push({
+            label:'speedAttack',
+            src:'speedAttack00',
+            totalFrames:8,
+            startFrame:0,
+            animationSpeed:0.65,
+            movieClip:null,
+            position:{x:-40,y:6},
+            anchor:{x:0.5,y:1},
+            loop:false,
+            haveCallback:true,
+        });
+
+        this.animationModel.push({
+            label:'speedAttackEnd',
+            src:'speedAttack00',
+            totalFrames:18,
+            startFrame:8,
+            animationSpeed:0.65,
+            movieClip:null,
+            position:{x:-40,y:6},
+            anchor:{x:0.5,y:1},
+            loop:false,
+            haveCallback:true,
+        });
+
 
         this.animationManager = new AnimationManager(this.animationModel, this.animationContainer)
         this.animationManager.finishCallback = this.finishAnimation.bind(this);
@@ -214,7 +240,9 @@ export default class Cupcake extends Entity {
         this.entityModel = {
             speed:{x:350, y:250},
             standardTimeJump:0.7,
-            jumpForce:300
+            jumpForce:300,
+            rangeSpeed:4,
+            attackSpeed:0.2,
         }
         this.side = 1; 
         this.meleeComboList = ['meleeAttack1','meleeAttack2','meleeAttack3','meleeAttack4']
@@ -246,10 +274,11 @@ export default class Cupcake extends Entity {
         this.animationManager.stopAll();
         this.animationManager.changeState('idle');
 
-        // this.showJust(['idle','revive'])
+        // this.animationManager.showJust(['idle','speedAttack'])
 
         // this.entityModel.standardTimeJump = 0.7;
         this.timeJump = 0;
+        this.attackTime = -1;
         this.dying = false;
         this.respawning = false;
         this.reset();
@@ -257,24 +286,13 @@ export default class Cupcake extends Entity {
 
         this.radius = 100;
         this.externalRadius = 160;
-        //this.debugCollision();
+        // this.debugCollision();
        
 
     }
 
-    showJust(list) {
-        this.animationManager.hideAll();
-        for (var i = 0; i < list.length; i++) {
-            for (var j = 0; j < this.animationManager.animationModel.length; j++) {
-                if(this.animationManager.animationModel[j].label == list[i])
-                {
-                    this.animationManager.animationModel[j].movieClip.visible = true
-                }
-            }
-        }
-    }
+    
     reset() {
-        console.log('RESET');
         this.timeJump = 0;
         this.animationContainer.alpha = 1;
         this.base.alpha = 1;
@@ -282,6 +300,7 @@ export default class Cupcake extends Entity {
         this.currentMeleeCombo = 0;
         this.animationManager.ableToChangeAnimation = true;
         this.rangeAttacking = false;
+        this.speedAttacking = false;
         this.attacking = false;
         this.jumping = false;
         this.jumpingOut = false;
@@ -290,11 +309,21 @@ export default class Cupcake extends Entity {
         this.starterScale = 0.5;
         this.standardScale = this.starterScale;
         this.speedFactor = 1;
+
+        this.collidable = true;
+
+        this.areaAttackTimer = -1;
+
+        this.timeJump = 0;
+        this.attackTime = -1;
+        this.rangeTime = -1;
         //this.scale.set(this.standardScale)
 
     }
 
     die() {
+        this.collidable = false;
+
         if(this.animationManager.changeState('killBack')){
             this.animationContainer.y = 0;
         }
@@ -311,6 +340,33 @@ export default class Cupcake extends Entity {
         let animModel = this.animationManager.getAnimation('run');
         animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
     }
+    areaAttackCollision() {
+        this.areaAttackTimer = -1;
+        let collisionList = this.game.getExternalColisionList(this,'enemy');
+        if(collisionList){
+            for (var i = 0; i < collisionList.length; i++) {
+                // if(collisionList[i].front || collisionList[i].back){
+                collisionList[i].entity.side = this.side * -1;
+                collisionList[i].entity.hit(5)
+                // }
+            }
+        }
+    }
+
+    meleeAttackCollision() {
+        let collisionList = this.game.getColisionList(this,'enemy');
+        if(collisionList){
+            for (var i = 0; i < collisionList.length; i++) {
+                if(collisionList[i].right || collisionList[i].left){
+                    collisionList[i].entity.side = this.side * -1;
+                    if(collisionList[i].entity.hit(1)){
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
     areaAttack() {
         if(this.dying){
             return;
@@ -319,6 +375,9 @@ export default class Cupcake extends Entity {
             if(this.animationManager.changeState('areaAttack')){
                 this.animationContainer.y = 0;
                 this.timeJump = 0;
+
+                this.areaAttackTimer = 0.5;
+
                 //this.jumping = false;
             }
             return;
@@ -345,11 +404,24 @@ export default class Cupcake extends Entity {
         if(this.rangeAttacking){
             return;
         }
+        if(this.speedAttacking){
+            return;
+        }
         if(this.jumping || this.jumpOut){
             return;
         }
         if(this.animationManager.changeState('rangeAttack')){
+
+            let rangeAnimation = this.animationManager.getAnimation('rangeAttack');
+            rangeAnimation.movieClip.animationSpeed = this.entityModel.rangeSpeed * rangeAnimation.animationSpeed;
+
+            let rangeAnimationEnd = this.animationManager.getAnimation('rangeAttackEnd');
+            rangeAnimationEnd.movieClip.animationSpeed = this.entityModel.rangeSpeed * rangeAnimationEnd.animationSpeed;
+
+            console.log(rangeAnimation.movieClip.animationSpeed);
+
             this.rangeAttacking = true;
+            this.rangeSpeedY = this.velocity.y;
         }
         
         this.velocity.x = 0;
@@ -362,27 +434,58 @@ export default class Cupcake extends Entity {
         if(this.attacking){
             return;
         }
+        if(this.rangeAttacking){
+            return;
+        }
+         if(this.speedAttacking){
+            return;
+        }
+        if(this.areaAttackTimer > 0){
+            return;
+        }
         if(this.jumping){
+            console.log(this.rangeAttacking);
             this.areaAttack();
             return;
         }
+//CONTINUAR AQUI
+        // if(this.speedFactor > 1){
+        //     this.animationManager.changeState('speedAttack');
+        //     this.speedAttacking = true;
+        // }
 
-        if(this.canCombo()){
-            this.currentMeleeCombo ++;
-        }else{
-            this.currentMeleeCombo = 0;
-        }
 
-        if(this.animationManager.changeState(this.meleeComboList[this.currentMeleeCombo])){
+
+        // if(this.canCombo()){
+        //     this.currentMeleeCombo ++;
+        // }else{
+        //     this.currentMeleeCombo = 0;
+        // }
+
+
+        // console.log('ATTACK');
+        if(this.animationManager.changeState(this.meleeComboList[this.currentMeleeCombo], this.attackTime <= 0) || this.attackTime <= 0){
+            this.attackTime = this.entityModel.attackSpeed;
             this.attacking = true;
             this.velocity.x = 0;
             this.velocity.y = 0;
             this.comboTimer = this.comboStandardTimer;
+
+
+            let canCombo = this.meleeAttackCollision();
+
+            if(this.canCombo() && canCombo){
+                this.currentMeleeCombo ++;
+            }else{
+                this.currentMeleeCombo = 0;
+            }
+
         }
     }
     canCombo() {
         // console.log(this.comboTimer);
-        return this.comboTimer > 0 && this.currentMeleeCombo < this.meleeComboList.length - 1;
+        return this.currentMeleeCombo < this.meleeComboList.length - 1;
+        // return this.comboTimer > 0 && this.currentMeleeCombo < this.meleeComboList.length - 1;
     }
     isMeleeCombo() {
         for (var i = 0; i < this.meleeComboList.length; i++) {
@@ -436,6 +539,19 @@ export default class Cupcake extends Entity {
         if(this.jumping){
             return
         }
+
+
+        if(this.animationManager.state == 'speedAttackEnd'){
+            this.speedAttacking = false;
+        }
+        if(this.speedAttacking){
+            ////console.log('RANGING');
+            //let bulletPosition = {x:this.position.x + (150  * this.side) * Math.abs(this.scale.x), y: this.position.y};
+            //this.game.addBullet(bulletPosition, {x:800 * this.side, y:this.rangeSpeedY}, 0.1);
+            this.animationManager.changeState('speedAttackEnd');
+            return;
+        }
+
         
         if(this.animationManager.state == 'rangeAttackEnd'){
             this.rangeAttacking = false;
@@ -443,14 +559,16 @@ export default class Cupcake extends Entity {
         if(this.rangeAttacking){
             ////console.log('RANGING');
             let bulletPosition = {x:this.position.x + (150  * this.side) * Math.abs(this.scale.x), y: this.position.y};
-            this.game.addBullet(bulletPosition, {x:800 * this.side, y:0}, 0.1);
+            this.game.addBullet(bulletPosition, {x:800 * this.side, y:this.rangeSpeedY}, 0.1);
             this.animationManager.changeState('rangeAttackEnd');
             return;
         }
+
+
         this.jumpingOut = false;
 
         if(this.isMeleeCombo()){            
-            this.attacking = false;
+            //this.attacking = false;
         }
 
         this.animationManager.changeState('idle');
@@ -494,11 +612,27 @@ export default class Cupcake extends Entity {
         }
         ////console.log(this.velocity.y);
         // this.timer -= delta;
+        //console.log(this.attacking);
         if(this.comboTimer > 0){
             this.comboTimer -= delta;
         }else{
             this.comboTimer = 0;
             this.currentMeleeCombo = 0;
+        }
+
+        if(this.areaAttackTimer > 0){
+            this.areaAttackTimer -= delta;
+            if(this.areaAttackTimer <= 0){
+                this.areaAttackCollision();
+            }
+        }
+
+        if(this.attackTime > 0){
+            this.attackTime -= delta;
+            if(this.attackTime <= 0){
+                this.attacking = false;
+                this.attackTime = -1;
+            }
         }
 
         // if(this.timer <= 0){

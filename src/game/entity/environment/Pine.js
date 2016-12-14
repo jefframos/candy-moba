@@ -23,8 +23,8 @@ export default class Pine extends StandardEnvironmentEntity {
             startFrame:0,
             animationSpeed:0.4,
             movieClip:null,
-            position:{x:10,y:-80},
-            anchor:{x:0.5,y:0.8},
+            position:{x:10,y:0},
+            anchor:{x:0.5,y:1},
             loop:false,
             haveCallback:false,
         });
@@ -33,10 +33,10 @@ export default class Pine extends StandardEnvironmentEntity {
             src:'pine'+idRock+'00',
             totalFrames:22,
             startFrame:0,
-            animationSpeed:0.4,
+            animationSpeed:0.5,
             movieClip:null,
-            position:{x:10,y:-80},
-            anchor:{x:0.5,y:0.8},
+            position:{x:10,y:0},
+            anchor:{x:0.5,y:1},
             loop:false,
             haveCallback:true,
         });
@@ -47,6 +47,8 @@ export default class Pine extends StandardEnvironmentEntity {
         this.animationManager.hideAll();
         this.animationManager.stopAll();
         this.animationManager.changeState('static');
+
+        // this.debugCollision()
 
     }
     

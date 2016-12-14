@@ -52,6 +52,17 @@ export default class Cupcake extends PIXI.Container {
         // this.stopAll();
         // this.changeState('idle');
     }
+    showJust(list) {
+        this.hideAll();
+        for (var i = 0; i < list.length; i++) {
+            for (var j = 0; j < this.animationModel.length; j++) {
+                if(this.animationModel[j].label == list[i])
+                {
+                    this.animationModel[j].movieClip.visible = true
+                }
+            }
+        }
+    }
     stopCurrent() {
         let current = this.animationModel[this.getAnimationID(this.state)];current.movieClip.gotoAndStop(current.startFrame);
     }
