@@ -28521,13 +28521,17 @@
 	
 	var _Cupcake2 = _interopRequireDefault(_Cupcake);
 	
-	var _StandardBullet = __webpack_require__(148);
+	var _StandardBullet = __webpack_require__(149);
 	
 	var _StandardBullet2 = _interopRequireDefault(_StandardBullet);
 	
-	var _StandardEnvironmentEntity = __webpack_require__(150);
+	var _Rock = __webpack_require__(151);
 	
-	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
+	var _Rock2 = _interopRequireDefault(_Rock);
+	
+	var _Pine = __webpack_require__(152);
+	
+	var _Pine2 = _interopRequireDefault(_Pine);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28556,8 +28560,13 @@
 			_this.cupcake.x = 500;
 			_this.cupcake.y = 500;
 	
-			for (var i = 0; i < 20; i++) {
-				var rock = new _StandardEnvironmentEntity2.default(_this);
+			for (var i = 0; i < 15; i++) {
+				var rock;
+				if (Math.random() < 0.3) {
+					rock = new _Pine2.default(_this);
+				} else {
+					rock = new _Rock2.default(_this);
+				}
 				_this.entityContainer.addChild(rock);
 				_this.addOnUpdateList(rock);
 				rock.x = Math.random() * _config2.default.width;
@@ -28571,6 +28580,8 @@
 			_this.addChild(text);
 			text.x = 10;
 			text.y = 10;
+	
+			text.scale.set(0.4);
 	
 			_this.bulletList = [];
 			return _this;
@@ -37262,7 +37273,7 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(148);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -37986,9 +37997,9 @@
 	        }
 	    }, {
 	        key: 'changeState',
-	        value: function changeState(state) {
+	        value: function changeState(state, force) {
 	            //console.log(state);
-	            if (this.state == state || !this.ableToChangeAnimation) {
+	            if (!force && (this.state == state || !this.ableToChangeAnimation)) {
 	                return false;
 	            }
 	
@@ -38011,6 +38022,7 @@
 	    }, {
 	        key: 'updateAnimations',
 	        value: function updateAnimations() {
+	            //console.log(this.animationModel[this.getAnimationID(this.state)].movieClip.playing);
 	            //console.log(this.state, this.getAnimationID(this.state),  this.animationModel[this.getAnimationID(this.state)].haveCallback, this.animationModel[this.getAnimationID(this.state)].movieClip.playing);
 	            if (this.state && this.animationModel[this.getAnimationID(this.state)].haveCallback && !this.animationModel[this.getAnimationID(this.state)].movieClip.playing) {
 	                //console.log(this.finishCallback);
@@ -38026,6 +38038,90 @@
 
 /***/ },
 /* 148 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Entity = function (_PIXI$Container) {
+	    _inherits(Entity, _PIXI$Container);
+	
+	    function Entity(debug) {
+	        _classCallCheck(this, Entity);
+	
+	        var _this = _possibleConstructorReturn(this, (Entity.__proto__ || Object.getPrototypeOf(Entity)).call(this));
+	
+	        _this.velocity = { x: 0, y: 0 };
+	        _this.standardScale = 1;
+	        _this.speedScale = 1;
+	        _this.starterScale = 0.5;
+	        _this.radius = 50;
+	        _this.externalRadius = 100;
+	        _this.static = false;
+	        _this.side = 1;
+	        return _this;
+	    }
+	
+	    _createClass(Entity, [{
+	        key: 'debugCollision',
+	        value: function debugCollision() {
+	            this.colisionCircle = new _pixi2.default.Graphics();
+	            this.colisionCircle.lineStyle(1, 0xFF0000);
+	            this.colisionCircle.drawCircle(0, 0, this.radius);
+	            this.colisionCircle.alpha = 0.8;
+	            this.addChild(this.colisionCircle);
+	
+	            if (!this.externalRadius) {
+	                return;
+	            }
+	            this.externalColisionCircle = new _pixi2.default.Graphics();
+	            this.externalColisionCircle.lineStyle(1, 0x00FF00);
+	            this.externalColisionCircle.drawCircle(0, 0, this.externalRadius);
+	            this.externalColisionCircle.alpha = 0.8;
+	            this.addChild(this.externalColisionCircle);
+	        }
+	    }, {
+	        key: 'setDistance',
+	        value: function setDistance(value) {
+	            this.standardScale = value * 0.3 + 0.2;
+	            this.speedScale = this.standardScale / this.starterScale;
+	            this.updateScale();
+	        }
+	    }, {
+	        key: 'updateScale',
+	        value: function updateScale() {
+	            this.scale.x = this.standardScale * this.side;
+	            this.scale.y = this.standardScale;
+	        }
+	    }, {
+	        key: 'update',
+	        value: function update(delta) {}
+	    }]);
+	
+	    return Entity;
+	}(_pixi2.default.Container);
+	
+	exports.default = Entity;
+
+/***/ },
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38048,7 +38144,7 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(148);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -38174,90 +38270,6 @@
 	exports.default = StandardBullet;
 
 /***/ },
-/* 149 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _pixi = __webpack_require__(1);
-	
-	var _pixi2 = _interopRequireDefault(_pixi);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Entity = function (_PIXI$Container) {
-	    _inherits(Entity, _PIXI$Container);
-	
-	    function Entity(debug) {
-	        _classCallCheck(this, Entity);
-	
-	        var _this = _possibleConstructorReturn(this, (Entity.__proto__ || Object.getPrototypeOf(Entity)).call(this));
-	
-	        _this.velocity = { x: 0, y: 0 };
-	        _this.standardScale = 1;
-	        _this.speedScale = 1;
-	        _this.starterScale = 0.5;
-	        _this.radius = 50;
-	        _this.externalRadius = 100;
-	        _this.static = false;
-	        _this.side = 1;
-	        return _this;
-	    }
-	
-	    _createClass(Entity, [{
-	        key: 'debugCollision',
-	        value: function debugCollision() {
-	            this.colisionCircle = new _pixi2.default.Graphics();
-	            this.colisionCircle.lineStyle(1, 0xFF0000);
-	            this.colisionCircle.drawCircle(0, 0, this.radius);
-	            this.colisionCircle.alpha = 0.8;
-	            this.addChild(this.colisionCircle);
-	
-	            if (!this.externalRadius) {
-	                return;
-	            }
-	            this.externalColisionCircle = new _pixi2.default.Graphics();
-	            this.externalColisionCircle.lineStyle(1, 0x00FF00);
-	            this.externalColisionCircle.drawCircle(0, 0, this.externalRadius);
-	            this.externalColisionCircle.alpha = 0.8;
-	            this.addChild(this.externalColisionCircle);
-	        }
-	    }, {
-	        key: 'setDistance',
-	        value: function setDistance(value) {
-	            this.standardScale = value * 0.3 + 0.2;
-	            this.speedScale = this.standardScale / this.starterScale;
-	            this.updateScale();
-	        }
-	    }, {
-	        key: 'updateScale',
-	        value: function updateScale() {
-	            this.scale.x = this.standardScale * this.side;
-	            this.scale.y = this.standardScale;
-	        }
-	    }, {
-	        key: 'update',
-	        value: function update(delta) {}
-	    }]);
-	
-	    return Entity;
-	}(_pixi2.default.Container);
-	
-	exports.default = Entity;
-
-/***/ },
 /* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -38281,7 +38293,7 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(148);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -38296,12 +38308,12 @@
 	var StandardEnvironmentEntity = function (_Entity) {
 	        _inherits(StandardEnvironmentEntity, _Entity);
 	
-	        function StandardEnvironmentEntity(velocity, lifeTime) {
+	        function StandardEnvironmentEntity(game) {
 	                _classCallCheck(this, StandardEnvironmentEntity);
 	
 	                var _this = _possibleConstructorReturn(this, (StandardEnvironmentEntity.__proto__ || Object.getPrototypeOf(StandardEnvironmentEntity)).call(this));
 	
-	                _this.lifeTime = lifeTime;
+	                _this.game = game;
 	                _this.base = new _pixi2.default.Container();
 	                _this.roundBase = new _pixi2.default.Graphics();
 	                _this.roundBase.beginFill(0);
@@ -38312,34 +38324,11 @@
 	                _this.base.addChild(_this.roundBase);
 	
 	                _this.addChild(_this.base);
+	
 	                _this.animationContainer = new _pixi2.default.Container();
 	                _this.animationContainer.x = 0;
 	                _this.animationContainer.y = 0;
 	                _this.addChild(_this.animationContainer);
-	
-	                var idRock = Math.floor(Math.random() * 2) + 1;
-	
-	                _this.animationModel = [];
-	                _this.animationModel.push({
-	                        label: 'rock',
-	                        src: 'rock1000' + idRock,
-	                        totalFrames: 1,
-	                        startFrame: 0,
-	                        animationSpeed: 0.4,
-	                        movieClip: null,
-	                        position: { x: 0, y: 0 },
-	                        anchor: { x: 0.5, y: 0.8 },
-	                        loop: false,
-	                        singleFrame: true
-	                });
-	
-	                _this.animationManager = new _AnimationManager2.default(_this.animationModel, _this.animationContainer);
-	                // this.scale.set(0);
-	                _this.kill2 = false;
-	
-	                _this.animationManager.hideAll();
-	                _this.animationManager.stopAll();
-	                _this.animationManager.changeState('rock');
 	
 	                _this.radius = 30;
 	                _this.externalRadius = 0;
@@ -38347,38 +38336,66 @@
 	
 	                _this.static = true;
 	
+	                _this.waitingNext = 5 * Math.random() + 1;
+	                _this.sinScale = Math.random();
+	
+	                _this.build();
 	                // this.sprite.scale.set(this.starterScale)
 	                return _this;
 	        }
 	
 	        _createClass(StandardEnvironmentEntity, [{
+	                key: 'build',
+	                value: function build() {
+	
+	                        var idRock = Math.floor(Math.random() * 2) + 1;
+	
+	                        this.animationModel = [];
+	                        this.animationModel.push({
+	                                label: 'idle',
+	                                src: 'rock1000' + idRock,
+	                                totalFrames: 1,
+	                                startFrame: 0,
+	                                animationSpeed: 0.4,
+	                                movieClip: null,
+	                                position: { x: 0, y: 0 },
+	                                anchor: { x: 0.5, y: 0.8 },
+	                                loop: false,
+	                                singleFrame: true
+	                        });
+	
+	                        this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
+	                        this.animationManager.finishCallback = this.finishAnimation.bind(this);
+	                        // this.scale.set(0);
+	                        this.kill2 = false;
+	
+	                        this.animationManager.hideAll();
+	                        this.animationManager.stopAll();
+	                        this.animationManager.changeState('idle');
+	                }
+	        }, {
+	                key: 'finishAnimation',
+	                value: function finishAnimation() {
+	                        this.animationManager.changeState('static', true);
+	                }
+	        }, {
 	                key: 'update',
 	                value: function update(delta) {
-	                        //if(this.static){
-	                        return;
-	                        //}
+	                        // console.log('this');
+	                        if (this.waitingNext > 0) {
+	                                this.waitingNext -= delta;
 	
-	                        if (this.lifeTime <= 0) {
-	                                this.spriteVelocity.y += this.gravity;
-	                                this.animationContainer.y += this.spriteVelocity.y * delta;
-	
-	                                if (this.animationContainer.y >= 0) {
-	                                        this.animationContainer.rotation = 0;
-	                                        this.animationManager.changeState('explode');
-	                                        this.base.visible = false;
-	                                        this.kill2 = true;
-	                                }
-	                        } else {
-	                                this.lifeTime -= delta;
+	                                var sin = Math.sin(this.sinScale += delta * 4);
+	                                this.animationContainer.scale.y = -sin * 0.02 + 1;
+	                                this.animationContainer.scale.x = sin * 0.02 + 1;
 	                        }
 	
-	                        this.animationContainer.rotation += delta * 10;
+	                        if (this.waitingNext <= 0) {
+	                                this.waitingNext = 5 * Math.random() + 1;
+	                                this.animationManager.changeState('idle', true);
+	                        }
 	
-	                        this.scale.x = this.standardScale;
-	                        this.scale.y = this.standardScale;
-	
-	                        this.x += this.velocity.x * delta * this.speedScale;
-	                        this.y += this.velocity.y * delta * this.speedScale;
+	                        this.animationManager.updateAnimations();
 	                }
 	        }]);
 	
@@ -38386,6 +38403,208 @@
 	}(_Entity3.default);
 	
 	exports.default = StandardEnvironmentEntity;
+
+/***/ },
+/* 151 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(147);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _Entity = __webpack_require__(148);
+	
+	var _Entity2 = _interopRequireDefault(_Entity);
+	
+	var _StandardEnvironmentEntity = __webpack_require__(150);
+	
+	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Rock = function (_StandardEnvironmentE) {
+	    _inherits(Rock, _StandardEnvironmentE);
+	
+	    function Rock(game) {
+	        _classCallCheck(this, Rock);
+	
+	        return _possibleConstructorReturn(this, (Rock.__proto__ || Object.getPrototypeOf(Rock)).call(this, game));
+	    }
+	
+	    _createClass(Rock, [{
+	        key: 'build',
+	        value: function build() {
+	
+	            var idRock = Math.floor(Math.random() * 2) + 1;
+	
+	            this.animationModel = [];
+	            this.animationModel.push({
+	                label: 'idle',
+	                src: 'rock' + idRock + '00',
+	                totalFrames: idRock == 1 ? 17 : 16,
+	                startFrame: 0,
+	                animationSpeed: 0.3,
+	                movieClip: null,
+	                position: { x: 0, y: 0 },
+	                anchor: { x: 0.5, y: 0.8 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	            this.animationModel.push({
+	                label: 'static',
+	                src: 'rock' + idRock + '00',
+	                totalFrames: 1,
+	                startFrame: 1,
+	                animationSpeed: 0.3,
+	                movieClip: null,
+	                position: { x: 0, y: 0 },
+	                anchor: { x: 0.5, y: 0.8 },
+	                loop: false,
+	                haveCallback: false
+	            });
+	
+	            this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
+	
+	            this.animationManager.hideAll();
+	            this.animationManager.stopAll();
+	            this.animationManager.changeState('static');
+	        }
+	    }, {
+	        key: 'update',
+	        value: function update(delta) {
+	            _get(Rock.prototype.__proto__ || Object.getPrototypeOf(Rock.prototype), 'update', this).call(this, delta);
+	        }
+	    }]);
+	
+	    return Rock;
+	}(_StandardEnvironmentEntity2.default);
+	
+	exports.default = Rock;
+
+/***/ },
+/* 152 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(147);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _Entity = __webpack_require__(148);
+	
+	var _Entity2 = _interopRequireDefault(_Entity);
+	
+	var _StandardEnvironmentEntity = __webpack_require__(150);
+	
+	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Pine = function (_StandardEnvironmentE) {
+	    _inherits(Pine, _StandardEnvironmentE);
+	
+	    function Pine(game) {
+	        _classCallCheck(this, Pine);
+	
+	        return _possibleConstructorReturn(this, (Pine.__proto__ || Object.getPrototypeOf(Pine)).call(this, game));
+	    }
+	
+	    _createClass(Pine, [{
+	        key: 'build',
+	        value: function build() {
+	
+	            var idRock = 1; // Math.floor(Math.random()*2) + 1;
+	
+	            this.animationModel = [];
+	            this.animationModel.push({
+	                label: 'static',
+	                src: 'pine' + idRock + '00',
+	                totalFrames: 1,
+	                startFrame: 0,
+	                animationSpeed: 0.4,
+	                movieClip: null,
+	                position: { x: 10, y: -80 },
+	                anchor: { x: 0.5, y: 0.8 },
+	                loop: false,
+	                haveCallback: false
+	            });
+	            this.animationModel.push({
+	                label: 'idle',
+	                src: 'pine' + idRock + '00',
+	                totalFrames: 22,
+	                startFrame: 0,
+	                animationSpeed: 0.4,
+	                movieClip: null,
+	                position: { x: 10, y: -80 },
+	                anchor: { x: 0.5, y: 0.8 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	
+	            this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
+	
+	            this.animationManager.hideAll();
+	            this.animationManager.stopAll();
+	            this.animationManager.changeState('static');
+	        }
+	    }, {
+	        key: 'update',
+	        value: function update(delta) {
+	            _get(Pine.prototype.__proto__ || Object.getPrototypeOf(Pine.prototype), 'update', this).call(this, delta);
+	        }
+	    }]);
+	
+	    return Pine;
+	}(_StandardEnvironmentEntity2.default);
+	
+	exports.default = Pine;
 
 /***/ }
 /******/ ]);

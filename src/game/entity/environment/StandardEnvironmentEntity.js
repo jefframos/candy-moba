@@ -4,11 +4,10 @@ import AnimationManager  from './../utils/AnimationManager';
 import Entity  from './../Entity';
 export default class StandardEnvironmentEntity extends Entity {
 
-    constructor(velocity, lifeTime) {
+    constructor(game) {
 
     	super();
-
-        this.lifeTime = lifeTime;
+        this.game = game;
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
         this.roundBase.beginFill(0);
@@ -19,16 +18,33 @@ export default class StandardEnvironmentEntity extends Entity {
         this.base.addChild(this.roundBase);
 
         this.addChild(this.base);
+
+
         this.animationContainer = new PIXI.Container();
         this.animationContainer.x = 0
         this.animationContainer.y = 0
         this.addChild(this.animationContainer);
 
+        this.radius = 30;
+        this.externalRadius = 0;
+        this.debugCollision();
+
+        this.static = true;
+
+        this.waitingNext = 5 * Math.random() + 1;
+        this.sinScale = Math.random();
+
+        this.build();
+        // this.sprite.scale.set(this.starterScale)
+    }
+
+    build ( ) {
+
         let idRock = Math.floor(Math.random()*2) + 1;
 
         this.animationModel = [];
         this.animationModel.push({
-            label:'rock',
+            label:'idle',
             src:'rock1000'+idRock,
             totalFrames:1,
             startFrame:0,
@@ -41,47 +57,36 @@ export default class StandardEnvironmentEntity extends Entity {
         });
 
         this.animationManager = new AnimationManager(this.animationModel, this.animationContainer);
+        this.animationManager.finishCallback = this.finishAnimation.bind(this);
              // this.scale.set(0);
         this.kill2 = false
 
         this.animationManager.hideAll();
         this.animationManager.stopAll();
-        this.animationManager.changeState('rock');
+        this.animationManager.changeState('idle');
 
-        this.radius = 30;
-        this.externalRadius = 0;
-        this.debugCollision();
+        
 
-        this.static = true;
-
-        // this.sprite.scale.set(this.starterScale)
     }
-
+    finishAnimation ( ) {
+        this.animationManager.changeState('static', true);
+    }
     update ( delta ) {
-        //if(this.static){
-            return;
-        //}
+        // console.log('this');
+       if(this.waitingNext > 0){
+            this.waitingNext -= delta;
 
-        if(this.lifeTime <= 0){
-            this.spriteVelocity.y += this.gravity;
-            this.animationContainer.y += this.spriteVelocity.y * delta;
+            let sin = Math.sin(this.sinScale += delta*4);
+            this.animationContainer.scale.y = (-sin * 0.02) + 1;
+            this.animationContainer.scale.x = (sin * 0.02) + 1;
             
-            if(this.animationContainer.y >= 0){
-                this.animationContainer.rotation = 0;
-                this.animationManager.changeState('explode');
-                this.base.visible = false;
-                this.kill2 = true;
-            }
-        }else{
-            this.lifeTime -= delta;
         }
 
-        this.animationContainer.rotation += delta * 10;
-   
-        this.scale.x = this.standardScale;
-        this.scale.y = this.standardScale;
+        if(this.waitingNext <= 0){
+            this.waitingNext = 5 * Math.random() + 1;
+            this.animationManager.changeState('idle', true);
+        }
 
-        this.x += this.velocity.x * delta * this.speedScale;
-        this.y += this.velocity.y * delta * this.speedScale;
+        this.animationManager.updateAnimations();
     }	
 }

@@ -104,9 +104,9 @@ export default class Cupcake extends PIXI.Container {
         }
         return -1;
     }
-    changeState(state){
+    changeState(state, force){
         //console.log(state);
-        if(this.state == state || !this.ableToChangeAnimation){
+        if(!force && (this.state == state || !this.ableToChangeAnimation)){
             return false;
         }
 
@@ -125,6 +125,7 @@ export default class Cupcake extends PIXI.Container {
         this.playMovieclip(this.getAnimationID(this.state));
     }
     updateAnimations(){
+        //console.log(this.animationModel[this.getAnimationID(this.state)].movieClip.playing);
         //console.log(this.state, this.getAnimationID(this.state),  this.animationModel[this.getAnimationID(this.state)].haveCallback, this.animationModel[this.getAnimationID(this.state)].movieClip.playing);
          if(this.state && 
             this.animationModel[this.getAnimationID(this.state)].haveCallback && 

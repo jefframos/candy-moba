@@ -6,7 +6,8 @@ import Screen from '../../screenManager/Screen';
 import InputManager from '../InputManager';
 import Cupcake from '../entity/Cupcake';
 import StandardBullet from '../entity/bullets/StandardBullet';
-import StandardEnvironmentEntity from '../entity/environment/StandardEnvironmentEntity';
+import Rock from '../entity/environment/Rock';
+import Pine from '../entity/environment/Pine';
 
 export default class PrototypeScreen extends Screen{
 	constructor(label){
@@ -23,8 +24,13 @@ export default class PrototypeScreen extends Screen{
 		this.cupcake.x = 500
 		this.cupcake.y = 500
 
-		for (var i = 0; i < 20; i++) {
-			let rock = new StandardEnvironmentEntity(this);
+		for (var i = 0; i < 15; i++) {
+			var rock;
+			if(Math.random() < 0.3){
+				rock = new Pine(this);
+			}else{
+				rock = new Rock(this);
+			}
 			this.entityContainer.addChild(rock)
 			this.addOnUpdateList(rock)
 			rock.x = Math.random() * config.width;
@@ -39,6 +45,8 @@ export default class PrototypeScreen extends Screen{
 		this.addChild(text);
 		text.x = 10
 		text.y = 10
+
+		text.scale.set(0.4)
 
 		this.bulletList = [];
 	}
