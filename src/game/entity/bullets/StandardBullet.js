@@ -74,7 +74,7 @@ export default class StandardBullet extends Entity {
 
         this.radius = 30;
         this.externalRadius = 0;
-        this.debugCollision();
+        //this.debugCollision();
 
         // this.sprite.scale.set(this.starterScale)
     }

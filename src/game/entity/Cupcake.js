@@ -257,7 +257,7 @@ export default class Cupcake extends Entity {
 
         this.radius = 100;
         this.externalRadius = 160;
-        this.debugCollision();
+        //this.debugCollision();
        
 
     }

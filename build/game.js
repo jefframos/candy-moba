@@ -37534,7 +37534,8 @@
 	
 	        _this.radius = 100;
 	        _this.externalRadius = 160;
-	        _this.debugCollision();
+	        //this.debugCollision();
+	
 	
 	        return _this;
 	    }
@@ -38103,6 +38104,12 @@
 	            this.standardScale = value * 0.3 + 0.2;
 	            this.speedScale = this.standardScale / this.starterScale;
 	            this.updateScale();
+	            this.updateTint(value);
+	        }
+	    }, {
+	        key: 'updateTint',
+	        value: function updateTint(value) {
+	            this.animationContainer.alpha = value * 0.4 + 0.6; //0xff0000
 	        }
 	    }, {
 	        key: 'updateScale',
@@ -38230,7 +38237,7 @@
 	
 	                _this.radius = 30;
 	                _this.externalRadius = 0;
-	                _this.debugCollision();
+	                //this.debugCollision();
 	
 	                // this.sprite.scale.set(this.starterScale)
 	                return _this;
@@ -38332,7 +38339,7 @@
 	
 	                _this.radius = 30;
 	                _this.externalRadius = 0;
-	                _this.debugCollision();
+	                //this.debugCollision();
 	
 	                _this.static = true;
 	

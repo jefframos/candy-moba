@@ -27,7 +27,7 @@ export default class StandardEnvironmentEntity extends Entity {
 
         this.radius = 30;
         this.externalRadius = 0;
-        this.debugCollision();
+        //this.debugCollision();
 
         this.static = true;
 

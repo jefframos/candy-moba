@@ -35,6 +35,10 @@ export default class Entity extends PIXI.Container {
         this.standardScale = value * 0.3 + 0.2;
         this.speedScale = this.standardScale / this.starterScale;
         this.updateScale();
+        this.updateTint(value);
+    }
+    updateTint(value) {
+        this.animationContainer.alpha = value * 0.4 + 0.6;//0xff0000
     }
     updateScale() {
         this.scale.x = (this.standardScale) * this.side;
