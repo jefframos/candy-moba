@@ -44,6 +44,7 @@ export default class PrototypeScreen extends Screen{
 		this.enemyList.push(this.enemy1);
 		this.enemyList.push(this.enemy2);
 
+		this.environmentList = [];
 		for (var i = 0; i < 100; i++) {
 			var rock;
 			var rnd = Math.random();
@@ -65,6 +66,8 @@ export default class PrototypeScreen extends Screen{
 			// rock.side = Math.random() < 0.5?1:-1;
 			rock.y = Math.random() < 0.6? Math.random() * (config.height * 0.2) + config.height * 0.2: Math.random() * (config.height * 0.5) + config.height * 0.7;
 			this.setScales(rock);
+
+			this.environmentList.push(rock);
 		}
 
 
@@ -106,8 +109,40 @@ export default class PrototypeScreen extends Screen{
 		//console.log(this);
 
 		this.entityContainer.children.sort(utils.depthCompare);
+
+		this.environmentCollision(this.cupcake);
 		
 	}
+	environmentCollision(entity) {
+	 	let collideList = [];
+ 		for (var i = 0; i < this.environmentList.length; i++) {
+ 			let colEnt = this.environmentList[i];	
+ 			if(colEnt.y > entity.y){
+	 			let dist = utils.distance(entity.x,entity.y, colEnt.x,colEnt.y)
+	 			let distFactor = entity.getExternalRadius() * 4;
+	 			if(dist < distFactor){
+
+	 				this.environmentList[i].updateAlpha((dist / (distFactor) )*0.8+0.2);
+
+	 				// let angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14
+	 				// let ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
+	 				// let left = Math.abs(angle) > 150 && entity.side == 1;
+	 				// let right = Math.abs(angle) < 30 && entity.side == -1;
+
+	 				// collideList.push({entity:colEnt, angle:angle, dist:dist, ableToHit: ableToHit, left:left, right:right});
+	 			}else{
+	 				this.environmentList[i].updateAlpha(1);
+	 			}
+ 			}else{
+ 				this.environmentList[i].updateAlpha(1);
+ 			}
+ 		}
+
+	 	//collideList.sort(utils.distCompare);
+
+	 	//return collideList
+	 }
+
 
 	getExternalColisionList(entity, type) {
 		if(!entity.collidable){

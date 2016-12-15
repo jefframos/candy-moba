@@ -28584,6 +28584,7 @@
 			_this.enemyList.push(_this.enemy1);
 			_this.enemyList.push(_this.enemy2);
 	
+			_this.environmentList = [];
 			for (var i = 0; i < 100; i++) {
 				var rock;
 				var rnd = Math.random();
@@ -28604,6 +28605,8 @@
 				// rock.side = Math.random() < 0.5?1:-1;
 				rock.y = Math.random() < 0.6 ? Math.random() * (_config2.default.height * 0.2) + _config2.default.height * 0.2 : Math.random() * (_config2.default.height * 0.5) + _config2.default.height * 0.7;
 				_this.setScales(rock);
+	
+				_this.environmentList.push(rock);
 			}
 	
 			_this.updateable = true;
@@ -28649,6 +28652,39 @@
 				//console.log(this);
 	
 				this.entityContainer.children.sort(_utils2.default.depthCompare);
+	
+				this.environmentCollision(this.cupcake);
+			}
+		}, {
+			key: 'environmentCollision',
+			value: function environmentCollision(entity) {
+				var collideList = [];
+				for (var i = 0; i < this.environmentList.length; i++) {
+					var colEnt = this.environmentList[i];
+					if (colEnt.y > entity.y) {
+						var dist = _utils2.default.distance(entity.x, entity.y, colEnt.x, colEnt.y);
+						var distFactor = entity.getExternalRadius() * 4;
+						if (dist < distFactor) {
+	
+							this.environmentList[i].updateAlpha(dist / distFactor * 0.8 + 0.2);
+	
+							// let angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14
+							// let ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
+							// let left = Math.abs(angle) > 150 && entity.side == 1;
+							// let right = Math.abs(angle) < 30 && entity.side == -1;
+	
+							// collideList.push({entity:colEnt, angle:angle, dist:dist, ableToHit: ableToHit, left:left, right:right});
+						} else {
+							this.environmentList[i].updateAlpha(1);
+						}
+					} else {
+						this.environmentList[i].updateAlpha(1);
+					}
+				}
+	
+				//collideList.sort(utils.distCompare);
+	
+				//return collideList
 			}
 		}, {
 			key: 'getExternalColisionList',
@@ -37474,6 +37510,17 @@
 	        });
 	
 	        _this.animationModel.push({
+	            label: 'runFast',
+	            src: 'speedUp00',
+	            totalFrames: 24,
+	            startFrame: 8,
+	            animationSpeed: 0.4,
+	            movieClip: null,
+	            position: { x: -15, y: 4 },
+	            anchor: { x: 0.5, y: 1 }
+	        });
+	
+	        _this.animationModel.push({
 	            label: 'meleeAttack1',
 	            src: 'meleeAttack100',
 	            totalFrames: 16,
@@ -37673,8 +37720,8 @@
 	            speed: { x: 350, y: 250 },
 	            standardTimeJump: 0.7,
 	            jumpForce: 300,
-	            rangeSpeed: 4,
-	            attackSpeed: 0.2,
+	            rangeSpeed: 1,
+	            attackSpeed: 0.8,
 	            dashTime: 0.5,
 	            speedUp: 2
 	        };
@@ -37777,7 +37824,7 @@
 	        key: 'speedUp',
 	        value: function speedUp() {
 	            this.speedFactor = this.entityModel.speedUp;
-	            var animModel = this.animationManager.getAnimation('run');
+	            var animModel = this.animationManager.getAnimation('runFast');
 	            animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
 	        }
 	    }, {
@@ -38073,7 +38120,11 @@
 	                this.stopMove();
 	            } else {
 	                if (!this.jumping && !this.speedAttacking) {
-	                    this.animationManager.changeState('run');
+	                    if (this.speedFactor == 1) {
+	                        this.animationManager.changeState('run');
+	                    } else {
+	                        this.animationManager.changeState('runFast');
+	                    }
 	                }
 	            }
 	        }
@@ -38454,6 +38505,12 @@
 	            this.speedScale = this.standardScale / this.starterScale;
 	            this.updateScale();
 	            // this.updateTint(value);
+	        }
+	    }, {
+	        key: 'updateAlpha',
+	        value: function updateAlpha(value) {
+	            TweenLite.to(this.animationContainer, 0.5, { alpha: value });
+	            // this.animationContainer.alpha = value;//0xff0000
 	        }
 	    }, {
 	        key: 'updateTint',

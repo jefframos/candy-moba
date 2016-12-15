@@ -55,6 +55,10 @@ export default class Entity extends PIXI.Container {
         this.updateScale();
         // this.updateTint(value);
     }
+    updateAlpha(value) {
+        TweenLite.to(this.animationContainer, 0.5, {alpha:value});
+        // this.animationContainer.alpha = value;//0xff0000
+    }
     updateTint(value) {
         this.animationContainer.alpha = value * 0.4 + 0.6;//0xff0000
     }

@@ -49,6 +49,17 @@ export default class Cupcake extends Entity {
         });
 
         this.animationModel.push({
+            label:'runFast',
+            src:'speedUp00',
+            totalFrames:24,
+            startFrame:8,
+            animationSpeed:0.4,
+            movieClip:null,
+            position:{x:-15,y:4},
+            anchor:{x:0.5,y:1}
+        });
+
+        this.animationModel.push({
             label:'meleeAttack1',
             src:'meleeAttack100',
             totalFrames:16,
@@ -253,8 +264,8 @@ export default class Cupcake extends Entity {
             speed:{x:350, y:250},
             standardTimeJump:0.7,
             jumpForce:300,
-            rangeSpeed:4,
-            attackSpeed:0.2,
+            rangeSpeed:1,
+            attackSpeed:0.8,
             dashTime: 0.5,
             speedUp:2,
         }
@@ -353,7 +364,7 @@ export default class Cupcake extends Entity {
     }
     speedUp() {
         this.speedFactor = this.entityModel.speedUp;
-        let animModel = this.animationManager.getAnimation('run');
+        let animModel = this.animationManager.getAnimation('runFast');
         animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
     }
     areaAttackCollision() {
@@ -629,7 +640,11 @@ export default class Cupcake extends Entity {
             this.stopMove();
         }else{
             if(!this.jumping && !this.speedAttacking){
-                this.animationManager.changeState('run');
+                if(this.speedFactor == 1){
+                    this.animationManager.changeState('run');
+                }else{
+                    this.animationManager.changeState('runFast');
+                }
             }
         }
     }
