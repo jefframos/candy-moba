@@ -23,25 +23,25 @@ export default class InputManager{
 	 	this.currentGamepad = -1;
 	 	this.gamePadType = -1;
 		
-
-
+	 	//8bitdo, snes, xbox
+	 	this.gamepadsMaxButtons = [16,10,12];
 		this.gamepadMap = [];
-		this.gamepadMap.push({label:'start', id:[11,9]});
-		this.gamepadMap.push({label:'select', id:[10,8]});
-		this.gamepadMap.push({label:'y', id:[4,3]});
-		this.gamepadMap.push({label:'b', id:[1,2]});
-		this.gamepadMap.push({label:'a', id:[0,1]});
-		this.gamepadMap.push({label:'x', id:[3,0]});
-		this.gamepadMap.push({label:'r', id:[7,6]});
-		this.gamepadMap.push({label:'l', id:[6,4]});
+		this.gamepadMap.push({label:'start', id:[11,9,9]});
+		this.gamepadMap.push({label:'select', id:[10,8,8]});
+		this.gamepadMap.push({label:'y', id:[4,3,2]});
+		this.gamepadMap.push({label:'b', id:[1,2,0]});
+		this.gamepadMap.push({label:'a', id:[0,1,1]});
+		this.gamepadMap.push({label:'x', id:[3,0,3]});
+		this.gamepadMap.push({label:'r', id:[7,6,5]});
+		this.gamepadMap.push({label:'l', id:[6,4,4]});
 	}
-	getButton(button){
-		if(this.gamePadType < 0){
+	getButton(button, type){
+		if(type < 0){
 			return;
 		}
 		for (var i = 0; i < this.gamepadMap.length; i++) {
 			if(this.gamepadMap[i].label == button){
-				return this.gamepadMap[i].id[this.gamePadType];
+				return this.gamepadMap[i].id[type];
 			}
 		}
 	}
@@ -57,7 +57,7 @@ export default class InputManager{
 		for (var i = 0; i < navigator.getGamepads()[this.currentGamepad].buttons.length; i++) {
 			str += (i+':'+navigator.getGamepads()[this.currentGamepad].buttons[i].value+' ');
 		}
-		console.log(str);
+		console.log(this.currentGamepad, str);
 	}
 	updateDpad(){
 		//l
@@ -78,6 +78,9 @@ export default class InputManager{
 	}
 	update(){
 
+// this.currentGamepad = 3
+		// this.debugButtons();
+
 		if(this.currentGamepad < 0){
 
 			let gamepadList = navigator.getGamepads();
@@ -85,21 +88,17 @@ export default class InputManager{
 			for (var i = 0; i < gamepadList.length; i++) {
 				if(gamepadList[i] && gamepadList[i].buttons && gamepadList[i].buttons.length > 5)
 				{
+					for (var j = 0; j < this.gamepadMap[0].id.length; j++) {
 
-					if(gamepadList[i].buttons.length >= 11 && gamepadList[i].buttons[11].value){
-						this.currentGamepad = i//gamepadList[i];
-						window.currentGamepad = i;
-						this.gamePadType = 0;
-						break
+						let tempGamepad = navigator.getGamepads()[i];
+						if(tempGamepad.buttons.length == this.gamepadsMaxButtons[j]&&
+							tempGamepad.buttons[this.getButton('start', j)]&&
+							tempGamepad.buttons[this.getButton('start', j)].value){
+							this.currentGamepad = i;
+							this.gamePadType = j;
+							break;
+						}
 					}
-					else if(gamepadList[i].buttons.length < 11 && gamepadList[i].buttons[9].value){
-						this.currentGamepad = i//gamepadList[i];
-						window.currentGamepad = i;
-						this.gamePadType = 1;
-						break
-					}
-
-
 				} 
 				
 			}
@@ -111,10 +110,10 @@ export default class InputManager{
 		}
 		
 
-		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('start')].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('start', this.gamePadType)].value){
 			this.usingGamepad = true;
 		}
-		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('select')].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('select', this.gamePadType)].value){
 			this.usingGamepad = false;
 			this.currentGamepad = -1;
 		}
@@ -135,7 +134,7 @@ export default class InputManager{
 
 		// this.debugButtons();
 
-		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('y')].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('y', this.gamePadType)].value){
 			this.act('action1');
 			this.usingGamepad = true;
 		}else{
@@ -143,7 +142,7 @@ export default class InputManager{
 		}
 
 //1B
-		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('b')].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('b', this.gamePadType)].value){
 			this.act('action2');
 			this.usingGamepad = true;
 		}else{
@@ -151,7 +150,7 @@ export default class InputManager{
 		}
 
 //0 A
-		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('a')].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('a', this.gamePadType)].value){
 			this.act('action4');
 			this.usingGamepad = true;
 		}else{
@@ -159,21 +158,21 @@ export default class InputManager{
 		}
 
 //3 X
-		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('x')].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('x', this.gamePadType)].value){
 			this.act('action3');
 			this.usingGamepad = true;
 		}else{
 			this.stopAct('action3');
 		}
 //7 R
-		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('r')].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('r', this.gamePadType)].value){
 			this.act('action5');
 			this.usingGamepad = true;
 		}else{
 			this.stopAct('action5');
 		}
 //6 R
-		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('l')].value){
+		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('l', this.gamePadType)].value){
 			this.act('action6');
 			this.usingGamepad = true;
 		}else{

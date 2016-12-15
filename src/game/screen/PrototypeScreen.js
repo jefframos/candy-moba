@@ -44,7 +44,7 @@ export default class PrototypeScreen extends Screen{
 		this.enemyList.push(this.enemy1);
 		this.enemyList.push(this.enemy2);
 
-		for (var i = 0; i < 350; i++) {
+		for (var i = 0; i < 100; i++) {
 			var rock;
 			var rnd = Math.random();
 			if(rnd < 0.1){
