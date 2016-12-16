@@ -150,11 +150,11 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename></filename>
+                <filename>../../../assets/Enemies/tomato{n}.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
-        <false/>
+        <true/>
         <key>forceIdenticalLayout</key>
         <false/>
         <key>outputFormat</key>
@@ -256,6 +256,28 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">hurt/tomatoHurt0001.png</key>
+            <key type="filename">hurt/tomatoHurt0002.png</key>
+            <key type="filename">hurt/tomatoHurt0003.png</key>
+            <key type="filename">hurt/tomatoHurt0004.png</key>
+            <key type="filename">hurt/tomatoHurt0005.png</key>
+            <key type="filename">hurt/tomatoHurt0006.png</key>
+            <key type="filename">hurt/tomatoHurt0007.png</key>
+            <key type="filename">hurt/tomatoHurt0008.png</key>
+            <key type="filename">hurt/tomatoHurt0009.png</key>
+            <key type="filename">hurt/tomatoHurt0010.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>31,35,61,70</rect>
+                <key>scale9Paddings</key>
+                <rect>31,35,61,70</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">idle/tomatoIdle0001.png</key>
             <key type="filename">idle/tomatoIdle0002.png</key>
             <key type="filename">idle/tomatoIdle0003.png</key>
@@ -283,23 +305,23 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">tomatoWalk/tomatoWalk0001.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0002.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0003.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0004.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0005.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0006.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0007.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0008.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0009.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0010.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0011.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0012.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0013.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0014.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0015.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0016.png</key>
-            <key type="filename">tomatoWalk/tomatoWalk0017.png</key>
+            <key type="filename">walk/tomatoWalk0001.png</key>
+            <key type="filename">walk/tomatoWalk0002.png</key>
+            <key type="filename">walk/tomatoWalk0003.png</key>
+            <key type="filename">walk/tomatoWalk0004.png</key>
+            <key type="filename">walk/tomatoWalk0005.png</key>
+            <key type="filename">walk/tomatoWalk0006.png</key>
+            <key type="filename">walk/tomatoWalk0007.png</key>
+            <key type="filename">walk/tomatoWalk0008.png</key>
+            <key type="filename">walk/tomatoWalk0009.png</key>
+            <key type="filename">walk/tomatoWalk0010.png</key>
+            <key type="filename">walk/tomatoWalk0011.png</key>
+            <key type="filename">walk/tomatoWalk0012.png</key>
+            <key type="filename">walk/tomatoWalk0013.png</key>
+            <key type="filename">walk/tomatoWalk0014.png</key>
+            <key type="filename">walk/tomatoWalk0015.png</key>
+            <key type="filename">walk/tomatoWalk0016.png</key>
+            <key type="filename">walk/tomatoWalk0017.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
