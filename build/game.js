@@ -37969,7 +37969,7 @@
 	            jumpForce: 300,
 	            rangeSpeed: 2, //std 1
 	            attackSpeed: 0.2, //std 0.4
-	            dashTime: 0.5,
+	            dashTime: 0.15,
 	            speedUp: 2
 	        };
 	        _this.side = 1;
@@ -38174,10 +38174,11 @@
 	    }, {
 	        key: 'endSpeedUpAttack',
 	        value: function endSpeedUpAttack() {
+	
 	            this.dashTime = -1;
 	
 	            if (this.speedAttacking) {
-	                this.animationManager.changeState('speedAttackEnd');
+	                this.animationManager.changeState('speedAttackEnd', true);
 	                return;
 	            }
 	        }
@@ -38207,8 +38208,8 @@
 	            //CONTINUAR AQUI
 	
 	
-	            console.log(this.speedFactor);
-	            if (this.speedFactor > 1 && Math.abs(this.velocity.x) + Math.abs(this.velocity.y) > 0) {
+	            if (false) {
+	                //} this.speedFactor > 1 && (Math.abs(this.velocity.x) + Math.abs(this.velocity.y)) > 0){
 	                this.animationManager.changeState('speedAttack');
 	                this.speedAttacking = true;
 	                this.dashTime = this.entityModel.dashTime;
@@ -38828,7 +38829,7 @@
 	                _this.base = new _pixi2.default.Container();
 	                _this.roundBase = new _pixi2.default.Graphics();
 	                _this.roundBase.beginFill(0);
-	                _this.roundBase.drawCircle(0, 0, 100);
+	                _this.roundBase.drawCircle(0, 0, 60);
 	                _this.roundBase.scale.y = 0.4;
 	                _this.roundBase.alpha = 0.1;
 	                _this.roundBase.x = 0;
@@ -38840,6 +38841,9 @@
 	                _this.animationContainer.y = 0;
 	                _this.addChild(_this.animationContainer);
 	
+	                _this.actionTimer = -1;
+	                _this.action = null;
+	
 	                _this.build();
 	
 	                // this.sprite.scale.set(this.starterScale)
@@ -38850,7 +38854,6 @@
 	                key: 'build',
 	                value: function build() {
 	
-	                        console.log('BUILD ENEMY');
 	                        this.animationModel = [];
 	                        this.animationModel.push({
 	                                label: 'idle',
@@ -38903,6 +38906,19 @@
 	                        });
 	
 	                        this.animationModel.push({
+	                                label: 'attack',
+	                                src: 'attack/tomatoAttack00',
+	                                totalFrames: 23,
+	                                startFrame: 0,
+	                                animationSpeed: 0.6,
+	                                movieClip: null,
+	                                position: { x: 45, y: 2 },
+	                                anchor: { x: 0.5, y: 1 },
+	                                loop: false,
+	                                haveCallback: true
+	                        });
+	
+	                        this.animationModel.push({
 	                                label: 'walk',
 	                                src: 'walk/tomatoWalk00',
 	                                totalFrames: 17,
@@ -38933,23 +38949,29 @@
 	                        this.animationManager.hideAll();
 	                        this.animationManager.stopAll();
 	                        this.animationManager.changeState('idle');
-	
 	                        this.radius = 120;
 	                        this.externalRadius = 160;
 	                        // this.debugCollision();
 	
 	                        this.killed = false;
 	
-	                        // this.animationManager.showJust(['idle','walk'])
+	                        // this.animationManager.showJust(['idle','attack'])
 	
 	                        this.flipKill = false;
 	
 	                        this.side = Math.random() < 0.5 ? 1 : -1;
 	
-	                        this.moveTime = 0;
-	                        this.waitTime = 0;
-	
 	                        this.move();
+	                }
+	        }, {
+	                key: 'attack',
+	                value: function attack() {
+	                        this.velocity.x = 0;
+	                        this.velocity.y = 0;
+	                        this.animationManager.changeState('attack');
+	
+	                        this.actionTimer = Math.random() * 2 + 1.5;
+	                        this.action = this.move;
 	                }
 	        }, {
 	                key: 'wait',
@@ -38957,18 +38979,22 @@
 	                        this.velocity.x = 0;
 	                        this.velocity.y = 0;
 	                        this.animationManager.changeState('idle');
-	                        this.waitTime = Math.random() * 3 + 1;
+	
+	                        this.actionTimer = Math.random() * 3 + 1;
+	                        this.action = this.attack;
 	                }
 	        }, {
 	                key: 'move',
 	                value: function move() {
+	                        this.side *= -1;
 	                        this.velocity.x = this.speed.x * this.side;
 	
 	                        if (Math.random() < 0.3) {
 	                                this.velocity.y = this.speed.y * (Math.random() < 0.5 ? 1 : -1);
 	                        }
 	                        this.animationManager.changeState('walk');
-	                        this.moveTime = Math.random() * 3 + 1;
+	                        this.actionTimer = Math.random() * 3 + 1;
+	                        this.action = this.wait;
 	                }
 	        }, {
 	                key: 'finishAnimation',
@@ -39032,21 +39058,12 @@
 	                                return;
 	                        }
 	
-	                        if (this.moveTime > 0) {
-	                                this.moveTime -= delta;
-	                                if (this.moveTime <= 0) {
-	                                        // console.log(this.moveTime);
-	                                        this.waitTime = Math.random() * 3 + 1;
-	                                        this.wait();
-	                                }
-	                        }
-	
-	                        if (this.waitTime > 0) {
-	                                this.waitTime -= delta;
-	                                if (this.waitTime <= 0) {
-	                                        this.moveTime = Math.random() * 3 + 1;
+	                        if (this.actionTimer > 0) {
+	                                this.actionTimer -= delta;
+	                                if (this.actionTimer <= 0) {
+	                                        this.actionTimer = Math.random() * 3 + 1;
 	                                        this.side *= -1;
-	                                        this.move();
+	                                        this.action();
 	                                }
 	                        }
 	                        this.animationManager.updateAnimations();

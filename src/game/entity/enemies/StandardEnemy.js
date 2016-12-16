@@ -12,7 +12,7 @@ export default class StandardEnemy extends Entity {
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
         this.roundBase.beginFill(0);
-        this.roundBase.drawCircle(0,0,100);
+        this.roundBase.drawCircle(0,0,60);
         this.roundBase.scale.y = 0.4
         this.roundBase.alpha = 0.1;
         this.roundBase.x = 0;
@@ -24,6 +24,10 @@ export default class StandardEnemy extends Entity {
         this.animationContainer.y = 0
         this.addChild(this.animationContainer);
 
+
+        this.actionTimer = -1;
+        this.action = null;
+
         this.build();
 
 
@@ -32,7 +36,6 @@ export default class StandardEnemy extends Entity {
 
     build () {
 
-        console.log('BUILD ENEMY');
         this.animationModel = [];
         this.animationModel.push({
             label:'idle',
@@ -85,6 +88,19 @@ export default class StandardEnemy extends Entity {
         });
 
         this.animationModel.push({
+            label:'attack',
+            src:'attack/tomatoAttack00',
+            totalFrames:23,
+            startFrame:0,
+            animationSpeed:0.6,
+            movieClip:null,
+            position:{x:45,y:2},
+            anchor:{x:0.5,y:1},
+            loop:false,
+            haveCallback:true,
+        });
+
+          this.animationModel.push({
             label:'walk',
             src:'walk/tomatoWalk00',
             totalFrames:17,
@@ -93,7 +109,7 @@ export default class StandardEnemy extends Entity {
             movieClip:null,
             position:{x:2,y:0},
             anchor:{x:0.5,y:1},
-            loop:true,
+            loop:true
         });
 
         this.animationManager = new AnimationManager(this.animationModel, this.animationContainer);
@@ -115,40 +131,49 @@ export default class StandardEnemy extends Entity {
         this.animationManager.hideAll();
         this.animationManager.stopAll();
         this.animationManager.changeState('idle');
-
-        this.radius = 120;
+         this.radius = 120;
         this.externalRadius = 160;
         // this.debugCollision();
 
         this.killed = false;
 
-        // this.animationManager.showJust(['idle','walk'])
+        // this.animationManager.showJust(['idle','attack'])
 
         this.flipKill = false;
 
         this.side = Math.random() < 0.5?1:-1;
 
-        this.moveTime = 0;
-        this.waitTime = 0;
-
-
+        
         this.move();
 
     }
+    attack ( ) {
+        this.velocity.x = 0;
+        this.velocity.y = 0;
+        this.animationManager.changeState('attack');
+        
+        this.actionTimer = Math.random() * 2 + 1.5;
+        this.action = this.move;
+    }
+
     wait ( ) {
         this.velocity.x = 0;
         this.velocity.y = 0;
         this.animationManager.changeState('idle');
-        this.waitTime = Math.random() * 3 + 1;
+        
+        this.actionTimer = Math.random() * 3 + 1;
+        this.action = this.attack;
     }
     move ( ) {
+        this.side *= -1;
         this.velocity.x = this.speed.x * this.side;
 
         if(Math.random() < 0.3){
             this.velocity.y = this.speed.y * (Math.random() < 0.5?1:-1);
         }
         this.animationManager.changeState('walk');
-        this.moveTime = Math.random() * 3 + 1;
+         this.actionTimer = Math.random() * 3 + 1;
+        this.action = this.wait;
     }
 
     finishAnimation ( ) {
@@ -208,21 +233,14 @@ export default class StandardEnemy extends Entity {
             return;
         }
 
-        if(this.moveTime > 0){
-            this.moveTime -= delta;
-            if(this.moveTime <= 0){
-                // console.log(this.moveTime);
-                this.waitTime = Math.random() * 3 + 1;
-                this.wait();   
-            }
-        }
 
-        if(this.waitTime > 0){
-            this.waitTime -= delta;
-            if(this.waitTime <= 0){
-                this.moveTime = Math.random() * 3 + 1;
+
+        if(this.actionTimer > 0){
+            this.actionTimer -= delta;
+            if(this.actionTimer <= 0){
+                this.actionTimer = Math.random() * 3 + 1;
                 this.side *= -1;
-                this.move();   
+                this.action();   
             }
         }
         this.animationManager.updateAnimations();

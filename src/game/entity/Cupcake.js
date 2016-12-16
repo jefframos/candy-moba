@@ -266,7 +266,7 @@ export default class Cupcake extends Entity {
             jumpForce:300,
             rangeSpeed:2,//std 1
             attackSpeed:0.2,//std 0.4
-            dashTime: 0.5,
+            dashTime: 0.15,
             speedUp:2,
         }
         this.side = 1; 
@@ -362,7 +362,7 @@ export default class Cupcake extends Entity {
         let animModel = this.animationManager.getAnimation('run');
         animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
     }
-    speedUp() {
+    speedUp() {        
         this.speedFactor = this.entityModel.speedUp;
         let animModel = this.animationManager.getAnimation('runFast');
         animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
@@ -456,10 +456,11 @@ export default class Cupcake extends Entity {
         this.velocity.y = 0;
     }
     endSpeedUpAttack() {
+
         this.dashTime = -1;
         
         if(this.speedAttacking){
-            this.animationManager.changeState('speedAttackEnd');
+            this.animationManager.changeState('speedAttackEnd', true);
             return;
         }
     }
@@ -487,8 +488,7 @@ export default class Cupcake extends Entity {
 //CONTINUAR AQUI
 
 
-        console.log(this.speedFactor);
-        if(this.speedFactor > 1 && (Math.abs(this.velocity.x) + Math.abs(this.velocity.y)) > 0){
+        if(false){//} this.speedFactor > 1 && (Math.abs(this.velocity.x) + Math.abs(this.velocity.y)) > 0){
             this.animationManager.changeState('speedAttack');
             this.speedAttacking = true;
             this.dashTime = this.entityModel.dashTime;
