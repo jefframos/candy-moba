@@ -275,6 +275,36 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">hurt1/hurt10001.png</key>
+            <key type="filename">hurt1/hurt10002.png</key>
+            <key type="filename">hurt1/hurt10003.png</key>
+            <key type="filename">hurt1/hurt10004.png</key>
+            <key type="filename">hurt1/hurt10005.png</key>
+            <key type="filename">hurt1/hurt10006.png</key>
+            <key type="filename">hurt1/hurt10007.png</key>
+            <key type="filename">hurt1/hurt10008.png</key>
+            <key type="filename">hurt1/hurt10009.png</key>
+            <key type="filename">hurt1/hurt10010.png</key>
+            <key type="filename">hurt1/hurt10011.png</key>
+            <key type="filename">hurt1/hurt10012.png</key>
+            <key type="filename">hurt1/hurt10013.png</key>
+            <key type="filename">hurt1/hurt10014.png</key>
+            <key type="filename">hurt1/hurt10015.png</key>
+            <key type="filename">hurt1/hurt10016.png</key>
+            <key type="filename">hurt1/hurt10017.png</key>
+            <key type="filename">hurt1/hurt10018.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>66,58,132,116</rect>
+                <key>scale9Paddings</key>
+                <rect>66,58,132,116</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">idle/idle0001.png</key>
             <key type="filename">idle/idle0002.png</key>
             <key type="filename">idle/idle0003.png</key>
@@ -376,6 +406,40 @@
                 <rect>116,57,233,113</rect>
                 <key>scale9Paddings</key>
                 <rect>116,57,233,113</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">kill2/kill20001.png</key>
+            <key type="filename">kill2/kill20002.png</key>
+            <key type="filename">kill2/kill20003.png</key>
+            <key type="filename">kill2/kill20004.png</key>
+            <key type="filename">kill2/kill20005.png</key>
+            <key type="filename">kill2/kill20006.png</key>
+            <key type="filename">kill2/kill20007.png</key>
+            <key type="filename">kill2/kill20008.png</key>
+            <key type="filename">kill2/kill20009.png</key>
+            <key type="filename">kill2/kill20010.png</key>
+            <key type="filename">kill2/kill20011.png</key>
+            <key type="filename">kill2/kill20012.png</key>
+            <key type="filename">kill2/kill20013.png</key>
+            <key type="filename">kill2/kill20014.png</key>
+            <key type="filename">kill2/kill20015.png</key>
+            <key type="filename">kill2/kill20016.png</key>
+            <key type="filename">kill2/kill20017.png</key>
+            <key type="filename">kill2/kill20018.png</key>
+            <key type="filename">kill2/kill20019.png</key>
+            <key type="filename">kill2/kill20020.png</key>
+            <key type="filename">kill2/kill20021.png</key>
+            <key type="filename">kill2/kill20022.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>126,63,253,125</rect>
+                <key>scale9Paddings</key>
+                <rect>126,63,253,125</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -607,6 +671,73 @@
                 <rect>58,65,116,129</rect>
                 <key>scale9Paddings</key>
                 <rect>58,65,116,129</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">speedAttack/speedAttack0001.png</key>
+            <key type="filename">speedAttack/speedAttack0002.png</key>
+            <key type="filename">speedAttack/speedAttack0003.png</key>
+            <key type="filename">speedAttack/speedAttack0004.png</key>
+            <key type="filename">speedAttack/speedAttack0005.png</key>
+            <key type="filename">speedAttack/speedAttack0006.png</key>
+            <key type="filename">speedAttack/speedAttack0007.png</key>
+            <key type="filename">speedAttack/speedAttack0008.png</key>
+            <key type="filename">speedAttack/speedAttack0009.png</key>
+            <key type="filename">speedAttack/speedAttack0010.png</key>
+            <key type="filename">speedAttack/speedAttack0011.png</key>
+            <key type="filename">speedAttack/speedAttack0012.png</key>
+            <key type="filename">speedAttack/speedAttack0013.png</key>
+            <key type="filename">speedAttack/speedAttack0014.png</key>
+            <key type="filename">speedAttack/speedAttack0015.png</key>
+            <key type="filename">speedAttack/speedAttack0016.png</key>
+            <key type="filename">speedAttack/speedAttack0017.png</key>
+            <key type="filename">speedAttack/speedAttack0018.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>76,69,152,138</rect>
+                <key>scale9Paddings</key>
+                <rect>76,69,152,138</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">speedUp/speedUp0001.png</key>
+            <key type="filename">speedUp/speedUp0002.png</key>
+            <key type="filename">speedUp/speedUp0003.png</key>
+            <key type="filename">speedUp/speedUp0004.png</key>
+            <key type="filename">speedUp/speedUp0005.png</key>
+            <key type="filename">speedUp/speedUp0006.png</key>
+            <key type="filename">speedUp/speedUp0007.png</key>
+            <key type="filename">speedUp/speedUp0008.png</key>
+            <key type="filename">speedUp/speedUp0009.png</key>
+            <key type="filename">speedUp/speedUp0010.png</key>
+            <key type="filename">speedUp/speedUp0011.png</key>
+            <key type="filename">speedUp/speedUp0012.png</key>
+            <key type="filename">speedUp/speedUp0013.png</key>
+            <key type="filename">speedUp/speedUp0014.png</key>
+            <key type="filename">speedUp/speedUp0015.png</key>
+            <key type="filename">speedUp/speedUp0016.png</key>
+            <key type="filename">speedUp/speedUp0017.png</key>
+            <key type="filename">speedUp/speedUp0018.png</key>
+            <key type="filename">speedUp/speedUp0019.png</key>
+            <key type="filename">speedUp/speedUp0020.png</key>
+            <key type="filename">speedUp/speedUp0021.png</key>
+            <key type="filename">speedUp/speedUp0022.png</key>
+            <key type="filename">speedUp/speedUp0023.png</key>
+            <key type="filename">speedUp/speedUp0024.png</key>
+            <key type="filename">speedUp/speedUp0025.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>61,62,123,125</rect>
+                <key>scale9Paddings</key>
+                <rect>61,62,123,125</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -882,6 +1013,89 @@
             <filename>bullet/cherryBullet10003.png</filename>
             <filename>bullet/cherryBullet10004.png</filename>
             <filename>bullet/cherryBullet10005.png</filename>
+            <filename>hurt1/hurt10013.png</filename>
+            <filename>hurt1/hurt10014.png</filename>
+            <filename>hurt1/hurt10015.png</filename>
+            <filename>hurt1/hurt10016.png</filename>
+            <filename>hurt1/hurt10017.png</filename>
+            <filename>hurt1/hurt10018.png</filename>
+            <filename>hurt1/hurt10001.png</filename>
+            <filename>hurt1/hurt10002.png</filename>
+            <filename>hurt1/hurt10003.png</filename>
+            <filename>hurt1/hurt10004.png</filename>
+            <filename>hurt1/hurt10005.png</filename>
+            <filename>hurt1/hurt10006.png</filename>
+            <filename>hurt1/hurt10007.png</filename>
+            <filename>hurt1/hurt10008.png</filename>
+            <filename>hurt1/hurt10009.png</filename>
+            <filename>hurt1/hurt10010.png</filename>
+            <filename>hurt1/hurt10011.png</filename>
+            <filename>hurt1/hurt10012.png</filename>
+            <filename>kill2/kill20022.png</filename>
+            <filename>kill2/kill20001.png</filename>
+            <filename>kill2/kill20002.png</filename>
+            <filename>kill2/kill20003.png</filename>
+            <filename>kill2/kill20004.png</filename>
+            <filename>kill2/kill20005.png</filename>
+            <filename>kill2/kill20006.png</filename>
+            <filename>kill2/kill20007.png</filename>
+            <filename>kill2/kill20008.png</filename>
+            <filename>kill2/kill20009.png</filename>
+            <filename>kill2/kill20010.png</filename>
+            <filename>kill2/kill20011.png</filename>
+            <filename>kill2/kill20012.png</filename>
+            <filename>kill2/kill20013.png</filename>
+            <filename>kill2/kill20014.png</filename>
+            <filename>kill2/kill20015.png</filename>
+            <filename>kill2/kill20016.png</filename>
+            <filename>kill2/kill20017.png</filename>
+            <filename>kill2/kill20018.png</filename>
+            <filename>kill2/kill20019.png</filename>
+            <filename>kill2/kill20020.png</filename>
+            <filename>kill2/kill20021.png</filename>
+            <filename>speedAttack/speedAttack0008.png</filename>
+            <filename>speedAttack/speedAttack0009.png</filename>
+            <filename>speedAttack/speedAttack0010.png</filename>
+            <filename>speedAttack/speedAttack0011.png</filename>
+            <filename>speedAttack/speedAttack0012.png</filename>
+            <filename>speedAttack/speedAttack0013.png</filename>
+            <filename>speedAttack/speedAttack0014.png</filename>
+            <filename>speedAttack/speedAttack0015.png</filename>
+            <filename>speedAttack/speedAttack0016.png</filename>
+            <filename>speedAttack/speedAttack0017.png</filename>
+            <filename>speedAttack/speedAttack0018.png</filename>
+            <filename>speedAttack/speedAttack0001.png</filename>
+            <filename>speedAttack/speedAttack0002.png</filename>
+            <filename>speedAttack/speedAttack0003.png</filename>
+            <filename>speedAttack/speedAttack0004.png</filename>
+            <filename>speedAttack/speedAttack0005.png</filename>
+            <filename>speedAttack/speedAttack0006.png</filename>
+            <filename>speedAttack/speedAttack0007.png</filename>
+            <filename>speedUp/speedUp0007.png</filename>
+            <filename>speedUp/speedUp0008.png</filename>
+            <filename>speedUp/speedUp0009.png</filename>
+            <filename>speedUp/speedUp0010.png</filename>
+            <filename>speedUp/speedUp0011.png</filename>
+            <filename>speedUp/speedUp0012.png</filename>
+            <filename>speedUp/speedUp0013.png</filename>
+            <filename>speedUp/speedUp0014.png</filename>
+            <filename>speedUp/speedUp0015.png</filename>
+            <filename>speedUp/speedUp0016.png</filename>
+            <filename>speedUp/speedUp0017.png</filename>
+            <filename>speedUp/speedUp0018.png</filename>
+            <filename>speedUp/speedUp0019.png</filename>
+            <filename>speedUp/speedUp0020.png</filename>
+            <filename>speedUp/speedUp0021.png</filename>
+            <filename>speedUp/speedUp0022.png</filename>
+            <filename>speedUp/speedUp0023.png</filename>
+            <filename>speedUp/speedUp0024.png</filename>
+            <filename>speedUp/speedUp0025.png</filename>
+            <filename>speedUp/speedUp0001.png</filename>
+            <filename>speedUp/speedUp0002.png</filename>
+            <filename>speedUp/speedUp0003.png</filename>
+            <filename>speedUp/speedUp0004.png</filename>
+            <filename>speedUp/speedUp0005.png</filename>
+            <filename>speedUp/speedUp0006.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

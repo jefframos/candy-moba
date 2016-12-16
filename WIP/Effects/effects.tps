@@ -150,11 +150,11 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename></filename>
+                <filename>../../assets/Effects/effects{n}.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
-        <false/>
+        <true/>
         <key>forceIdenticalLayout</key>
         <false/>
         <key>outputFormat</key>
@@ -196,9 +196,39 @@
             <false/>
         </struct>
         <key>individualSpriteSettings</key>
-        <map type="IndividualSpriteSettingsMap"/>
+        <map type="IndividualSpriteSettingsMap">
+            <key type="filename">Smoke1/smoke10001.png</key>
+            <key type="filename">Smoke1/smoke10002.png</key>
+            <key type="filename">Smoke1/smoke10003.png</key>
+            <key type="filename">Smoke1/smoke10004.png</key>
+            <key type="filename">Smoke1/smoke10005.png</key>
+            <key type="filename">Smoke1/smoke10006.png</key>
+            <key type="filename">Smoke1/smoke10007.png</key>
+            <key type="filename">Smoke1/smoke10008.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>50,33,100,66</rect>
+                <key>scale9Paddings</key>
+                <rect>50,33,100,66</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+        </map>
         <key>fileList</key>
-        <array/>
+        <array>
+            <filename>Smoke1/smoke10007.png</filename>
+            <filename>Smoke1/smoke10008.png</filename>
+            <filename>Smoke1/smoke10001.png</filename>
+            <filename>Smoke1/smoke10002.png</filename>
+            <filename>Smoke1/smoke10003.png</filename>
+            <filename>Smoke1/smoke10004.png</filename>
+            <filename>Smoke1/smoke10005.png</filename>
+            <filename>Smoke1/smoke10006.png</filename>
+        </array>
         <key>ignoreFileList</key>
         <array/>
         <key>replaceList</key>

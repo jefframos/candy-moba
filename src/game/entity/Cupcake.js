@@ -264,8 +264,8 @@ export default class Cupcake extends Entity {
             speed:{x:350, y:250},
             standardTimeJump:0.7,
             jumpForce:300,
-            rangeSpeed:1,
-            attackSpeed:0.8,
+            rangeSpeed:2,//std 1
+            attackSpeed:0.2,//std 0.4
             dashTime: 0.5,
             speedUp:2,
         }

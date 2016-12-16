@@ -34,6 +34,15 @@ export default class InputManager{
 		this.gamepadMap.push({label:'x', id:[3,0,3]});
 		this.gamepadMap.push({label:'r', id:[7,6,5]});
 		this.gamepadMap.push({label:'l', id:[6,4,4]});
+
+
+		// window.addEventListener("gamepadconnected", function(e) {
+		//   var gp = navigator.getGamepads()[0];
+		//   console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+		//   gp.index, gp.id,
+		//   gp.buttons.length, gp.axes.length);
+		// });
+		
 	}
 	getButton(button, type){
 		if(type < 0){
@@ -80,6 +89,13 @@ export default class InputManager{
 
 // this.currentGamepad = 3
 		// this.debugButtons();
+
+		// this.console.log(this);
+		// this.currentGamepad = 0;
+		// this.gamePadType = 0;
+		// this.debugButtons();
+
+		// return
 
 		if(this.currentGamepad < 0){
 

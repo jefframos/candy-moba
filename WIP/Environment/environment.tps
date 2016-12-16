@@ -150,11 +150,11 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename></filename>
+                <filename>../../assets/Environment/environment{n}.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
-        <false/>
+        <true/>
         <key>forceIdenticalLayout</key>
         <false/>
         <key>outputFormat</key>
@@ -196,9 +196,205 @@
             <false/>
         </struct>
         <key>individualSpriteSettings</key>
-        <map type="IndividualSpriteSettingsMap"/>
+        <map type="IndividualSpriteSettingsMap">
+            <key type="filename">Bush1/bush10001.png</key>
+            <key type="filename">Bush1/bush10002.png</key>
+            <key type="filename">Bush1/bush10003.png</key>
+            <key type="filename">Bush1/bush10004.png</key>
+            <key type="filename">Bush1/bush10005.png</key>
+            <key type="filename">Bush1/bush10006.png</key>
+            <key type="filename">Bush1/bush10007.png</key>
+            <key type="filename">Bush1/bush10008.png</key>
+            <key type="filename">Bush1/bush10009.png</key>
+            <key type="filename">Bush1/bush10010.png</key>
+            <key type="filename">Bush1/bush10011.png</key>
+            <key type="filename">Bush1/bush10012.png</key>
+            <key type="filename">Bush1/bush10013.png</key>
+            <key type="filename">Bush1/bush10014.png</key>
+            <key type="filename">Bush1/bush10015.png</key>
+            <key type="filename">Bush1/bush10016.png</key>
+            <key type="filename">Bush1/bush10017.png</key>
+            <key type="filename">Bush1/bush10018.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>29,17,58,34</rect>
+                <key>scale9Paddings</key>
+                <rect>29,17,58,34</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Pine1/pine10001.png</key>
+            <key type="filename">Pine1/pine10002.png</key>
+            <key type="filename">Pine1/pine10003.png</key>
+            <key type="filename">Pine1/pine10004.png</key>
+            <key type="filename">Pine1/pine10005.png</key>
+            <key type="filename">Pine1/pine10006.png</key>
+            <key type="filename">Pine1/pine10007.png</key>
+            <key type="filename">Pine1/pine10008.png</key>
+            <key type="filename">Pine1/pine10009.png</key>
+            <key type="filename">Pine1/pine10010.png</key>
+            <key type="filename">Pine1/pine10011.png</key>
+            <key type="filename">Pine1/pine10012.png</key>
+            <key type="filename">Pine1/pine10013.png</key>
+            <key type="filename">Pine1/pine10014.png</key>
+            <key type="filename">Pine1/pine10015.png</key>
+            <key type="filename">Pine1/pine10016.png</key>
+            <key type="filename">Pine1/pine10017.png</key>
+            <key type="filename">Pine1/pine10018.png</key>
+            <key type="filename">Pine1/pine10019.png</key>
+            <key type="filename">Pine1/pine10020.png</key>
+            <key type="filename">Pine1/pine10021.png</key>
+            <key type="filename">Pine1/pine10022.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>71,140,142,281</rect>
+                <key>scale9Paddings</key>
+                <rect>71,140,142,281</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Rock1/rock10001.png</key>
+            <key type="filename">Rock1/rock10002.png</key>
+            <key type="filename">Rock1/rock10003.png</key>
+            <key type="filename">Rock1/rock10004.png</key>
+            <key type="filename">Rock1/rock10005.png</key>
+            <key type="filename">Rock1/rock10006.png</key>
+            <key type="filename">Rock1/rock10007.png</key>
+            <key type="filename">Rock1/rock10008.png</key>
+            <key type="filename">Rock1/rock10009.png</key>
+            <key type="filename">Rock1/rock10010.png</key>
+            <key type="filename">Rock1/rock10011.png</key>
+            <key type="filename">Rock1/rock10012.png</key>
+            <key type="filename">Rock1/rock10013.png</key>
+            <key type="filename">Rock1/rock10014.png</key>
+            <key type="filename">Rock1/rock10015.png</key>
+            <key type="filename">Rock1/rock10016.png</key>
+            <key type="filename">Rock1/rock10017.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>29,25,59,49</rect>
+                <key>scale9Paddings</key>
+                <rect>29,25,59,49</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Rock2/rock20001.png</key>
+            <key type="filename">Rock2/rock20002.png</key>
+            <key type="filename">Rock2/rock20003.png</key>
+            <key type="filename">Rock2/rock20004.png</key>
+            <key type="filename">Rock2/rock20005.png</key>
+            <key type="filename">Rock2/rock20006.png</key>
+            <key type="filename">Rock2/rock20007.png</key>
+            <key type="filename">Rock2/rock20008.png</key>
+            <key type="filename">Rock2/rock20009.png</key>
+            <key type="filename">Rock2/rock20010.png</key>
+            <key type="filename">Rock2/rock20011.png</key>
+            <key type="filename">Rock2/rock20012.png</key>
+            <key type="filename">Rock2/rock20013.png</key>
+            <key type="filename">Rock2/rock20014.png</key>
+            <key type="filename">Rock2/rock20015.png</key>
+            <key type="filename">Rock2/rock20016.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>28,16,55,32</rect>
+                <key>scale9Paddings</key>
+                <rect>28,16,55,32</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+        </map>
         <key>fileList</key>
-        <array/>
+        <array>
+            <filename>Pine1/pine10001.png</filename>
+            <filename>Pine1/pine10002.png</filename>
+            <filename>Pine1/pine10003.png</filename>
+            <filename>Pine1/pine10004.png</filename>
+            <filename>Pine1/pine10005.png</filename>
+            <filename>Pine1/pine10006.png</filename>
+            <filename>Pine1/pine10007.png</filename>
+            <filename>Pine1/pine10008.png</filename>
+            <filename>Pine1/pine10009.png</filename>
+            <filename>Pine1/pine10010.png</filename>
+            <filename>Pine1/pine10011.png</filename>
+            <filename>Pine1/pine10012.png</filename>
+            <filename>Pine1/pine10013.png</filename>
+            <filename>Pine1/pine10014.png</filename>
+            <filename>Pine1/pine10015.png</filename>
+            <filename>Pine1/pine10016.png</filename>
+            <filename>Pine1/pine10017.png</filename>
+            <filename>Pine1/pine10018.png</filename>
+            <filename>Pine1/pine10019.png</filename>
+            <filename>Pine1/pine10020.png</filename>
+            <filename>Pine1/pine10021.png</filename>
+            <filename>Pine1/pine10022.png</filename>
+            <filename>Rock1/rock10013.png</filename>
+            <filename>Rock1/rock10014.png</filename>
+            <filename>Rock1/rock10015.png</filename>
+            <filename>Rock1/rock10016.png</filename>
+            <filename>Rock1/rock10017.png</filename>
+            <filename>Rock1/rock10001.png</filename>
+            <filename>Rock1/rock10002.png</filename>
+            <filename>Rock1/rock10003.png</filename>
+            <filename>Rock1/rock10004.png</filename>
+            <filename>Rock1/rock10005.png</filename>
+            <filename>Rock1/rock10006.png</filename>
+            <filename>Rock1/rock10007.png</filename>
+            <filename>Rock1/rock10008.png</filename>
+            <filename>Rock1/rock10009.png</filename>
+            <filename>Rock1/rock10010.png</filename>
+            <filename>Rock1/rock10011.png</filename>
+            <filename>Rock1/rock10012.png</filename>
+            <filename>Rock2/rock20014.png</filename>
+            <filename>Rock2/rock20015.png</filename>
+            <filename>Rock2/rock20016.png</filename>
+            <filename>Rock2/rock20001.png</filename>
+            <filename>Rock2/rock20002.png</filename>
+            <filename>Rock2/rock20003.png</filename>
+            <filename>Rock2/rock20004.png</filename>
+            <filename>Rock2/rock20005.png</filename>
+            <filename>Rock2/rock20006.png</filename>
+            <filename>Rock2/rock20007.png</filename>
+            <filename>Rock2/rock20008.png</filename>
+            <filename>Rock2/rock20009.png</filename>
+            <filename>Rock2/rock20010.png</filename>
+            <filename>Rock2/rock20011.png</filename>
+            <filename>Rock2/rock20012.png</filename>
+            <filename>Rock2/rock20013.png</filename>
+            <filename>Bush1/bush10007.png</filename>
+            <filename>Bush1/bush10008.png</filename>
+            <filename>Bush1/bush10009.png</filename>
+            <filename>Bush1/bush10010.png</filename>
+            <filename>Bush1/bush10011.png</filename>
+            <filename>Bush1/bush10012.png</filename>
+            <filename>Bush1/bush10013.png</filename>
+            <filename>Bush1/bush10014.png</filename>
+            <filename>Bush1/bush10015.png</filename>
+            <filename>Bush1/bush10016.png</filename>
+            <filename>Bush1/bush10017.png</filename>
+            <filename>Bush1/bush10018.png</filename>
+            <filename>Bush1/bush10001.png</filename>
+            <filename>Bush1/bush10002.png</filename>
+            <filename>Bush1/bush10003.png</filename>
+            <filename>Bush1/bush10004.png</filename>
+            <filename>Bush1/bush10005.png</filename>
+            <filename>Bush1/bush10006.png</filename>
+        </array>
         <key>ignoreFileList</key>
         <array/>
         <key>replaceList</key>

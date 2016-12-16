@@ -4,6 +4,7 @@ import config  from '../../config';
 import utils  from '../../utils';
 import Screen from '../../screenManager/Screen';
 import InputManager from '../InputManager';
+import Camera from '../Camera';
 import Cupcake from '../entity/Cupcake';
 import StandardEnemy from '../entity/enemies/StandardEnemy';
 import StandardBullet from '../entity/bullets/StandardBullet';
@@ -17,8 +18,13 @@ export default class PrototypeScreen extends Screen{
 
 		this.inputManager = new InputManager(this);
 
+		this.worldBounds = {x:0,y:0, w:2000, h:config.height * 2}
+
+		this.gameContainer = new PIXI.Container();
+		this.addChild(this.gameContainer);
+
 		this.entityContainer = new PIXI.Container();
-		this.addChild(this.entityContainer)
+		this.gameContainer.addChild(this.entityContainer)
 
 		this.cupcake = new Cupcake(this);
 		this.entityContainer.addChild(this.cupcake)
@@ -27,25 +33,20 @@ export default class PrototypeScreen extends Screen{
 		this.cupcake.y = config.height / 2;
 
 
-		this.enemy1 = new StandardEnemy(this);
-		this.entityContainer.addChild(this.enemy1)
-		this.addOnUpdateList(this.enemy1)
-		this.enemy1.x = config.width / 6
-		this.enemy1.y = config.height / 2;
-
-
-		this.enemy2 = new StandardEnemy(this);
-		this.entityContainer.addChild(this.enemy2)
-		this.addOnUpdateList(this.enemy2)
-		this.enemy2.x = config.width/2 * 1.6
-		this.enemy2.y = config.height / 2;
-
 		this.enemyList = [];
-		this.enemyList.push(this.enemy1);
-		this.enemyList.push(this.enemy2);
 
-		this.environmentList = [];
 		for (var i = 0; i < 100; i++) {
+
+			let tempEnemy = new StandardEnemy(this);
+			this.entityContainer.addChild(tempEnemy)
+			this.addOnUpdateList(tempEnemy)
+			tempEnemy.x = this.worldBounds.w * Math.random();
+			tempEnemy.y = this.worldBounds.h * Math.random();
+			this.enemyList.push(tempEnemy);
+
+		}
+		this.environmentList = [];
+		for (var i = 0; i < 150; i++) {
 			var rock;
 			var rnd = Math.random();
 			if(rnd < 0.1){
@@ -60,11 +61,11 @@ export default class PrototypeScreen extends Screen{
 
 			this.entityContainer.addChild(rock)
 			this.addOnUpdateList(rock)
-			rock.x = Math.random() * config.width;
+			rock.x = this.worldBounds.w * Math.random();
 
 			rock.side = rock.x < config.width/2 ? 1 : -1;
 			// rock.side = Math.random() < 0.5?1:-1;
-			rock.y = Math.random() < 0.6? Math.random() * (config.height * 0.2) + config.height * 0.2: Math.random() * (config.height * 0.5) + config.height * 0.7;
+			rock.y = Math.random() < 0.6? Math.random() * (config.height * 0.2) + config.height * 0.2: Math.random() * (this.worldBounds.h * 0.5) + config.height * 0.7;
 			this.setScales(rock);
 
 			this.environmentList.push(rock);
@@ -81,6 +82,10 @@ export default class PrototypeScreen extends Screen{
 		text.scale.set(0.4)
 
 		this.bulletList = [];
+
+		this.camera = new Camera(this, this.gameContainer);
+		this.camera.follow(this.cupcake);
+
 	}
 	build(){
 		this.lastAction = null;
@@ -89,6 +94,9 @@ export default class PrototypeScreen extends Screen{
 	}
 	update ( delta ) {
 		super.update(delta)
+
+
+		this.camera.update(delta);
 		this.inputManager.update();
 
 		//let scaleFactor = 
@@ -221,7 +229,8 @@ export default class PrototypeScreen extends Screen{
 		// console.log(entity, 1-utils.distance(0,entity.y,0,config.height) / config.height);
 		//console.log('2'+entity);
 
-		entity.setDistance(1-utils.distance(0,entity.y,0,config.height) / config.height);
+		let h = this.worldBounds.h;
+		entity.setDistance(1-utils.distance(0,entity.y,0,h) / h +  0.3);
 
 	}
 	updateKeyUp(key){

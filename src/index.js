@@ -7,6 +7,7 @@ import PrototypeScreen from './game/screen/PrototypeScreen';
 
 
 PIXI.loader
+	.add('./assets/Enemies/tomato0.json')
 	.add('./assets/Cupcake/cupcake0.json')
 	.add('./assets/Cupcake/cupcake1.json')
 	.add('./assets/Cupcake/cupcake2.json')

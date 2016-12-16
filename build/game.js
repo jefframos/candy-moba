@@ -28229,7 +28229,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	PIXI.loader.add('./assets/Cupcake/cupcake0.json').add('./assets/Cupcake/cupcake1.json').add('./assets/Cupcake/cupcake2.json').add('./assets/Cupcake/cupcake3.json').add('./assets/Environment/environment0.json').add('./assets/Effects/effects0.json').load(configGame);
+	PIXI.loader.add('./assets/Enemies/tomato0.json').add('./assets/Cupcake/cupcake0.json').add('./assets/Cupcake/cupcake1.json').add('./assets/Cupcake/cupcake2.json').add('./assets/Cupcake/cupcake3.json').add('./assets/Environment/environment0.json').add('./assets/Effects/effects0.json').load(configGame);
 	
 	function configGame() {
 	
@@ -28517,27 +28517,31 @@
 	
 	var _InputManager2 = _interopRequireDefault(_InputManager);
 	
-	var _Cupcake = __webpack_require__(146);
+	var _Camera = __webpack_require__(146);
+	
+	var _Camera2 = _interopRequireDefault(_Camera);
+	
+	var _Cupcake = __webpack_require__(147);
 	
 	var _Cupcake2 = _interopRequireDefault(_Cupcake);
 	
-	var _StandardEnemy = __webpack_require__(149);
+	var _StandardEnemy = __webpack_require__(150);
 	
 	var _StandardEnemy2 = _interopRequireDefault(_StandardEnemy);
 	
-	var _StandardBullet = __webpack_require__(150);
+	var _StandardBullet = __webpack_require__(151);
 	
 	var _StandardBullet2 = _interopRequireDefault(_StandardBullet);
 	
-	var _Rock = __webpack_require__(151);
+	var _Rock = __webpack_require__(152);
 	
 	var _Rock2 = _interopRequireDefault(_Rock);
 	
-	var _Pine = __webpack_require__(153);
+	var _Pine = __webpack_require__(154);
 	
 	var _Pine2 = _interopRequireDefault(_Pine);
 	
-	var _Bush = __webpack_require__(154);
+	var _Bush = __webpack_require__(155);
 	
 	var _Bush2 = _interopRequireDefault(_Bush);
 	
@@ -28559,8 +28563,13 @@
 	
 			_this.inputManager = new _InputManager2.default(_this);
 	
+			_this.worldBounds = { x: 0, y: 0, w: 2000, h: _config2.default.height * 2 };
+	
+			_this.gameContainer = new _pixi2.default.Container();
+			_this.addChild(_this.gameContainer);
+	
 			_this.entityContainer = new _pixi2.default.Container();
-			_this.addChild(_this.entityContainer);
+			_this.gameContainer.addChild(_this.entityContainer);
 	
 			_this.cupcake = new _Cupcake2.default(_this);
 			_this.entityContainer.addChild(_this.cupcake);
@@ -28568,24 +28577,19 @@
 			_this.cupcake.x = _config2.default.width / 2;
 			_this.cupcake.y = _config2.default.height / 2;
 	
-			_this.enemy1 = new _StandardEnemy2.default(_this);
-			_this.entityContainer.addChild(_this.enemy1);
-			_this.addOnUpdateList(_this.enemy1);
-			_this.enemy1.x = _config2.default.width / 6;
-			_this.enemy1.y = _config2.default.height / 2;
-	
-			_this.enemy2 = new _StandardEnemy2.default(_this);
-			_this.entityContainer.addChild(_this.enemy2);
-			_this.addOnUpdateList(_this.enemy2);
-			_this.enemy2.x = _config2.default.width / 2 * 1.6;
-			_this.enemy2.y = _config2.default.height / 2;
-	
 			_this.enemyList = [];
-			_this.enemyList.push(_this.enemy1);
-			_this.enemyList.push(_this.enemy2);
 	
-			_this.environmentList = [];
 			for (var i = 0; i < 100; i++) {
+	
+				var tempEnemy = new _StandardEnemy2.default(_this);
+				_this.entityContainer.addChild(tempEnemy);
+				_this.addOnUpdateList(tempEnemy);
+				tempEnemy.x = _this.worldBounds.w * Math.random();
+				tempEnemy.y = _this.worldBounds.h * Math.random();
+				_this.enemyList.push(tempEnemy);
+			}
+			_this.environmentList = [];
+			for (var i = 0; i < 150; i++) {
 				var rock;
 				var rnd = Math.random();
 				if (rnd < 0.1) {
@@ -28599,11 +28603,11 @@
 	
 				_this.entityContainer.addChild(rock);
 				_this.addOnUpdateList(rock);
-				rock.x = Math.random() * _config2.default.width;
+				rock.x = _this.worldBounds.w * Math.random();
 	
 				rock.side = rock.x < _config2.default.width / 2 ? 1 : -1;
 				// rock.side = Math.random() < 0.5?1:-1;
-				rock.y = Math.random() < 0.6 ? Math.random() * (_config2.default.height * 0.2) + _config2.default.height * 0.2 : Math.random() * (_config2.default.height * 0.5) + _config2.default.height * 0.7;
+				rock.y = Math.random() < 0.6 ? Math.random() * (_config2.default.height * 0.2) + _config2.default.height * 0.2 : Math.random() * (_this.worldBounds.h * 0.5) + _config2.default.height * 0.7;
 				_this.setScales(rock);
 	
 				_this.environmentList.push(rock);
@@ -28619,6 +28623,10 @@
 			text.scale.set(0.4);
 	
 			_this.bulletList = [];
+	
+			_this.camera = new _Camera2.default(_this, _this.gameContainer);
+			_this.camera.follow(_this.cupcake);
+	
 			return _this;
 		}
 	
@@ -28632,6 +28640,8 @@
 			key: 'update',
 			value: function update(delta) {
 				_get(PrototypeScreen.prototype.__proto__ || Object.getPrototypeOf(PrototypeScreen.prototype), 'update', this).call(this, delta);
+	
+				this.camera.update(delta);
 				this.inputManager.update();
 	
 				//let scaleFactor = 
@@ -28764,7 +28774,8 @@
 				// console.log(entity, 1-utils.distance(0,entity.y,0,config.height) / config.height);
 				//console.log('2'+entity);
 	
-				entity.setDistance(1 - _utils2.default.distance(0, entity.y, 0, _config2.default.height) / _config2.default.height);
+				var h = this.worldBounds.h;
+				entity.setDistance(1 - _utils2.default.distance(0, entity.y, 0, h) / h + 0.3);
 			}
 		}, {
 			key: 'updateKeyUp',
@@ -37091,6 +37102,13 @@
 			this.gamepadMap.push({ label: 'x', id: [3, 0, 3] });
 			this.gamepadMap.push({ label: 'r', id: [7, 6, 5] });
 			this.gamepadMap.push({ label: 'l', id: [6, 4, 4] });
+	
+			// window.addEventListener("gamepadconnected", function(e) {
+			//   var gp = navigator.getGamepads()[0];
+			//   console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+			//   gp.index, gp.id,
+			//   gp.buttons.length, gp.axes.length);
+			// });
 		}
 	
 		_createClass(InputManager, [{
@@ -37148,6 +37166,13 @@
 	
 				// this.currentGamepad = 3
 				// this.debugButtons();
+	
+				// this.console.log(this);
+				// this.currentGamepad = 0;
+				// this.gamePadType = 0;
+				// this.debugButtons();
+	
+				// return
 	
 				if (this.currentGamepad < 0) {
 	
@@ -37433,6 +37458,228 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // import Gamepad from './Gamepad'
+	
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _config = __webpack_require__(137);
+	
+	var _config2 = _interopRequireDefault(_config);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Camera = function () {
+		function Camera(game, worldMap) {
+			_classCallCheck(this, Camera);
+	
+			this.game = game;
+			this.entityFollow = null;
+			this.velocity = { x: 0, y: 0 };
+			this.velocityPlus = { x: 0, y: 0 };
+			this.virtualVelocity = { x: 0, y: 0 };
+			this.cameraSpeed = { x: _config2.default.width * 0.5, y: _config2.default.height * 0.5 };
+			this.acceleration = { x: this.cameraSpeed.x / 60, y: this.cameraSpeed.y / 60 };
+			this.worldMap = worldMap;
+			this.cameraSpeed = { x: _config2.default.width * 0.5, y: _config2.default.height * 0.5 };
+			this.acceleration = { x: this.cameraSpeed.x / 60, y: this.cameraSpeed.y / 60 };
+			this.cameraDelayStandard = { x: 1 };
+			this.cameraDelay = { x: 0 };
+			this.cameraStopping = { x: false };
+			this.cameraMoving = { x: false };
+			this.fixCamera = false;
+			//se a distancia minima da camera for pequena, parece que o cara ta bebado
+		}
+	
+		_createClass(Camera, [{
+			key: 'follow',
+			value: function follow(entity) {
+				this.entityFollow = entity;
+	
+				if (this.entityFollow.entityModel && this.entityFollow.entityModel.speed) {
+					this.cameraSpeed = { x: this.entityFollow.entityModel.speed.x, y: this.entityFollow.entityModel.speed.y };
+					console.log(this.cameraSpeed);
+				} else {
+					this.cameraSpeed = { x: _config2.default.width * 0.5, y: _config2.default.height * 0.5 };
+				}
+				this.acceleration = { x: this.cameraSpeed.x * 0.01, y: this.cameraSpeed.y * 0.01 };
+			}
+		}, {
+			key: 'unfollow',
+			value: function unfollow() {
+				this.entityFollow = null;
+			}
+		}, {
+			key: 'updateX',
+			value: function updateX(globalEntityPosition) {
+	
+				// this.cameraStopping.x = false;
+				if (globalEntityPosition.x < _config2.default.width / 2 - _config2.default.width * 0.2) {
+					this.virtualVelocity.x = this.cameraSpeed.x * 2;
+				} else if (globalEntityPosition.x > _config2.default.width / 2 + _config2.default.width * 0.2) {
+					this.virtualVelocity.x = -this.cameraSpeed.x * 2;
+				} else if (globalEntityPosition.x < _config2.default.width / 2 - this.cameraSpeed.x / this.acceleration.x) {
+					this.virtualVelocity.x = this.cameraSpeed.x;
+				} else if (globalEntityPosition.x > _config2.default.width / 2 + this.cameraSpeed.x / this.acceleration.x) {
+					this.virtualVelocity.x = -this.cameraSpeed.x;
+				} else if (this.entityFollow.velocity.x == 0) {
+					//} if(this.cameraDelay.x <= 0){
+	
+					console.log('STOP CAMERA');
+					// this.cameraStopping.x = true;
+					this.virtualVelocity.x = 0;
+					this.velocityPlus.x = 0;
+				}
+	
+				// if(this.virtualVelocity.x != 0 && this.cameraDelay.x <= 0){
+				// 	this.cameraDelay.x = this.cameraDelayStandard.x;
+				// }
+	
+				if (this.velocity.x < this.virtualVelocity.x) {
+					if (this.velocity.x > 0) {
+						// this.velocity.x += this.acceleration.x;
+					}
+					this.velocity.x += this.acceleration.x;
+					if (this.entityFollow.velocity && this.entityFollow.velocity.x) {
+						//this.velocityPlus.x = -this.entityFollow.velocity.x;
+					}
+					if (this.velocity.x > this.virtualVelocity.x) {
+						this.velocity.x = this.virtualVelocity.x;
+					}
+				} else if (this.velocity.x > this.virtualVelocity.x) {
+					if (this.velocity.x < 0) {
+						// this.velocity.x -= this.acceleration.x;
+					}
+					if (this.velocity.x > this.virtualVelocity.x) {
+						this.velocity.x -= this.acceleration.x;
+						if (this.entityFollow.velocity && this.entityFollow.velocity.x) {
+							//this.velocityPlus.x = this.entityFollow.velocity.x;
+						}
+						if (this.velocity.x < this.virtualVelocity.x) {
+							this.velocity.x = this.virtualVelocity.x;
+						}
+					}
+				} else {
+					this.velocityPlus.x = 0;
+				}
+	
+				// if(this.velocity.x)
+			}
+		}, {
+			key: 'updateY',
+			value: function updateY(globalEntityPosition) {
+				if (globalEntityPosition.y < _config2.default.height / 2 - _config2.default.height * 0.2) {
+					this.virtualVelocity.y = this.cameraSpeed.y * 2;
+				} else if (globalEntityPosition.y > _config2.default.height / 2 + _config2.default.height * 0.2) {
+					this.virtualVelocity.y = -this.cameraSpeed.y * 2;
+				} else if (globalEntityPosition.y < _config2.default.height / 2 - _config2.default.height * this.cameraSpeed.y * this.acceleration.y) {
+					this.virtualVelocity.y = this.cameraSpeed.y;
+				} else if (globalEntityPosition.y > _config2.default.height / 2 + _config2.default.height * this.cameraSpeed.y * this.acceleration.y) {
+					this.virtualVelocity.y = -this.cameraSpeed.y;
+				} else {
+					this.virtualVelocity.y = 0;
+					this.velocityPlus.y = 0;
+				}
+	
+				if (this.velocity.y < this.virtualVelocity.y) {
+					if (this.velocity.y > 0) {
+						// this.velocity.y += this.acceleration.y;
+					}
+					this.velocity.y += this.acceleration.y;
+					if (this.entityFollow.velocity && this.entityFollow.velocity.y) {
+						this.velocityPlus.y = -this.entityFollow.velocity.y;
+					}
+					if (this.velocity.y > this.virtualVelocity.y) {
+						this.velocity.y = this.virtualVelocity.y;
+					}
+				} else if (this.velocity.y > this.virtualVelocity.y) {
+					if (this.velocity.y > this.virtualVelocity.y) {
+						if (this.velocity.y < 0) {
+							// this.velocity.y -= this.acceleration.y;
+						}
+						this.velocity.y -= this.acceleration.y;
+						if (this.entityFollow.velocity && this.entityFollow.velocity.y) {
+							//this.velocityPlus.y = this.entityFollow.velocity.y;
+						}
+						if (this.velocity.y < this.virtualVelocity.y) {
+							this.velocity.y = this.virtualVelocity.y;
+						}
+					}
+				} else {
+					this.velocityPlus.y = 0;
+				}
+			}
+		}, {
+			key: 'update',
+			value: function update(delta) {
+	
+				if (!this.entityFollow) {
+					return;
+				}
+	
+				// if(Math.abs(this.entityFollow.velocity.y) + Math.abs(this.entityFollow.velocity.x)){
+				// }
+				var globalEntityPosition = this.entityFollow.toGlobal(new PIXI.Point());
+				var globalWorldPosition = this.worldMap.toGlobal(new PIXI.Point());
+				// console.log(this.worldMap.x, globalEntityPosition.x);
+	
+				var middleDistance = _utils2.default.distance(globalEntityPosition.x, globalEntityPosition.y, _config2.default.width / 2, _config2.default.height / 2);
+				// console.log(middleDistance);
+				if (middleDistance > 20) {
+					// this.worldMap.x = config.width / 2 - globalEntityPosition.x
+					// console.log(config.width / 2 , globalEntityPosition.x, globalWorldPosition.x);
+					TweenLite.to(this.worldMap, 1, { x: _config2.default.width / 2 - globalEntityPosition.x + globalWorldPosition.x, y: _config2.default.height / 2 - globalEntityPosition.y + globalWorldPosition.y });
+				}
+				// console.log(middleDistance);
+				// if(middleDistance >  config.width * 0.1){
+				// 	let percentageOfMiddleX = middleDistance / config.width * 0.2;
+				// 	this.velocityPlus.x = this.cameraSpeed.x * percentageOfMiddleX;
+				// }
+				// if(middleDistance >  config.height * 0.1){
+				// 	let percentageOfMiddleY = middleDistance / config.height * 0.2;
+				// 	this.velocityPlus.y = this.cameraSpeed.y * percentageOfMiddleY;
+				// }
+	
+	
+				// if(this.cameraDelay.x > 0){
+				// 	// console.log(delta);
+				// 	this.cameraDelay.x -= delta;
+				// }
+				// //console.log(this.cameraDelay.x);
+				// if(this.virtualVelocity.x != 0){
+				// 	this.cameraMoving.x = true;
+				// }else{
+				// 	this.cameraMoving.x = false;
+				// }
+	
+				//this.updateX(globalEntityPosition);
+				//this.updateY(globalEntityPosition);
+	
+	
+				//this.worldMap.x += (this.velocity.x + this.velocityPlus.x) * delta // this.entityFollow.standardScale;
+				//this.worldMap.y += (this.velocity.y + this.velocityPlus.y) * delta // this.entityFollow.standardScale;
+			}
+		}]);
+	
+		return Camera;
+	}();
+	
+	exports.default = Camera;
+
+/***/ },
+/* 147 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	
@@ -37446,11 +37693,11 @@
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _AnimationManager = __webpack_require__(147);
+	var _AnimationManager = __webpack_require__(148);
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(148);
+	var _Entity2 = __webpack_require__(149);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -37720,8 +37967,8 @@
 	            speed: { x: 350, y: 250 },
 	            standardTimeJump: 0.7,
 	            jumpForce: 300,
-	            rangeSpeed: 1,
-	            attackSpeed: 0.8,
+	            rangeSpeed: 2, //std 1
+	            attackSpeed: 0.2, //std 0.4
 	            dashTime: 0.5,
 	            speedUp: 2
 	        };
@@ -38217,7 +38464,7 @@
 	exports.default = Cupcake;
 
 /***/ },
-/* 147 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38412,7 +38659,7 @@
 	exports.default = Cupcake;
 
 /***/ },
-/* 148 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38534,7 +38781,7 @@
 	exports.default = Entity;
 
 /***/ },
-/* 149 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38553,11 +38800,11 @@
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _AnimationManager = __webpack_require__(147);
+	var _AnimationManager = __webpack_require__(148);
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(148);
+	var _Entity2 = __webpack_require__(149);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -38589,11 +38836,12 @@
 	
 	                _this.addChild(_this.base);
 	                _this.animationContainer = new _pixi2.default.Container();
-	                _this.animationContainer.x = 35;
+	                _this.animationContainer.x = -5;
 	                _this.animationContainer.y = 0;
 	                _this.addChild(_this.animationContainer);
 	
 	                _this.build();
+	
 	                // this.sprite.scale.set(this.starterScale)
 	                return _this;
 	        }
@@ -38602,11 +38850,12 @@
 	                key: 'build',
 	                value: function build() {
 	
+	                        console.log('BUILD ENEMY');
 	                        this.animationModel = [];
 	                        this.animationModel.push({
 	                                label: 'idle',
-	                                src: 'idle00',
-	                                totalFrames: 14,
+	                                src: 'idle/tomatoIdle00',
+	                                totalFrames: 15,
 	                                startFrame: 0,
 	                                animationSpeed: 0.4,
 	                                movieClip: null,
@@ -38616,12 +38865,12 @@
 	
 	                        this.animationModel.push({
 	                                label: 'killBack',
-	                                src: 'kill100',
-	                                totalFrames: 22,
+	                                src: 'dead1/tomatoDead100',
+	                                totalFrames: 12,
 	                                startFrame: 0,
 	                                animationSpeed: 0.65,
 	                                movieClip: null,
-	                                position: { x: -190, y: 15 },
+	                                position: { x: 0, y: 0 },
 	                                anchor: { x: 0.5, y: 1 },
 	                                loop: false,
 	                                haveCallback: true
@@ -38629,12 +38878,12 @@
 	
 	                        this.animationModel.push({
 	                                label: 'killFront',
-	                                src: 'kill200',
-	                                totalFrames: 22,
+	                                src: 'dead1/tomatoDead100',
+	                                totalFrames: 12,
 	                                startFrame: 0,
 	                                animationSpeed: 0.65,
 	                                movieClip: null,
-	                                position: { x: 190, y: 15 },
+	                                position: { x: 0, y: 0 },
 	                                anchor: { x: 0.5, y: 1 },
 	                                loop: false,
 	                                haveCallback: true
@@ -38642,15 +38891,27 @@
 	
 	                        this.animationModel.push({
 	                                label: 'hurt',
-	                                src: 'hurt100',
-	                                totalFrames: 18,
-	                                startFrame: 10,
+	                                src: 'hurt/tomatoHurt00',
+	                                totalFrames: 10,
+	                                startFrame: 0,
 	                                animationSpeed: 0.6,
 	                                movieClip: null,
-	                                position: { x: -35, y: 4 },
+	                                position: { x: -15, y: 0 },
 	                                anchor: { x: 0.5, y: 1 },
 	                                loop: false,
 	                                haveCallback: true
+	                        });
+	
+	                        this.animationModel.push({
+	                                label: 'walk',
+	                                src: 'walk/tomatoWalk00',
+	                                totalFrames: 17,
+	                                startFrame: 0,
+	                                animationSpeed: 0.6,
+	                                movieClip: null,
+	                                position: { x: 2, y: 0 },
+	                                anchor: { x: 0.5, y: 1 },
+	                                loop: true
 	                        });
 	
 	                        this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
@@ -38658,6 +38919,7 @@
 	
 	                        // this.animationContainer.addChild(this.sprite);
 	
+	                        this.speed = { x: 100, y: 100 };
 	                        this.velocity = { x: 0, y: 0 };
 	                        this.spriteVelocity = { x: 0, y: 0 };
 	
@@ -38672,13 +38934,41 @@
 	                        this.animationManager.stopAll();
 	                        this.animationManager.changeState('idle');
 	
-	                        this.radius = 100;
+	                        this.radius = 120;
 	                        this.externalRadius = 160;
 	                        // this.debugCollision();
 	
 	                        this.killed = false;
 	
-	                        // this.animationManager.showJust(['idle','killFront'])
+	                        // this.animationManager.showJust(['idle','walk'])
+	
+	                        this.flipKill = false;
+	
+	                        this.side = Math.random() < 0.5 ? 1 : -1;
+	
+	                        this.moveTime = 0;
+	                        this.waitTime = 0;
+	
+	                        this.move();
+	                }
+	        }, {
+	                key: 'wait',
+	                value: function wait() {
+	                        this.velocity.x = 0;
+	                        this.velocity.y = 0;
+	                        this.animationManager.changeState('idle');
+	                        this.waitTime = Math.random() * 3 + 1;
+	                }
+	        }, {
+	                key: 'move',
+	                value: function move() {
+	                        this.velocity.x = this.speed.x * this.side;
+	
+	                        if (Math.random() < 0.3) {
+	                                this.velocity.y = this.speed.y * (Math.random() < 0.5 ? 1 : -1);
+	                        }
+	                        this.animationManager.changeState('walk');
+	                        this.moveTime = Math.random() * 3 + 1;
 	                }
 	        }, {
 	                key: 'finishAnimation',
@@ -38697,6 +38987,8 @@
 	                        if (this.life < 0) {
 	                                return false;
 	                        }
+	
+	                        this.wait();
 	
 	                        this.life -= power;
 	
@@ -38717,10 +39009,13 @@
 	                key: 'dead',
 	                value: function dead() {
 	
+	                        TweenLite.to(this.base, 0.5, { alpha: 0 });
 	                        this.collidable = false;
 	
 	                        if (this.side < 0) {
-	                                this.side = 1;
+	                                if (this.flipKill) {
+	                                        this.side = 1;
+	                                }
 	                                this.updateScale();
 	                                this.animationManager.ableToChangeAnimation = true;
 	                                this.animationManager.changeState('killFront', true);
@@ -38737,6 +39032,23 @@
 	                                return;
 	                        }
 	
+	                        if (this.moveTime > 0) {
+	                                this.moveTime -= delta;
+	                                if (this.moveTime <= 0) {
+	                                        // console.log(this.moveTime);
+	                                        this.waitTime = Math.random() * 3 + 1;
+	                                        this.wait();
+	                                }
+	                        }
+	
+	                        if (this.waitTime > 0) {
+	                                this.waitTime -= delta;
+	                                if (this.waitTime <= 0) {
+	                                        this.moveTime = Math.random() * 3 + 1;
+	                                        this.side *= -1;
+	                                        this.move();
+	                                }
+	                        }
 	                        this.animationManager.updateAnimations();
 	
 	                        if (this.kill2) {
@@ -38771,7 +39083,7 @@
 	exports.default = StandardEnemy;
 
 /***/ },
-/* 150 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38790,11 +39102,11 @@
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _AnimationManager = __webpack_require__(147);
+	var _AnimationManager = __webpack_require__(148);
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(148);
+	var _Entity2 = __webpack_require__(149);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -38959,7 +39271,7 @@
 	exports.default = StandardBullet;
 
 /***/ },
-/* 151 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -38980,15 +39292,15 @@
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _AnimationManager = __webpack_require__(147);
+	var _AnimationManager = __webpack_require__(148);
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity = __webpack_require__(148);
+	var _Entity = __webpack_require__(149);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _StandardEnvironmentEntity = __webpack_require__(152);
+	var _StandardEnvironmentEntity = __webpack_require__(153);
 	
 	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
 	
@@ -39060,7 +39372,7 @@
 	exports.default = Rock;
 
 /***/ },
-/* 152 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39079,11 +39391,11 @@
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _AnimationManager = __webpack_require__(147);
+	var _AnimationManager = __webpack_require__(148);
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(148);
+	var _Entity2 = __webpack_require__(149);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -39200,7 +39512,7 @@
 	exports.default = StandardEnvironmentEntity;
 
 /***/ },
-/* 153 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39221,15 +39533,15 @@
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _AnimationManager = __webpack_require__(147);
+	var _AnimationManager = __webpack_require__(148);
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity = __webpack_require__(148);
+	var _Entity = __webpack_require__(149);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _StandardEnvironmentEntity = __webpack_require__(152);
+	var _StandardEnvironmentEntity = __webpack_require__(153);
 	
 	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
 	
@@ -39303,7 +39615,7 @@
 	exports.default = Pine;
 
 /***/ },
-/* 154 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39324,15 +39636,15 @@
 	
 	var _utils2 = _interopRequireDefault(_utils);
 	
-	var _AnimationManager = __webpack_require__(147);
+	var _AnimationManager = __webpack_require__(148);
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity = __webpack_require__(148);
+	var _Entity = __webpack_require__(149);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _StandardEnvironmentEntity = __webpack_require__(152);
+	var _StandardEnvironmentEntity = __webpack_require__(153);
 	
 	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
 	
