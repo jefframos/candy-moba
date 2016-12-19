@@ -8,10 +8,12 @@ export default class StandardEnemy extends Entity {
 
     	super();
 
+        this.type = 'enemy';
+
         this.game = game;
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
-        this.roundBase.beginFill(0);
+        this.roundBase.beginFill(0xffffff);
         this.roundBase.drawCircle(0,0,60);
         this.roundBase.scale.y = 0.4
         this.roundBase.alpha = 0.1;
@@ -27,9 +29,9 @@ export default class StandardEnemy extends Entity {
 
         this.actionTimer = -1;
         this.action = null;
+        
 
-        this.build();
-
+        // this.build();
 
         // this.sprite.scale.set(this.starterScale)
     }
@@ -88,10 +90,23 @@ export default class StandardEnemy extends Entity {
         });
 
         this.animationModel.push({
-            label:'attack',
+            label:'attackIn',
+            src:'attack/tomatoAttack00',
+            totalFrames:10,
+            startFrame:0,
+            animationSpeed:0.6,
+            movieClip:null,
+            position:{x:45,y:2},
+            anchor:{x:0.5,y:1},
+            loop:false,
+            haveCallback:true,
+        });
+
+        this.animationModel.push({
+            label:'attackOut',
             src:'attack/tomatoAttack00',
             totalFrames:23,
-            startFrame:0,
+            startFrame:11,
             animationSpeed:0.6,
             movieClip:null,
             position:{x:45,y:2},
@@ -131,7 +146,7 @@ export default class StandardEnemy extends Entity {
         this.animationManager.hideAll();
         this.animationManager.stopAll();
         this.animationManager.changeState('idle');
-         this.radius = 120;
+        this.radius = 120;
         this.externalRadius = 160;
         // this.debugCollision();
 
@@ -141,43 +156,117 @@ export default class StandardEnemy extends Entity {
 
         this.flipKill = false;
 
-        this.side = Math.random() < 0.5?1:-1;
+        this.side = -1;//Math.random() < 0.5?1:-1;
 
-        
+        this.attackTimer = -1;
+        this.attackSpeed = 3;
+        this.attacking = false;
+
+        this.ableToMove = true;
+
+        this.entityToAttack = null;
+        //this.actionTimer = Math.random() * 2 + 1.5;
+        //this.action = this.move;
+
+        this.targetPosition = {x:-1,y:-10};
+        this.followTarget = false;
         this.move();
 
     }
-    attack ( ) {
-        this.velocity.x = 0;
-        this.velocity.y = 0;
-        this.animationManager.changeState('attack');
-        
-        this.actionTimer = Math.random() * 2 + 1.5;
-        this.action = this.move;
-    }
+
 
     wait ( ) {
         this.velocity.x = 0;
         this.velocity.y = 0;
         this.animationManager.changeState('idle');
         
-        this.actionTimer = Math.random() * 3 + 1;
-        this.action = this.attack;
+        this.actionTimer = 0.1//Math.random() * 3 + 1;
+        this.action = this.move;
     }
-    move ( ) {
-        this.side *= -1;
-        this.velocity.x = this.speed.x * this.side;
-
-        if(Math.random() < 0.3){
-            this.velocity.y = this.speed.y * (Math.random() < 0.5?1:-1);
+    setTarget (position) {
+        this.targetPosition.x = position.x;
+        this.targetPosition.y = position.y;
+        this.followTarget = true;
+        this.move();
+    }
+    move () {
+        // console.log(this.attacking);
+        if(this.attacking && !this.ableToMove){
+            return
         }
+        if(this.followTarget){
+
+            let angle = Math.atan2(this.targetPosition.y - this.y, this.targetPosition.x - this.x);
+            this.velocity.x = Math.cos(angle) * this.speed.x;
+            this.velocity.y = Math.sin(angle) * this.speed.x;
+
+            if(this.velocity.x < 0){
+                this.side = -1;
+            }else{
+                this.side = 1;
+            }
+        }else{
+            this.velocity.x = this.speed.x * this.side;
+        }
+
         this.animationManager.changeState('walk');
-         this.actionTimer = Math.random() * 3 + 1;
-        this.action = this.wait;
     }
 
-    finishAnimation ( ) {
+    moveBack (delta) {
+        this.side *= -1;
 
+        this.velocity.x = this.speed.x * this.side;
+        this.velocity.y *= -1;
+
+        this.x += this.velocity.x * delta * this.speedScale * 2;
+        this.y += this.velocity.y * delta * this.speedScale * 2;
+        
+        this.animationManager.changeState('walk');
+        // this.actionTimer = 2//Math.random() * 3 + 1;
+        // this.action = this.wait;
+    }
+
+    attack () {
+        //this.actionTimer = this.attackTimer + 0.1//Math.random() * 2 + 1.5;
+        //this.action = this.move;
+        this.attackTimer = this.attackSpeed;
+        // console.log(this.entityToAttack);
+        let newList = this.game.getSimpleEntityCollision(this, this.entityToAttack.entity);
+        // console.log('ATTACK', newList);
+        if(newList.length){
+            this.entityToAttack.entity.hit(1);
+        }
+        // this.attacking = false;
+    }
+    prepareAttack (target) {
+        if(!target || this.attacking){
+            return
+        }
+
+        this.ableToMove = false;
+
+        this.entityToAttack = target;
+        this.velocity.x = 0;
+        this.velocity.y = 0;
+        this.animationManager.changeState('attackIn', true);
+        this.attacking = true;
+
+        
+        if(this.entityToAttack.entity.type == 'tower'){
+            this.entityToAttack.entity.addEnemy(this);
+        }
+        
+    }
+    finishAnimation ( ) {
+        if(this.animationManager.state == 'attackOut'){
+            this.ableToMove = true;
+        }
+        if(this.animationManager.state == 'attackIn'){
+            this.animationManager.changeState('attackOut', true);
+            this.attack();
+            return;
+
+        }
         if(this.animationManager.state == 'killFront' || this.animationManager.state == 'killBack'){
             this.killed = true;
             return;
@@ -190,11 +279,16 @@ export default class StandardEnemy extends Entity {
             return false;
         }
 
-        this.wait();
+        // this.wait();
+
+        this.hitting = true;
+        this.hitTime = 0.3;
 
         this.life -= power;
 
-        this.animationManager.changeState('hurt', true);
+        if(this.animationManager.state != 'attack'){
+            this.animationManager.changeState('hurt', true);
+        }
 
         if(forceSide){
             this.side = forceSide;
@@ -208,6 +302,12 @@ export default class StandardEnemy extends Entity {
 
         return true;
     }
+
+    endHit(){
+        this.hitting = false;
+        this.hitTime = -1;
+    }
+
     dead() {
 
         TweenLite.to(this.base,0.5,{alpha:0})
@@ -225,6 +325,13 @@ export default class StandardEnemy extends Entity {
         }
         //this.kill = true;
     }
+    updateBaseColor ( ) {
+        if(this.hitting){
+            this.roundBase.tint = 0xFF0000;
+        }else{
+            this.roundBase.tint = 0;
+        }
+    }
     update ( delta ) {
 
 
@@ -232,39 +339,66 @@ export default class StandardEnemy extends Entity {
         if(this.killed){
             return;
         }
+        // console.log(this.followTarget);
+        
 
+        if(!this.attacking){
+            let entityCollisions = this.game.getColisionList(this,['tower','player']);
+            // console.log(entityCollisions);
+            if(entityCollisions && entityCollisions.length){
+                if(entityCollisions[0].ableToHit || entityCollisions[0].entity.type == 'tower'){
+                    if(entityCollisions[0].trueLeft){
+                        this.side = 1;
+                    }else{
+                        this.side = -1;
+                    }
+                    this.prepareAttack(entityCollisions[0]);
+                }
+            }
+        }
 
-
+        if(this.attackTimer > 0){
+            this.attackTimer -= delta;
+            if (this.attackTimer <= 0) {
+                this.attacking = false;
+            }
+        }
+        // console.log(this.velocity);
         if(this.actionTimer > 0){
             this.actionTimer -= delta;
             if(this.actionTimer <= 0){
-                this.actionTimer = Math.random() * 3 + 1;
-                this.side *= -1;
+                //this.actionTimer = Math.random() * 3 + 1;
+                //this.side *= -1;
                 this.action();   
             }
         }
         this.animationManager.updateAnimations();
 
-        if(this.kill2){
-            return;
+        if(this.hitTime > 0){
+            this.hitTime -= delta;
+            if(this.hitTime <= 0){
+                this.endHit();
+            }
         }
 
-        // if(this.lifeTime <= 0){
-        //     this.spriteVelocity.y += this.gravity;
-        //     this.animationContainer.y += this.spriteVelocity.y * delta;
-            
-        //     if(this.animationContainer.y >= 0){
-        //         this.animationContainer.rotation = 0;
-        //         this.animationManager.changeState('explode');
-        //         this.base.visible = false;
-        //         this.kill2 = true;
-        //     }
-        // }else{
-        //     this.lifeTime -= delta;
-        // }
+        if(this.followTarget){
+            if(utils.distance(this.targetPosition.x, this.targetPosition.y, this.x, this.y) < 20){
+                //this.followTarget = false;
+                this.wait();
+            }else{
+                // console.log('MOVE');
+                this.move();
+            }
+        }
 
-        // this.animationContainer.rotation += delta * 10;
 
+        this.updateBaseColor();
+
+        if(this.game.worldCollision(this.x , this.y)){
+            this.moveBack(delta);
+            return
+        }
+        // console.log(this.velocity);
 
         this.x += this.velocity.x * delta * this.speedScale;
         this.y += this.velocity.y * delta * this.speedScale;

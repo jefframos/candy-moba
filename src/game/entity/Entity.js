@@ -3,7 +3,9 @@ export default class Entity extends PIXI.Container {
 
     constructor(debug) {  
         super();  
+        this.virtualVelocity = {x:0,y:0};
         this.velocity = {x:0,y:0};
+        this.scaleFator = 1;
         this.standardScale = 1;
         this.speedScale = 1;
         this.starterScale = 0.5;
@@ -50,7 +52,7 @@ export default class Entity extends PIXI.Container {
         return this.standardScale * this.externalRadius;
     }
     setDistance(value) {
-        this.standardScale = value * 0.35 + 0.15;
+        this.standardScale = (value * 0.35 + 0.15) * this.scaleFator;
         this.speedScale = this.standardScale / this.starterScale;
         this.updateScale();
         // this.updateTint(value);
