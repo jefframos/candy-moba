@@ -8,10 +8,12 @@ import Camera from '../Camera';
 import Cupcake from '../entity/Cupcake';
 import StandardEnemy from '../entity/enemies/StandardEnemy';
 import StandardBullet from '../entity/bullets/StandardBullet';
+import TowerBullet from '../entity/bullets/TowerBullet';
 import Rock from '../entity/environment/Rock';
 import Pine from '../entity/environment/Pine';
 import Bush from '../entity/environment/Bush';
 import Tower from '../entity/towers/Tower';
+import Spawner from '../entity/spawner/Spawner';
 
 export default class PrototypeScreen extends Screen{
 	constructor(label){
@@ -23,63 +25,77 @@ export default class PrototypeScreen extends Screen{
 		this.gameContainer = new PIXI.Container();
 		this.addChild(this.gameContainer);
 
-
-		this.polyPts = [80,700,
-		820,289,
-		1397,279,
-		1821,740,
-		2524,764,
-		2850,303,
-		3450,307,
-		3846,768,
-		4377,657,
-		4861,293,
-		5625,242,
-		5909,391,
-		5909,1681,
-		5690,1914,
-		4456,1886,
-		3953,1644,
-		2566,1662,
-		1946,1877,
-		778,1844,
-		74,1215,
-		80,700];
-	// this.poly = new PIXI.Polygon(this.polyPts);
+		this.gameContainer.scale.set(0.3)
 
 
-		var graphics = new PIXI.Graphics();
-		graphics.beginFill(0xffffff);
-		graphics.alpha = 0.5
-		graphics.drawPolygon(this.polyPts);
-		graphics.endFill();
+		this.polyPts = config.worldBounds;
+		var worldBoundsGraphic = new PIXI.Graphics();
+		worldBoundsGraphic.beginFill(0xffffff);
+		worldBoundsGraphic.alpha = 0.1
+		worldBoundsGraphic.drawPolygon(this.polyPts);
+		worldBoundsGraphic.endFill();
+
+		this.gameContainer.addChild(worldBoundsGraphic)
+
+
+		var wayPath1 = new PIXI.Graphics();
+		wayPath1.beginFill(0xffffff);
+		wayPath1.alpha = 0.1
+		wayPath1.drawPolygon(config.wayPath1);
+		wayPath1.endFill();
+
+		this.gameContainer.addChild(wayPath1)
+
 
 		this.worldPolygon = new PIXI.Polygon(this.polyPts)
-
-		this.worldBounds = {x:80,y:300, w:6000, h:2000}
-		this.gameContainer.addChild(graphics)
-
+		this.worldBounds = {x:0,y:0, w:6000, h:2000}
 
 
 		this.entityContainer = new PIXI.Container();
 		this.gameContainer.addChild(this.entityContainer)
 
-		this.cupcake = new Cupcake(this, {x:300,y:1200});
+		this.cupcake = new Cupcake(this, {x:config.playerPositions[0][1],y:config.playerPositions[0][2]}, 0);
 		this.entityContainer.addChild(this.cupcake)
 		this.addOnUpdateList(this.cupcake)
 
 
-		this.tower = new Tower(this);
-		this.entityContainer.addChild(this.tower)
-		this.addOnUpdateList(this.tower)
-		this.towerList = [];
-		this.towerList.push(this.tower);
-		this.tower.x = 250;
-		this.tower.y = 1000;
 
-		this.setScales(this.tower);
-		
-		this.tower.build();
+		this.spawnerList = [];
+		for (var i = 0; i < config.spawnerList.length; i++) {
+			var spawnerData = config.spawnerList[i];
+			let spawner = new Spawner(this, i);
+			this.entityContainer.addChild(spawner)
+			this.addOnUpdateList(spawner)
+			this.spawnerList.push(spawner);
+			spawner.x = spawnerData[0][1];
+			spawner.y = spawnerData[0][2];
+			spawner.build();
+			this.setScales(spawner);
+
+			for (var j = 1; j < config.spawnerList[i].length; j++) {
+				spawner.addWaypoint(config.spawnerList[i][j][1],config.spawnerList[i][j][2]);
+			}
+		}
+
+				console.log(config.towerList);
+		this.towerList = [];
+		for (var i = 0; i < config.towerList.length; i++) {
+			for (var j = 0; j < config.towerList[i].length; j++) {
+				var towerData = config.towerList[i][j];
+				console.log(towerData);
+				let tower = new Tower(this, i);
+				tower.name = towerData[0];
+				this.entityContainer.addChild(tower)
+				this.addOnUpdateList(tower)
+				this.towerList.push(tower);
+				tower.x = towerData[1];
+				tower.y = towerData[2];
+
+				this.setScales(tower);
+
+				tower.build();
+			}
+		}
 		// this.cupcake.x = this.worldBounds.w / 2 + this.worldBounds.x
 		// this.cupcake.y = this.worldBounds.h / 2 + this.worldBounds.y;
 
@@ -88,38 +104,8 @@ export default class PrototypeScreen extends Screen{
 
 
 		this.enemyList = [];
-		let acc = 50
-		for (var i = 0; i < 25; i++) {
-
-			let tempEnemy = new StandardEnemy(this);
-			this.entityContainer.addChild(tempEnemy)
-			this.addOnUpdateList(tempEnemy)
-
-
-			let tempPos = {x:this.worldBounds.w * Math.random() + this.worldBounds.x, y:this.worldBounds.h * Math.random() + this.worldBounds.y}
-			while(this.worldCollision(tempPos.x,tempPos.y)){
-				tempPos = {x:this.worldBounds.w * Math.random() + this.worldBounds.x, y:this.worldBounds.h * Math.random() + this.worldBounds.y}
-			}
-
-			tempEnemy.x = 500 + acc * i;
-			tempEnemy.y = 1000 + Math.random() + Math.random() * 50 - 25;
-			tempEnemy.build();
-
-
-			tempEnemy.setTarget({x:this.tower.x,y:this.tower.y})
-			this.enemyList.push(tempEnemy);
-
-		}
-
-		// var debug3 = new PIXI.Graphics();
-		// debug3.beginFill(0xff0000);
-		// debug3.drawCircle(0,0,20);
-		// debug3.x = 500;
-		// debug3.y = 1200;
-
-		// this.gameContainer.addChild(debug3)
-
-		// for (var i = 0; i < 200; i++) {
+		// let acc = 50
+		// for (var i = 0; i < 25; i++) {
 
 		// 	let tempEnemy = new StandardEnemy(this);
 		// 	this.entityContainer.addChild(tempEnemy)
@@ -131,42 +117,45 @@ export default class PrototypeScreen extends Screen{
 		// 		tempPos = {x:this.worldBounds.w * Math.random() + this.worldBounds.x, y:this.worldBounds.h * Math.random() + this.worldBounds.y}
 		// 	}
 
-		// 	tempEnemy.x = tempPos.x;
-		// 	tempEnemy.y = tempPos.y;
+		// 	tempEnemy.x = 500 + acc * i;
+		// 	tempEnemy.y = 1000 + Math.random() + Math.random() * 50 - 25;
+		// 	tempEnemy.build();
+
+
+		// 	tempEnemy.setTarget({x:this.towerList[0].x,y:this.towerList[0].y})
 		// 	this.enemyList.push(tempEnemy);
-
 		// }
+
 		this.environmentList = [];
-		for (var i = 0; i < 200; i++) {
-			var rock;
-			var rnd = Math.random();
-			if(rnd < 0.1){
-				rock = new Pine(this);
-				//rock = new Rock(this);
+		for (var i = 0; i < config.environmentList.length; i++) {
+			var envData = config.environmentList[i];
+			// console.log(envData);
+			var environmentEntity;
 
-			}else if(rnd < 0.8){
-				rock = new Rock(this);
-			}else{
-				rock = new Bush(this);
+			if(envData[0] == 'pine'){
+				environmentEntity = new Pine(this, true);
+			}else if(envData[0].indexOf('rock') !== -1){
+				console.log(envData[0]);
+				environmentEntity = new Rock(this, true);
+			}else if(envData[0].indexOf('bush') !== -1){
+				environmentEntity = new Bush(this, true);
 			}
 
-			this.entityContainer.addChild(rock)
-			this.addOnUpdateList(rock)
+			this.entityContainer.addChild(environmentEntity)
+			//this.addOnUpdateList(environmentEntity)
 
-			let tempPos = {x:this.worldBounds.w * Math.random() + this.worldBounds.x, y:this.worldBounds.h * Math.random() + this.worldBounds.y}
+			environmentEntity.x = envData[1];
+			environmentEntity.y = envData[2];
 
-			while(this.worldCollision(tempPos.x,tempPos.y)){
-				tempPos = {x:this.worldBounds.w * Math.random() + this.worldBounds.x, y:this.worldBounds.h * Math.random() + this.worldBounds.y}
-			}
-			rock.x = tempPos.x;
-			rock.y = tempPos.y;
+			environmentEntity.side = envData[3]
+			environmentEntity.starterScale = envData[4] * 2
 
-			// rock.side = rock.x < config.width/2 ? 1 : -1;
-			rock.side = Math.random() < 0.5?1:-1;
-			// rock.y = Math.random() < 0.6? Math.random() * (config.height * 0.2) + config.height * 0.2: Math.random() * (this.worldBounds.h * 0.5) + config.height * 0.7;
-			this.setScales(rock);
 
-			this.environmentList.push(rock);
+			// environmentEntity.y = Math.random() < 0.6? Math.random() * (config.height * 0.2) + config.height * 0.2: Math.random() * (this.worldBounds.h * 0.5) + config.height * 0.7;
+			this.setScales(environmentEntity);
+
+			this.environmentList.push(environmentEntity);
+
 		}
 
 
@@ -183,21 +172,56 @@ export default class PrototypeScreen extends Screen{
 
 
 		this.camera = new Camera(this, this.gameContainer);
-		this.camera.follow(this.cupcake);
+		this.speedUpValue = 1;
+
+		this.initGame();
+
+	}
+	initGame(){
+		this.speedUpValue = 1;
+		for (var i = this.spawnerList.length - 1; i >= 0; i--) {
+			this.spawnerList[i].start();
+		}
+	}
+	addEnemy(type, position, waypoints, team){
+
+		let tempEnemy = new StandardEnemy(this, team);
+
+
+		tempEnemy.setWaypoints(waypoints)
+
+
+		this.entityContainer.addChild(tempEnemy)
+		this.addOnUpdateList(tempEnemy)
+
+
+
+		tempEnemy.x = position.x;
+		tempEnemy.y = position.y;
+
+
+		tempEnemy.build();
+
+
+		// tempEnemy.setTarget({x:this.towerList[0].x,y:this.towerList[0].y})
+		this.enemyList.push(tempEnemy);
 
 	}
 	build(){
 		this.lastAction = null;
 		super.build();
 
-		console.log(this.worldCollision(this.cupcake));
+		this.camera.follow(this.cupcake);
 
 	}
 	update ( delta ) {
-		super.update(delta)
+
+		let newDelta = delta * this.speedUpValue;
+
+		super.update(newDelta)
 
 
-		this.camera.update(delta);
+		this.camera.update(newDelta);
 		this.inputManager.update();
 
 		//let scaleFactor = 
@@ -235,7 +259,7 @@ export default class PrototypeScreen extends Screen{
 	 			let distFactor = entity.getExternalRadius() * 4;
 	 			if(dist < distFactor){
 
-	 				this.environmentList[i].updateAlpha((dist / (distFactor) )*0.8+0.2);
+	 				this.environmentList[i].updateAlpha((dist / (distFactor) )*0.9+0.1);
 
 	 				// let angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14
 	 				// let ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
@@ -288,7 +312,7 @@ export default class PrototypeScreen extends Screen{
 		return entitiesList
 	}
 
-	getExternalColisionList(entity, type) {
+	getExternalColisionList(entity, type, rival) {
 		if(!entity.collidable){
 			return;
 		}
@@ -297,17 +321,19 @@ export default class PrototypeScreen extends Screen{
 	 	
  		for (var i = 0; i < entitiesList.length; i++) {
  			let colEnt = entitiesList[i];
- 			if(colEnt.collidable){	 				
-	 			let dist = utils.distance(entity.x,entity.y, colEnt.x,colEnt.y)
-	 			if(dist < colEnt.getExternalRadius() + entity.getExternalRadius()){
+ 			if(!rival || (rival && entity.team != colEnt.team)){
+	 			if(colEnt.collidable){	 				
+		 			let dist = utils.distance(entity.x,entity.y, colEnt.x,colEnt.y)
+		 			if(dist < colEnt.getExternalRadius() + entity.getExternalRadius()){
 
-	 				let angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14
-	 				let ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
-	 				let left = Math.abs(angle) > 150 && entity.side == 1;
-	 				let right = Math.abs(angle) < 30 && entity.side == -1;
+		 				let angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14
+		 				let ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
+		 				let left = Math.abs(angle) > 150 && entity.side == 1;
+		 				let right = Math.abs(angle) < 30 && entity.side == -1;
 
-	 				collideList.push({entity:colEnt, angle:angle, dist:dist, ableToHit: ableToHit, left:left, right:right});
-	 			}
+		 				collideList.push({entity:colEnt, angle:angle, dist:dist, ableToHit: ableToHit, left:left, right:right});
+		 			}
+		 		}
 	 		}
  		}
 
@@ -315,7 +341,7 @@ export default class PrototypeScreen extends Screen{
 	 	return collideList
 	 }
 
-	 getColisionList(entity, type) {
+	 getColisionList(entity, type, rival) {
 	 	if(!entity.collidable){
 			return;
 		}
@@ -324,40 +350,46 @@ export default class PrototypeScreen extends Screen{
 	 	// console.log(entitiesList);
  		for (var i = 0; i < entitiesList.length; i++) {
  			let colEnt = entitiesList[i];
- 			if(colEnt.collidable){		 			
-	 			let dist = utils.distance(entity.x,entity.y, colEnt.x,colEnt.y)
-	 			if(dist < colEnt.getRadius() + entity.getRadius()){
-	 				let angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14
-	 				let ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
-	 				let left = Math.abs(angle) > 150 && entity.side == 1;
-	 				let right = Math.abs(angle) < 30 && entity.side == -1;
+ 			if(!rival || (rival && entity.team != colEnt.team)){
+	 			if(colEnt.collidable){		 			
+		 			let dist = utils.distance(entity.x,entity.y, colEnt.x,colEnt.y)
+		 			if(dist < colEnt.getRadius() + entity.getRadius()){
+		 				let angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14
+		 				let ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
+		 				let left = Math.abs(angle) > 150 && entity.side == 1;
+		 				let right = Math.abs(angle) < 30 && entity.side == -1;
 
-	 				let trueLeft = Math.abs(angle) > 150;
-	 				let trueRight = Math.abs(angle) < 30;
+		 				let trueLeft = Math.abs(angle) > 150;
+		 				let trueRight = Math.abs(angle) < 30;
 
-	 				collideList.push(
-	 					{
-	 						entity:colEnt,
-	 						angle:angle,
-	 						dist:dist,
-	 						ableToHit: ableToHit,
-	 						left:left,
-	 						right:right ,
-							trueLeft:trueLeft,
-	 						trueRight:trueRight
-	 					}
-	 				);
-	 			}
+		 				collideList.push(
+		 					{
+		 						entity:colEnt,
+		 						angle:angle,
+		 						dist:dist,
+		 						ableToHit: ableToHit,
+		 						left:left,
+		 						right:right ,
+								trueLeft:trueLeft,
+		 						trueRight:trueRight
+		 					}
+		 				);
+		 			}
+				}
 			}
- 			collideList.sort(utils.distCompare);	 			
+	 		collideList.sort(utils.distCompare);	 			
  		}
 	 	return collideList
 	 }
 
-	 getSimpleEntityCollision(entity1, entity2) {
+	 getSimpleEntityCollision(entity1, entity2, rival) {
 	 	if(!entity1.collidable){
 			return;
 		}
+		if((rival && entity1.team == entity2.team)){
+			return;
+		}
+
 	 	let collideList = [];
 		let colEnt = entity2;
 		if(colEnt.collidable){		 			
@@ -421,10 +453,26 @@ export default class PrototypeScreen extends Screen{
 		this.setScales(bullet);
 
 	}
+	addTowerBullet(pos, vel, life, power, team){
+		let bullet = new TowerBullet(this, vel, life, power, team);
+		this.entityContainer.addChild(bullet)
+		this.addOnUpdateList(bullet)
+		bullet.position.x = pos.x
+		bullet.position.y = pos.y
+
+		this.bulletList.push(bullet);
+
+		this.setScales(bullet);
+
+	}
 	updateKeyDown(){
+		this.speedUpValue = 1;
+
 		for (var i = 0; i < this.inputManager.keys.length; i++) {
 			if(this.inputManager.keys[i] == 'action1'){
 				//console.log('space');
+
+				
 				
 				this.lastAction = this.inputManager.keys[i];
 				this.cupcake.attack();
@@ -453,6 +501,13 @@ export default class PrototypeScreen extends Screen{
 			if(this.inputManager.keys[i] == 'action6'){
 				//console.log('space');
 				this.lastAction = this.inputManager.keys[i];
+				this.speedUpValue = 5;
+				// this.cupcake.die();
+			}
+			if(this.inputManager.keys[i] == 'action7'){
+				//console.log('space');
+				this.lastAction = this.inputManager.keys[i];
+				this.speedUpValue = 10;
 				// this.cupcake.die();
 			}
 		}

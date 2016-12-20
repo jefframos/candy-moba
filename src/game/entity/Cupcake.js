@@ -4,12 +4,14 @@ import AnimationManager  from './utils/AnimationManager';
 import Entity  from './Entity';
 export default class Cupcake extends Entity {
 
-    constructor(game, startPosition) {
+    constructor(game, startPosition, team) {
 
+        console.log(startPosition);
     	super();
 
         this.type = 'hero';
         this.game = game;
+        this.team = team;
         this.startPosition = startPosition;
 
         this.base = new PIXI.Container();
@@ -285,7 +287,7 @@ export default class Cupcake extends Entity {
             speedUp:1.5,
             dashSpeed:5,
             hitFeedback:0.2,
-            life:50,
+            maxLife:50,
             attack:0.5,
         }
         this.side = 1; 
@@ -370,12 +372,16 @@ export default class Cupcake extends Entity {
         this.x = this.startPosition.x;
         this.y = this.startPosition.y;
 
+        this.maxLife = this.entityModel.maxLife;
         this.life = this.entityModel.life;
         //this.scale.set(this.standardScale)
+
+        this.addLifeBar({x:0, y:-250}, {w:120, h:15}, this.team == 0?0x0000FF:0x00FF00);
 
     }
 
     dead() {
+        this.removeLifeBar();
         this.collidable = false;
         if(this.animationManager.changeState('killBack', true)){
             this.animationContainer.y = 0;
@@ -402,18 +408,18 @@ export default class Cupcake extends Entity {
     }
     areaAttackCollision() {
         this.areaAttackTimer = -1;
-        let collisionList = this.game.getExternalColisionList(this,'enemy');
+        let collisionList = this.game.getExternalColisionList(this,'enemy', true);
         if(collisionList){
             for (var i = 0; i < collisionList.length; i++) {
                 // if(collisionList[i].front || collisionList[i].back){
                 collisionList[i].entity.side = this.side * -1;
-                collisionList[i].entity.hit(5)
+                collisionList[i].entity.hit(2)
                 // }
             }
         }
     }
     dashAttackCollision() {
-        let collisionList = this.game.getColisionList(this,'enemy');
+        let collisionList = this.game.getColisionList(this,'enemy', true);
         if(collisionList){
             for (var i = 0; i < collisionList.length; i++) {
                 //if(collisionList[i].right || collisionList[i].left){
@@ -427,7 +433,7 @@ export default class Cupcake extends Entity {
         return false
     }
     meleeAttackCollision() {
-        let collisionList = this.game.getColisionList(this,'enemy');
+        let collisionList = this.game.getColisionList(this,'enemy', true);
         if(collisionList){
             for (var i = 0; i < collisionList.length; i++) {
                 if(collisionList[i].right || collisionList[i].left){
@@ -653,7 +659,7 @@ export default class Cupcake extends Entity {
         this.hitTime = -1;
     }
     hit(power, forceSide) {
-        if(this.life < 0){
+        if(this.life < 0 || this.areaAttackTimer > 0){
             return false;
         }
 
@@ -678,6 +684,7 @@ export default class Cupcake extends Entity {
             //return false;
         }
 
+        this.updateLifeBar();
 
         return true;
     }

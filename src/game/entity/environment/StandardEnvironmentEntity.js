@@ -4,9 +4,11 @@ import AnimationManager  from './../utils/AnimationManager';
 import Entity  from './../Entity';
 export default class StandardEnvironmentEntity extends Entity {
 
-    constructor(game) {
+    constructor(game, flatten) {
 
     	super();
+
+        this.flatten = flatten;
         this.game = game;
         // this.base = new PIXI.Container();
         // this.roundBase = new PIXI.Graphics();
@@ -72,6 +74,9 @@ export default class StandardEnvironmentEntity extends Entity {
         this.animationManager.changeState('static', true);
     }
     update ( delta ) {
+        if(this.flatten){
+            return
+        }
         // console.log('this');
        if(this.waitingNext > 0){
             this.waitingNext -= delta;

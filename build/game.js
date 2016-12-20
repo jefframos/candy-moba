@@ -28229,7 +28229,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	PIXI.loader.add('./assets/Enemies/tomato0.json').add('./assets/Cupcake/cupcake0.json').add('./assets/Cupcake/cupcake1.json').add('./assets/Cupcake/cupcake2.json').add('./assets/Cupcake/cupcake3.json').add('./assets/Environment/environment0.json').add('./assets/Effects/effects0.json').load(configGame);
+	PIXI.loader.add('./assets/Enemies/tomato0.json').add('./assets/Cupcake/cupcake0.json').add('./assets/Cupcake/cupcake1.json').add('./assets/Cupcake/cupcake2.json').add('./assets/Cupcake/cupcake3.json').add('./assets/Environment/environment0.json').add('./assets/Effects/effects0.json').add('./assets/Towers/towers0.json').add('./assets/Spawners/spawners0.json').load(configGame);
 	
 	function configGame() {
 	
@@ -28301,7 +28301,19 @@
 			resolution: 2,
 			antialias: true,
 			backgroundColor: 0x77A162
-		}
+		},
+		playerPositions: [
+		// ['player0',1402.1,963.3]
+	
+		["player0", 6612, 963.3]],
+	
+		towerList: [[["towerA1", 2339, 1448.2], ["towerA0", 2316.55, 484.5], ["towerAA", 479.5, 956.9], ["towerB1", 5712.75, 1341.25]], [["tower2A1", 11278.85, 1367.7], ["tower2A0", 11301.3, 484.5], ["tower2AA", 13138.35, 956.9], ["tower2B1", 7905.1, 1268.8]]],
+		worldBounds: [192, 708.2, 852.4, 288.5, 3218.8, 272.45, 4169.55, 729.1, 5776.95, 761.1, 6546.45, 296.45, 7899.4, 288.45, 8779.4, 776.9, 11117.35, 288.45, 12799.35, 232.35, 13475.9, 384.6, 13475.9, 1682.5, 12982.3, 1914.85, 10203.15, 1890.8, 9014.75, 1642.45, 5825.2, 1748.8, 4475.9, 1879.7, 756.75, 1842.95, 194.3, 1221.65],
+		wayPath1: [272.1, 897.65, 1116.6, 1049.9, 1497.1, 1399.45, 2760.75, 1395.85, 4371.65, 1380.05, 5325, 1298.85, 7344.7, 1294.7, 8153.35, 1213.2, 9267.05, 1235.1, 10851.4, 1363.75, 13338.05, 1169.55, 13265.9, 1495.65, 12601.1, 1574.45, 11377.75, 1622.5, 10345.35, 1681.15, 9135.95, 1516.15, 8119.2, 1537.05, 6564.85, 1585.3, 5336.3, 1686.6, 4187.05, 1694.65, 2931.3, 1706, 957.05, 1767.65, 305.95, 1219.55],
+	
+		spawnerList: [[["spawner2", 779.85, 1469.3], ["spawner2wp_0", 1578.8, 1564.75], ["spawner2wp_1", 5418.05, 1553.45], ["spawner2wp_2", 7912.25, 1440.4], ["spawner2wp_3", 10082.4, 1522.5], ["spawner2wp_4", 11270.6, 1614.7], ["spawner2wp_5", 13138.15, 986.55]], [["spawner1", 12993, 1405.9], ["spawner1wp_0", 11532.9, 1484.3], ["spawner1wp_1", 8345.4, 1422], ["spawner1wp_2", 5709.8, 1507.55], ["spawner1wp_3", 2363.35, 1638.85], ["spawner1wp_4", 1471.05, 1556.4], ["spawner1wp_5", 468.5, 936.5]]],
+	
+		environmentList: [["pine", 3998, 352, 1, 0.439788818359375], ["pine", 4378.2, 372.2, 1, 0.439788818359375], ["pine", 4746.45, 361.25, 1, 0.439788818359375], ["pine", 5010.85, 360.65, 1, 0.439788818359375], ["pine", 5157.2, 456.25, 1, 0.439788818359375], ["pine", 5380.5, 419.95, 1, 0.439788818359375], ["pine", 5512.7, 447.7, 1, 0.439788818359375], ["pine", 5644.9, 306.6, 1, 0.439788818359375], ["pine", 5777.1, 447.1, 1, 0.439788818359375], ["pine", 5961, 419, 1, 0.439788818359375], ["pine", 6521.7, 270.6, 1, 0.439788818359375], ["pine", 6766, 258.35, 1, 0.439788818359375], ["pine", 6891.35, 270, 1, 0.439788818359375], ["pine", 7196.4, 257.75, 1, 0.439788818359375], ["pine", 7545.65, 269.65, 1, 0.439788818359375], ["pine", 6211.2, 419.9, 1, 0.439788818359375], ["pine", 7328.6, 257.45, 1, 0.439788818359375], ["pine", 7853.2, 202.2, 1, 0.439788818359375], ["pine", 8579.1, 327.7, 1, 0.439788818359375], ["pine", 8218.05, 284.7, 1, 0.439788818359375], ["pine", 8873.95, 255.4, 1, 0.439788818359375], ["pine", 9118.25, 283.15, 1, 0.439788818359375], ["pine", 9243.6, 254.8, 1, 0.439788818359375], ["pine", 9548.65, 282.55, 1, 0.439788818359375], ["pine", 9897.9, 254.45, 1, 0.439788818359375], ["pine", 8948.95, 330.4, 1, 0.439788818359375], ["pine", 9680.85, 282.25, 1, 0.439788818359375], ["pine", 10205.45, 187, 1, 0.439788818359375], ["pine", 10931.35, 312.5, 1, 0.439788818359375], ["pine", 10499, 434.65, 1, 0.439788818359375], ["pine", 11181.1, 165.05, 1, 0.439788818359375], ["pine", 11425.4, 192.8, 1, 0.439788818359375], ["pine", 11550.75, 164.45, 1, 0.439788818359375], ["pine", 11855.8, 192.2, 1, 0.439788818359375], ["pine", 12205.05, 164.1, 1, 0.439788818359375], ["pine", 11256.1, 240.05, 1, 0.439788818359375], ["pine", 11988, 191.9, 1, 0.439788818359375], ["pine", 12512.6, 96.65, 1, 0.439788818359375], ["pine", 13238.5, 222.15, 1, 0.439788818359375], ["pine", 12828.65, 257.95, 1, 0.439788818359375], ["pine", 1698.05, 163.95, 1, 0.439788818359375], ["pine", 2078.25, 184.15, 1, 0.439788818359375], ["pine", 2446.5, 173.2, 1, 0.439788818359375], ["pine", 2710.9, 172.6, 1, 0.439788818359375], ["pine", 2857.25, 252.2, 1, 0.439788818359375], ["pine", 3080.55, 231.9, 1, 0.439788818359375], ["pine", 3212.75, 259.65, 1, 0.439788818359375], ["pine", 3477.15, 259.05, 1, 0.439788818359375], ["pine", 3661.05, 230.95, 1, 0.439788818359375], ["pine", 645.7, 238.95, 1, 0.439788818359375], ["pine", 1025.9, 259.15, 1, 0.439788818359375], ["pine", 1394.15, 248.2, 1, 0.439788818359375], ["pine", 1201.7, 186.2, 1, 0.439788818359375], ["pine", 161.45, 243.95, 1, 0.439788818359375], ["pine", 424.5, 323.2, 1, 0.439788818359375], ["pine", 13428.15, 194.95, 1, 0.439788818359375], ["pine", 13503.15, 269.95, 1, 0.439788818359375], ["pine", 4078, 284, 1, 0.439788818359375], ["pine", 4458.2, 304.2, 1, 0.439788818359375], ["pine", 4826.45, 293.25, 1, 0.439788818359375], ["pine", 5090.85, 292.65, 1, 0.439788818359375], ["pine", 5237.2, 388.25, 1, 0.439788818359375], ["pine", 5460.5, 351.95, 1, 0.439788818359375], ["pine", 5592.7, 379.7, 1, 0.439788818359375], ["pine", 5724.9, 238.6, 1, 0.439788818359375], ["pine", 5857.1, 379.1, 1, 0.439788818359375], ["pine", 6041, 351, 1, 0.439788818359375], ["pine", 6601.7, 202.6, 1, 0.439788818359375], ["pine", 6846, 230.35, 1, 0.439788818359375], ["pine", 6971.35, 202, 1, 0.439788818359375], ["pine", 7276.4, 229.75, 1, 0.439788818359375], ["pine", 7625.65, 201.65, 1, 0.439788818359375], ["pine", 6291.2, 351.9, 1, 0.439788818359375], ["pine", 7408.6, 229.45, 1, 0.439788818359375], ["pine", 7933.2, 134.2, 1, 0.439788818359375], ["pine", 8659.1, 259.7, 1, 0.439788818359375], ["pine", 8298.05, 216.7, 1, 0.439788818359375], ["pine", 8953.95, 187.4, 1, 0.439788818359375], ["pine", 9198.25, 215.15, 1, 0.439788818359375], ["pine", 9323.6, 186.8, 1, 0.439788818359375], ["pine", 9628.65, 214.55, 1, 0.439788818359375], ["pine", 9977.9, 186.45, 1, 0.439788818359375], ["pine", 9028.95, 262.4, 1, 0.439788818359375], ["pine", 9760.85, 214.25, 1, 0.439788818359375], ["pine", 10285.45, 119, 1, 0.439788818359375], ["pine", 11011.35, 244.5, 1, 0.439788818359375], ["pine", 10579, 366.65, 1, 0.439788818359375], ["pine", 11261.1, 97.05, 1, 0.439788818359375], ["pine", 11505.4, 124.8, 1, 0.439788818359375], ["pine", 11630.75, 96.45, 1, 0.439788818359375], ["pine", 11935.8, 124.2, 1, 0.439788818359375], ["pine", 12285.05, 96.1, 1, 0.439788818359375], ["pine", 11336.1, 172.05, 1, 0.439788818359375], ["pine", 12068, 123.9, 1, 0.439788818359375], ["pine", 12592.6, 28.65, 1, 0.439788818359375], ["pine", 13318.5, 154.15, 1, 0.439788818359375], ["pine", 12908.65, 189.95, 1, 0.439788818359375], ["pine", 1778.05, 95.95, 1, 0.439788818359375], ["pine", 2158.25, 116.15, 1, 0.439788818359375], ["pine", 2526.5, 105.2, 1, 0.439788818359375], ["pine", 2790.9, 104.6, 1, 0.439788818359375], ["pine", 2937.25, 200.2, 1, 0.439788818359375], ["pine", 3160.55, 163.9, 1, 0.439788818359375], ["pine", 3292.75, 191.65, 1, 0.439788818359375], ["pine", 3557.15, 191.05, 1, 0.439788818359375], ["pine", 3741.05, 162.95, 1, 0.439788818359375], ["pine", 725.7, 170.95, 1, 0.439788818359375], ["pine", 1105.9, 191.15, 1, 0.439788818359375], ["pine", 1474.15, 180.2, 1, 0.439788818359375], ["pine", 1281.7, 118.2, 1, 0.439788818359375], ["pine", 241.45, 175.95, 1, 0.439788818359375], ["pine", 504.5, 255.2, 1, 0.439788818359375], ["pine", 13508.15, 126.95, 1, 0.439788818359375], ["pine", 13583.15, 201.95, 1, 0.439788818359375], ["pine", 4158, 324, 1, 0.439788818359375], ["pine", 4538.2, 344.2, 1, 0.439788818359375], ["pine", 4906.45, 333.25, 1, 0.439788818359375], ["pine", 5170.85, 332.65, 1, 0.439788818359375], ["pine", 5317.2, 428.25, 1, 0.439788818359375], ["pine", 5540.5, 391.95, 1, 0.439788818359375], ["pine", 5672.7, 419.7, 1, 0.439788818359375], ["pine", 5804.9, 278.6, 1, 0.439788818359375], ["pine", 5937.1, 419.1, 1, 0.439788818359375], ["pine", 6121, 391, 1, 0.439788818359375], ["pine", 6681.7, 242.6, 1, 0.439788818359375], ["pine", 6926, 270.35, 1, 0.439788818359375], ["pine", 7051.35, 242, 1, 0.439788818359375], ["pine", 7356.4, 269.75, 1, 0.439788818359375], ["pine", 7705.65, 241.65, 1, 0.439788818359375], ["pine", 6371.2, 391.9, 1, 0.439788818359375], ["pine", 7488.6, 269.45, 1, 0.439788818359375], ["pine", 8013.2, 174.2, 1, 0.439788818359375], ["pine", 8739.1, 299.7, 1, 0.439788818359375], ["pine", 8378.05, 256.7, 1, 0.439788818359375], ["pine", 9033.95, 227.4, 1, 0.439788818359375], ["pine", 9278.25, 255.15, 1, 0.439788818359375], ["pine", 9403.6, 226.8, 1, 0.439788818359375], ["pine", 9708.65, 254.55, 1, 0.439788818359375], ["pine", 10057.9, 226.45, 1, 0.439788818359375], ["pine", 9108.95, 302.4, 1, 0.439788818359375], ["pine", 9840.85, 254.25, 1, 0.439788818359375], ["pine", 10365.45, 159, 1, 0.439788818359375], ["pine", 11091.35, 284.5, 1, 0.439788818359375], ["pine", 10659, 406.65, 1, 0.439788818359375], ["pine", 11341.1, 137.05, 1, 0.439788818359375], ["pine", 11585.4, 164.8, 1, 0.439788818359375], ["pine", 11710.75, 136.45, 1, 0.439788818359375], ["pine", 12015.8, 164.2, 1, 0.439788818359375], ["pine", 12365.05, 136.1, 1, 0.439788818359375], ["pine", 11416.1, 212.05, 1, 0.439788818359375], ["pine", 12148, 163.9, 1, 0.439788818359375], ["pine", 12672.6, 68.65, 1, 0.439788818359375], ["pine", 13398.5, 194.15, 1, 0.439788818359375], ["pine", 12988.65, 229.95, 1, 0.439788818359375], ["pine", 1858.05, 135.95, 1, 0.439788818359375], ["pine", 2238.25, 156.15, 1, 0.439788818359375], ["pine", 2606.5, 145.2, 1, 0.439788818359375], ["pine", 2870.9, 144.6, 1, 0.439788818359375], ["pine", 3017.25, 240.2, 1, 0.439788818359375], ["pine", 3240.55, 203.9, 1, 0.439788818359375], ["pine", 3372.75, 231.65, 1, 0.439788818359375], ["pine", 3637.15, 231.05, 1, 0.439788818359375], ["pine", 3821.05, 202.95, 1, 0.439788818359375], ["pine", 805.7, 210.95, 1, 0.439788818359375], ["pine", 1185.9, 231.15, 1, 0.439788818359375], ["pine", 1554.15, 220.2, 1, 0.439788818359375], ["pine", 1361.7, 158.2, 1, 0.439788818359375], ["pine", 321.45, 215.95, 1, 0.439788818359375], ["pine", 584.5, 295.2, 1, 0.439788818359375], ["pine", 13588.15, 166.95, 1, 0.439788818359375], ["pine", 4198, 364, 1, 0.439788818359375], ["pine", 4578.2, 384.2, 1, 0.439788818359375], ["pine", 4946.45, 373.25, 1, 0.439788818359375], ["pine", 5210.85, 372.65, 1, 0.439788818359375], ["pine", 5357.2, 468.25, 1, 0.439788818359375], ["pine", 5580.5, 431.95, 1, 0.439788818359375], ["pine", 5712.7, 459.7, 1, 0.439788818359375], ["pine", 5844.9, 318.6, 1, 0.439788818359375], ["pine", 5977.1, 459.1, 1, 0.439788818359375], ["pine", 6161, 431, 1, 0.439788818359375], ["pine", 6721.7, 282.6, 1, 0.439788818359375], ["pine", 6966, 230.35, 1, 0.439788818359375], ["pine", 7091.35, 282, 1, 0.439788818359375], ["pine", 7396.4, 269.75, 1, 0.439788818359375], ["pine", 7745.65, 281.65, 1, 0.439788818359375], ["pine", 6411.2, 351.9, 1, 0.439788818359375], ["pine", 7528.6, 269.45, 1, 0.439788818359375], ["pine", 8053.2, 214.2, 1, 0.439788818359375], ["pine", 8779.1, 339.7, 1, 0.439788818359375], ["pine", 8418.05, 296.7, 1, 0.439788818359375], ["pine", 9073.95, 267.4, 1, 0.439788818359375], ["pine", 9318.25, 295.15, 1, 0.439788818359375], ["pine", 9443.6, 266.8, 1, 0.439788818359375], ["pine", 9748.65, 294.55, 1, 0.439788818359375], ["pine", 10097.9, 266.45, 1, 0.439788818359375], ["pine", 9148.95, 342.4, 1, 0.439788818359375], ["pine", 9880.85, 294.25, 1, 0.439788818359375], ["pine", 10405.45, 199, 1, 0.439788818359375], ["pine", 11131.35, 324.5, 1, 0.439788818359375], ["pine", 10699, 406.65, 1, 0.439788818359375], ["pine", 11381.1, 177.05, 1, 0.439788818359375], ["pine", 11625.4, 204.8, 1, 0.439788818359375], ["pine", 11750.75, 176.45, 1, 0.439788818359375], ["pine", 12055.8, 204.2, 1, 0.439788818359375], ["pine", 12405.05, 176.1, 1, 0.439788818359375], ["pine", 11456.1, 252.05, 1, 0.439788818359375], ["pine", 12188, 203.9, 1, 0.439788818359375], ["pine", 12712.6, 108.65, 1, 0.439788818359375], ["pine", 13438.5, 234.15, 1, 0.439788818359375], ["pine", 13028.65, 269.95, 1, 0.439788818359375], ["pine", 1898.05, 175.95, 1, 0.439788818359375], ["pine", 2278.25, 196.15, 1, 0.439788818359375], ["pine", 2646.5, 185.2, 1, 0.439788818359375], ["pine", 2910.9, 184.6, 1, 0.439788818359375], ["pine", 3057.25, 264.2, 1, 0.439788818359375], ["pine", 3280.55, 243.9, 1, 0.439788818359375], ["pine", 3412.75, 271.65, 1, 0.439788818359375], ["pine", 3677.15, 271.05, 1, 0.439788818359375], ["pine", 3861.05, 242.95, 1, 0.439788818359375], ["pine", 845.7, 250.95, 1, 0.439788818359375], ["pine", 1225.9, 271.15, 1, 0.439788818359375], ["pine", 1594.15, 260.2, 1, 0.439788818359375], ["pine", 1401.7, 198.2, 1, 0.439788818359375], ["pine", 361.45, 255.95, 1, 0.439788818359375], ["pine", 624.5, 335.2, 1, 0.439788818359375], ["pine", 4318, 432, 1, 0.439788818359375], ["pine", 4698.2, 452.2, 1, 0.439788818359375], ["pine", 5066.45, 441.25, 1, 0.439788818359375], ["pine", 5330.85, 440.65, 1, 0.439788818359375], ["pine", 5477.2, 536.25, 1, 0.439788818359375], ["pine", 5700.5, 499.95, 1, 0.439788818359375], ["pine", 5832.7, 527.7, 1, 0.439788818359375], ["pine", 5964.9, 386.6, 1, 0.439788818359375], ["pine", 6097.1, 527.1, 1, 0.439788818359375], ["pine", 6281, 419, 1, 0.439788818359375], ["pine", 6841.7, 270.6, 1, 0.439788818359375], ["pine", 7211.35, 270, 1, 0.439788818359375], ["pine", 7516.4, 257.75, 1, 0.439788818359375], ["pine", 7865.65, 269.65, 1, 0.439788818359375], ["pine", 7648.6, 297.45, 1, 0.439788818359375], ["pine", 8173.2, 282.2, 1, 0.439788818359375], ["pine", 8899.1, 407.7, 1, 0.439788818359375], ["pine", 8538.05, 364.7, 1, 0.439788818359375], ["pine", 9193.95, 335.4, 1, 0.439788818359375], ["pine", 9438.25, 363.15, 1, 0.439788818359375], ["pine", 9563.6, 334.8, 1, 0.439788818359375], ["pine", 9868.65, 362.55, 1, 0.439788818359375], ["pine", 10217.9, 334.45, 1, 0.439788818359375], ["pine", 9268.95, 410.4, 1, 0.439788818359375], ["pine", 10000.85, 362.25, 1, 0.439788818359375], ["pine", 10525.45, 267, 1, 0.439788818359375], ["pine", 11251.35, 272.5, 1, 0.439788818359375], ["pine", 10404.25, 500.8, 1, 0.439788818359375], ["pine", 11501.1, 245.05, 1, 0.439788818359375], ["pine", 11745.4, 232.8, 1, 0.439788818359375], ["pine", 11870.75, 244.45, 1, 0.439788818359375], ["pine", 12175.8, 232.2, 1, 0.439788818359375], ["pine", 12525.05, 204.1, 1, 0.439788818359375], ["pine", 11576.1, 240.05, 1, 0.439788818359375], ["pine", 12308, 191.9, 1, 0.439788818359375], ["pine", 12832.6, 176.65, 1, 0.439788818359375], ["pine", 13558.5, 302.15, 1, 0.439788818359375], ["pine", 13148.65, 297.95, 1, 0.439788818359375], ["pine", 2018.05, 243.95, 1, 0.439788818359375], ["pine", 2398.25, 264.15, 1, 0.439788818359375], ["pine", 2766.5, 253.2, 1, 0.439788818359375], ["pine", 3030.9, 252.6, 1, 0.439788818359375], ["pine", 3177.25, 268.2, 1, 0.439788818359375], ["pine", 3400.55, 311.9, 1, 0.439788818359375], ["pine", 3532.75, 339.65, 1, 0.439788818359375], ["pine", 3797.15, 339.05, 1, 0.439788818359375], ["pine", 3981.05, 310.95, 1, 0.439788818359375], ["pine", 965.7, 238.95, 1, 0.439788818359375], ["pine", 1345.9, 259.15, 1, 0.439788818359375], ["pine", 1714.15, 248.2, 1, 0.439788818359375], ["pine", 1521.7, 266.2, 1, 0.439788818359375], ["pine", 481.45, 323.95, 1, 0.439788818359375], ["pine", 744.5, 323.2, 1, 0.439788818359375], ["rock2", 5337.6, 1732.8, 1, 0.4000244140625], ["pine", 430.5, 488.05, 1, 0.439788818359375], ["pine", 218.2, 417.15, 1, 0.439788818359375], ["pine", 161.5, 516.8, 1, 0.439788818359375], ["pine", 4037.8, 487.9, 1, 0.439788818359375], ["pine", 3825.5, 417, 1, 0.439788818359375], ["pine", 3768.8, 476.65, 1, 0.439788818359375], ["pine", 4578.75, 480.2, 1, 0.439788818359375], ["pine", 4366.45, 409.3, 1, 0.439788818359375], ["pine", 4309.75, 508.95, 1, 0.439788818359375], ["pine", 5104.7, 555.2, 1, 0.439788818359375], ["pine", 4892.4, 484.3, 1, 0.439788818359375], ["pine", 4779.65, 583.95, 1, 0.439788818359375], ["pine", 5405.3, 555.2, 1, 0.439788818359375], ["pine", 5931.25, 630.2, 1, 0.439788818359375], ["pine", 5718.95, 559.3, 1, 0.439788818359375], ["pine", 5606.2, 658.95, 1, 0.439788818359375], ["pine", 8592.35, 481, 1, 0.439788818359375], ["pine", 9118.3, 556, 1, 0.439788818359375], ["pine", 8906, 485.1, 1, 0.439788818359375], ["pine", 8793.25, 584.75, 1, 0.439788818359375], ["pine", 9372, 452.3, 1, 0.439788818359375], ["pine", 9897.95, 527.3, 1, 0.439788818359375], ["pine", 9685.65, 456.4, 1, 0.439788818359375], ["pine", 9572.9, 556.05, 1, 0.439788818359375], ["pine", 8412.15, 428.45, 1, 0.439788818359375], ["pine", 8183.15, 425.95, 1, 0.439788818359375], ["rock1", 4325.6, 652.85, 1, 0.4071197509765625], ["bush", 5243.05, 573.35, 1, 0.2498931884765625], ["bush", 4962.95, 588.55, 1, 0.2498931884765625], ["bush", 5445.6, 645.15, 1, 0.2498931884765625], ["rock1", 4637.15, 636.85, 1, 0.4071197509765625], ["rock2", 5740.45, 558.15, 1, 0.4000244140625], ["rock2", 5807.8, 591.35, 1, 0.2657318115234375], ["rock2", 5674.75, 628.05, 1, 0.2657318115234375], ["bush", 5270.25, 653.9, 1, 0.384490966796875], ["bush", 4905.3, 623.95, 1, 0.2498931884765625], ["bush", 5062.6, 625.5, 1, 0.2498931884765625], ["rock1", 4405.4, 525.65, 1, 0.746917724609375], ["rock1", 4600.8, 653, -1, 0.4071197509765625], ["rock2", 4687.3, 557.1, 1, 0.2657318115234375], ["rock2", 4274.4, 573.1, 1, 0.2657318115234375], ["rock2", 4524.25, 562.05, 1, 0.2657318115234375], ["rock1", 4402.55, 563.4, 1, 0.2331695556640625], ["bush", 4730.85, 681.95, 1, 0.312164306640625], ["bush", 4142.05, 538.6, 1, 0.388397216796875], ["bush", 4968.4, 699, 1, 0.384490966796875], ["rock1", 8608.15, 556.7, 1, 0.4071197509765625], ["bush", 9967.75, 489.35, 1, 0.2498931884765625], ["rock1", 10171.5, 369.9, 1, 0.4071197509765625], ["rock2", 10718.65, 264.8, 1, 0.4000244140625], ["rock2", 10786, 298, 1, 0.2657318115234375], ["rock2", 10652.95, 334.7, 1, 0.2657318115234375], ["bush", 9737.6, 420.45, 1, 0.384490966796875], ["bush", 9988.25, 396.8, 1, 0.2498931884765625], ["rock1", 8710.5, 425.75, 1, 0.746917724609375], ["rock1", 9057.9, 498.7, -1, 0.4071197509765625], ["rock2", 10241.65, 440.15, 1, 0.2657318115234375], ["rock2", 8772.3, 570.35, 1, 0.2657318115234375], ["rock2", 10078.6, 445.1, 1, 0.2657318115234375], ["rock1", 8907.8, 589.1, 1, 0.2331695556640625], ["bush", 9248.7, 417.15, 1, 0.312164306640625], ["bush", 8485.9, 449.4, 1, 0.388397216796875], ["bush", 9614.95, 447, -1, 0.384490966796875], ["rock2", 8868.25, 549.9, 1, 0.2657318115234375], ["rock2", 9011.1, 568.9, 1, 0.2657318115234375], ["rock2", 266, 580.15, 1, 0.4000244140625], ["rock2", 301.9, 525.55, 1, 0.2657318115234375], ["rock2", 168.85, 562.25, 1, 0.2657318115234375], ["rock2", 13667.1, 382.55, -1, 0.4000244140625], ["rock2", 13567.2, 267.5, 1, 0.2657318115234375], ["rock2", 13559.9, 467.5, 1, 0.2657318115234375], ["rock2", 13695.5, 524.6, -1, 0.7036590576171875], ["rock2", 13507.4, 483.55, 1, 0.2657318115234375], ["rock2", 13528.25, 649.75, 1, 0.2657318115234375], ["rock2", 1442.8, 1124.8, 1, 0.2203826904296875], ["rock2", 1507.4, 1090, 1, 0.2657318115234375], ["rock2", 1362.45, 1135.6, 1, 0.3255767822265625], ["rock2", 1306.1, 1098, 1, 0.2657318115234375], ["rock2", 1255.15, 1061.4, 1, 0.2021484375], ["rock2", 1236.45, 1013.7, 1, 0.1805572509765625], ["rock2", 1545.5, 1056.8, 1, 0.2657318115234375], ["rock2", 1556.65, 1015.35, 1, 0.158966064453125], ["rock2", 1568.5, 967.4, 1, 0.2657318115234375], ["rock2", 1548.55, 920.9, 1, 0.1590576171875], ["rock2", 1534.25, 876.9, 1, 0.2657318115234375], ["rock2", 1476.25, 823.65, 1, 0.2653045654296875], ["rock2", 1395.05, 804.05, 1, 0.4000244140625], ["rock2", 1307.35, 831.55, 1, 0.264984130859375], ["rock2", 1213.65, 979.5, 1, 0.1888275146484375], ["rock2", 1227.3, 917.45, 1, 0.1988067626953125], ["rock2", 1262, 869.5, 1, 0.1845245361328125], ["pine", 3946, 2297.95, 1, 0.439788818359375], ["pine", 4326.2, 2374.2, 1, 0.439788818359375], ["pine", 4694.45, 2307.2, 1, 0.439788818359375], ["pine", 4958.85, 2250.55, 1, 0.439788818359375], ["pine", 5291.65, 2238.1, 1, 0.439788818359375], ["pine", 5592.9, 2252.55, 1, 0.439788818359375], ["pine", 5968.85, 2136.95, 1, 0.439788818359375], ["pine", 6244.2, 2271.95, 1, 0.439788818359375], ["pine", 6572.6, 2337.15, 1, 0.439788818359375], ["pine", 6825.55, 2328.95, 1, 0.439788818359375], ["pine", 7061.7, 2208.9, 1, 0.439788818359375], ["pine", 7493.65, 2173.3, 1, 0.439788818359375], ["pine", 7304.55, 2313.4, 1, 0.439788818359375], ["pine", 7801.2, 2143.45, 1, 0.439788818359375], ["pine", 8376.8, 2156.2, 1, 0.439788818359375], ["pine", 8068.35, 2158.3, 1, 0.439788818359375], ["pine", 8716.75, 2129, 1, 0.439788818359375], ["pine", 8925.7, 2260.75, 1, 0.439788818359375], ["pine", 9191.6, 2368.9, 1, 0.439788818359375], ["pine", 9496.65, 2396.65, 1, 0.439788818359375], ["pine", 9845.9, 2368.55, 1, 0.439788818359375], ["pine", 9628.85, 2396.35, 1, 0.439788818359375], ["pine", 10153.45, 2301.1, 1, 0.439788818359375], ["pine", 10879.35, 2426.6, 1, 0.439788818359375], ["pine", 10447, 2390.9, 1, 0.439788818359375], ["pine", 11129.1, 2279.15, 1, 0.439788818359375], ["pine", 11373.4, 2306.9, 1, 0.439788818359375], ["pine", 11498.75, 2278.55, 1, 0.439788818359375], ["pine", 11803.8, 2306.3, 1, 0.439788818359375], ["pine", 12153.05, 2278.2, 1, 0.439788818359375], ["pine", 11204.1, 2354.15, 1, 0.439788818359375], ["pine", 11936, 2306, 1, 0.439788818359375], ["pine", 12460.6, 2323.45, 1, 0.439788818359375], ["pine", 13186.5, 2268.6, 1, 0.439788818359375], ["pine", 12776.65, 2372.05, 1, 0.439788818359375], ["pine", 1646.05, 2278.05, 1, 0.439788818359375], ["pine", 2026.25, 2298.25, 1, 0.439788818359375], ["pine", 2394.5, 2287.3, 1, 0.439788818359375], ["pine", 2658.9, 2286.7, 1, 0.439788818359375], ["pine", 2805.25, 2382.3, 1, 0.439788818359375], ["pine", 3028.55, 2346, 1, 0.439788818359375], ["pine", 3160.75, 2261.65, 1, 0.439788818359375], ["pine", 3425.15, 2373.15, 1, 0.439788818359375], ["pine", 3609.05, 2345.05, 1, 0.439788818359375], ["pine", 593.7, 2247.85, 1, 0.439788818359375], ["pine", 973.9, 2373.25, 1, 0.439788818359375], ["pine", 1342.15, 2362.3, 1, 0.439788818359375], ["pine", 1149.7, 2300.3, 1, 0.439788818359375], ["pine", 105.25, 1839.95, 1, 0.439788818359375], ["pine", 283.1, 2041.4, 1, 0.439788818359375], ["pine", 202.75, 2210.1, 1, 0.439788818359375], ["pine", 13487, 1501.9, 1, 0.439788818359375], ["pine", 13505.95, 1689, 1, 0.439788818359375], ["pine", 13412.8, 1988.35, 1, 0.439788818359375], ["pine", 4078, 2337.95, 1, 0.439788818359375], ["pine", 4458.2, 2414.2, 1, 0.439788818359375], ["pine", 4826.45, 2347.2, 1, 0.439788818359375], ["pine", 5090.85, 2290.55, 1, 0.439788818359375], ["pine", 5423.65, 2278.1, 1, 0.439788818359375], ["pine", 5724.9, 2292.55, 1, 0.439788818359375], ["pine", 6100.85, 2176.95, 1, 0.439788818359375], ["pine", 6376.2, 2311.95, 1, 0.439788818359375], ["pine", 6704.6, 2377.15, 1, 0.439788818359375], ["pine", 6957.55, 2368.95, 1, 0.439788818359375], ["pine", 7193.7, 2248.9, 1, 0.439788818359375], ["pine", 7625.65, 2213.3, 1, 0.439788818359375], ["pine", 7436.55, 2353.4, 1, 0.439788818359375], ["pine", 7933.2, 2183.45, 1, 0.439788818359375], ["pine", 8508.8, 2196.2, 1, 0.439788818359375], ["pine", 8200.35, 2198.3, 1, 0.439788818359375], ["pine", 8848.75, 2169, 1, 0.439788818359375], ["pine", 9057.7, 2300.75, 1, 0.439788818359375], ["pine", 9323.6, 2408.9, 1, 0.439788818359375], ["pine", 9628.65, 2436.65, 1, 0.439788818359375], ["pine", 9977.9, 2408.55, 1, 0.439788818359375], ["pine", 9760.85, 2436.35, 1, 0.439788818359375], ["pine", 10285.45, 2341.1, 1, 0.439788818359375], ["pine", 11011.35, 2466.6, 1, 0.439788818359375], ["pine", 10579, 2430.9, 1, 0.439788818359375], ["pine", 11261.1, 2319.15, 1, 0.439788818359375], ["pine", 11505.4, 2346.9, 1, 0.439788818359375], ["pine", 11630.75, 2318.55, 1, 0.439788818359375], ["pine", 11935.8, 2346.3, 1, 0.439788818359375], ["pine", 12285.05, 2318.2, 1, 0.439788818359375], ["pine", 11336.1, 2394.15, 1, 0.439788818359375], ["pine", 12068, 2346, 1, 0.439788818359375], ["pine", 12592.6, 2363.45, 1, 0.439788818359375], ["pine", 13318.5, 2308.6, 1, 0.439788818359375], ["pine", 12908.65, 2412.05, 1, 0.439788818359375], ["pine", 1778.05, 2318.05, 1, 0.439788818359375], ["pine", 2158.25, 2338.25, 1, 0.439788818359375], ["pine", 2526.5, 2327.3, 1, 0.439788818359375], ["pine", 2790.9, 2326.7, 1, 0.439788818359375], ["pine", 2937.25, 2422.3, 1, 0.439788818359375], ["pine", 3160.55, 2386, 1, 0.439788818359375], ["pine", 3292.75, 2301.65, 1, 0.439788818359375], ["pine", 3557.15, 2413.15, 1, 0.439788818359375], ["pine", 3741.05, 2385.05, 1, 0.439788818359375], ["pine", 725.7, 2287.85, 1, 0.439788818359375], ["pine", 1105.9, 2413.25, 1, 0.439788818359375], ["pine", 1474.15, 2402.3, 1, 0.439788818359375], ["pine", 1281.7, 2340.3, 1, 0.439788818359375], ["pine", 237.25, 1879.95, 1, 0.439788818359375], ["pine", 415.1, 2081.4, 1, 0.439788818359375], ["pine", 334.75, 2250.1, 1, 0.439788818359375], ["pine", 13619, 1541.9, 1, 0.439788818359375], ["pine", 13637.95, 1729, 1, 0.439788818359375], ["pine", 13544.8, 2028.35, 1, 0.439788818359375]]
 	};
 
 /***/ },
@@ -28535,6 +28547,10 @@
 	
 	var _StandardBullet2 = _interopRequireDefault(_StandardBullet);
 	
+	var _TowerBullet = __webpack_require__(158);
+	
+	var _TowerBullet2 = _interopRequireDefault(_TowerBullet);
+	
 	var _Rock = __webpack_require__(152);
 	
 	var _Rock2 = _interopRequireDefault(_Rock);
@@ -28550,6 +28566,10 @@
 	var _Tower = __webpack_require__(156);
 	
 	var _Tower2 = _interopRequireDefault(_Tower);
+	
+	var _Spawner = __webpack_require__(157);
+	
+	var _Spawner2 = _interopRequireDefault(_Spawner);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28572,39 +28592,71 @@
 			_this.gameContainer = new _pixi2.default.Container();
 			_this.addChild(_this.gameContainer);
 	
-			_this.polyPts = [80, 700, 820, 289, 1397, 279, 1821, 740, 2524, 764, 2850, 303, 3450, 307, 3846, 768, 4377, 657, 4861, 293, 5625, 242, 5909, 391, 5909, 1681, 5690, 1914, 4456, 1886, 3953, 1644, 2566, 1662, 1946, 1877, 778, 1844, 74, 1215, 80, 700];
-			// this.poly = new PIXI.Polygon(this.polyPts);
+			_this.gameContainer.scale.set(0.3);
 	
+			_this.polyPts = _config2.default.worldBounds;
+			var worldBoundsGraphic = new _pixi2.default.Graphics();
+			worldBoundsGraphic.beginFill(0xffffff);
+			worldBoundsGraphic.alpha = 0.1;
+			worldBoundsGraphic.drawPolygon(_this.polyPts);
+			worldBoundsGraphic.endFill();
 	
-			var graphics = new _pixi2.default.Graphics();
-			graphics.beginFill(0xffffff);
-			graphics.alpha = 0.5;
-			graphics.drawPolygon(_this.polyPts);
-			graphics.endFill();
+			_this.gameContainer.addChild(worldBoundsGraphic);
+	
+			var wayPath1 = new _pixi2.default.Graphics();
+			wayPath1.beginFill(0xffffff);
+			wayPath1.alpha = 0.1;
+			wayPath1.drawPolygon(_config2.default.wayPath1);
+			wayPath1.endFill();
+	
+			_this.gameContainer.addChild(wayPath1);
 	
 			_this.worldPolygon = new _pixi2.default.Polygon(_this.polyPts);
-	
-			_this.worldBounds = { x: 80, y: 300, w: 6000, h: 2000 };
-			_this.gameContainer.addChild(graphics);
+			_this.worldBounds = { x: 0, y: 0, w: 6000, h: 2000 };
 	
 			_this.entityContainer = new _pixi2.default.Container();
 			_this.gameContainer.addChild(_this.entityContainer);
 	
-			_this.cupcake = new _Cupcake2.default(_this, { x: 300, y: 1200 });
+			_this.cupcake = new _Cupcake2.default(_this, { x: _config2.default.playerPositions[0][1], y: _config2.default.playerPositions[0][2] }, 0);
 			_this.entityContainer.addChild(_this.cupcake);
 			_this.addOnUpdateList(_this.cupcake);
 	
-			_this.tower = new _Tower2.default(_this);
-			_this.entityContainer.addChild(_this.tower);
-			_this.addOnUpdateList(_this.tower);
+			_this.spawnerList = [];
+			for (var i = 0; i < _config2.default.spawnerList.length; i++) {
+				var spawnerData = _config2.default.spawnerList[i];
+				var spawner = new _Spawner2.default(_this, i);
+				_this.entityContainer.addChild(spawner);
+				_this.addOnUpdateList(spawner);
+				_this.spawnerList.push(spawner);
+				spawner.x = spawnerData[0][1];
+				spawner.y = spawnerData[0][2];
+				spawner.build();
+				_this.setScales(spawner);
+	
+				for (var j = 1; j < _config2.default.spawnerList[i].length; j++) {
+					spawner.addWaypoint(_config2.default.spawnerList[i][j][1], _config2.default.spawnerList[i][j][2]);
+				}
+			}
+	
+			console.log(_config2.default.towerList);
 			_this.towerList = [];
-			_this.towerList.push(_this.tower);
-			_this.tower.x = 250;
-			_this.tower.y = 1000;
+			for (var i = 0; i < _config2.default.towerList.length; i++) {
+				for (var j = 0; j < _config2.default.towerList[i].length; j++) {
+					var towerData = _config2.default.towerList[i][j];
+					console.log(towerData);
+					var tower = new _Tower2.default(_this, i);
+					tower.name = towerData[0];
+					_this.entityContainer.addChild(tower);
+					_this.addOnUpdateList(tower);
+					_this.towerList.push(tower);
+					tower.x = towerData[1];
+					tower.y = towerData[2];
 	
-			_this.setScales(_this.tower);
+					_this.setScales(tower);
 	
-			_this.tower.build();
+					tower.build();
+				}
+			}
 			// this.cupcake.x = this.worldBounds.w / 2 + this.worldBounds.x
 			// this.cupcake.y = this.worldBounds.h / 2 + this.worldBounds.y;
 	
@@ -28613,35 +28665,8 @@
 	
 	
 			_this.enemyList = [];
-			var acc = 50;
-			for (var i = 0; i < 25; i++) {
-	
-				var tempEnemy = new _StandardEnemy2.default(_this);
-				_this.entityContainer.addChild(tempEnemy);
-				_this.addOnUpdateList(tempEnemy);
-	
-				var tempPos = { x: _this.worldBounds.w * Math.random() + _this.worldBounds.x, y: _this.worldBounds.h * Math.random() + _this.worldBounds.y };
-				while (_this.worldCollision(tempPos.x, tempPos.y)) {
-					tempPos = { x: _this.worldBounds.w * Math.random() + _this.worldBounds.x, y: _this.worldBounds.h * Math.random() + _this.worldBounds.y };
-				}
-	
-				tempEnemy.x = 500 + acc * i;
-				tempEnemy.y = 1000 + Math.random() + Math.random() * 50 - 25;
-				tempEnemy.build();
-	
-				tempEnemy.setTarget({ x: _this.tower.x, y: _this.tower.y });
-				_this.enemyList.push(tempEnemy);
-			}
-	
-			// var debug3 = new PIXI.Graphics();
-			// debug3.beginFill(0xff0000);
-			// debug3.drawCircle(0,0,20);
-			// debug3.x = 500;
-			// debug3.y = 1200;
-	
-			// this.gameContainer.addChild(debug3)
-	
-			// for (var i = 0; i < 200; i++) {
+			// let acc = 50
+			// for (var i = 0; i < 25; i++) {
 	
 			// 	let tempEnemy = new StandardEnemy(this);
 			// 	this.entityContainer.addChild(tempEnemy)
@@ -28653,41 +28678,43 @@
 			// 		tempPos = {x:this.worldBounds.w * Math.random() + this.worldBounds.x, y:this.worldBounds.h * Math.random() + this.worldBounds.y}
 			// 	}
 	
-			// 	tempEnemy.x = tempPos.x;
-			// 	tempEnemy.y = tempPos.y;
+			// 	tempEnemy.x = 500 + acc * i;
+			// 	tempEnemy.y = 1000 + Math.random() + Math.random() * 50 - 25;
+			// 	tempEnemy.build();
+	
+	
+			// 	tempEnemy.setTarget({x:this.towerList[0].x,y:this.towerList[0].y})
 			// 	this.enemyList.push(tempEnemy);
-	
 			// }
+	
 			_this.environmentList = [];
-			for (var i = 0; i < 200; i++) {
-				var rock;
-				var rnd = Math.random();
-				if (rnd < 0.1) {
-					rock = new _Pine2.default(_this);
-					//rock = new Rock(this);
-				} else if (rnd < 0.8) {
-					rock = new _Rock2.default(_this);
-				} else {
-					rock = new _Bush2.default(_this);
+			for (var i = 0; i < _config2.default.environmentList.length; i++) {
+				var envData = _config2.default.environmentList[i];
+				// console.log(envData);
+				var environmentEntity;
+	
+				if (envData[0] == 'pine') {
+					environmentEntity = new _Pine2.default(_this, true);
+				} else if (envData[0].indexOf('rock') !== -1) {
+					console.log(envData[0]);
+					environmentEntity = new _Rock2.default(_this, true);
+				} else if (envData[0].indexOf('bush') !== -1) {
+					environmentEntity = new _Bush2.default(_this, true);
 				}
 	
-				_this.entityContainer.addChild(rock);
-				_this.addOnUpdateList(rock);
+				_this.entityContainer.addChild(environmentEntity);
+				//this.addOnUpdateList(environmentEntity)
 	
-				var _tempPos = { x: _this.worldBounds.w * Math.random() + _this.worldBounds.x, y: _this.worldBounds.h * Math.random() + _this.worldBounds.y };
+				environmentEntity.x = envData[1];
+				environmentEntity.y = envData[2];
 	
-				while (_this.worldCollision(_tempPos.x, _tempPos.y)) {
-					_tempPos = { x: _this.worldBounds.w * Math.random() + _this.worldBounds.x, y: _this.worldBounds.h * Math.random() + _this.worldBounds.y };
-				}
-				rock.x = _tempPos.x;
-				rock.y = _tempPos.y;
+				environmentEntity.side = envData[3];
+				environmentEntity.starterScale = envData[4] * 2;
 	
-				// rock.side = rock.x < config.width/2 ? 1 : -1;
-				rock.side = Math.random() < 0.5 ? 1 : -1;
-				// rock.y = Math.random() < 0.6? Math.random() * (config.height * 0.2) + config.height * 0.2: Math.random() * (this.worldBounds.h * 0.5) + config.height * 0.7;
-				_this.setScales(rock);
+				// environmentEntity.y = Math.random() < 0.6? Math.random() * (config.height * 0.2) + config.height * 0.2: Math.random() * (this.worldBounds.h * 0.5) + config.height * 0.7;
+				_this.setScales(environmentEntity);
 	
-				_this.environmentList.push(rock);
+				_this.environmentList.push(environmentEntity);
 			}
 	
 			_this.updateable = true;
@@ -28702,25 +28729,57 @@
 			_this.bulletList = [];
 	
 			_this.camera = new _Camera2.default(_this, _this.gameContainer);
-			_this.camera.follow(_this.cupcake);
+			_this.speedUpValue = 1;
+	
+			_this.initGame();
 	
 			return _this;
 		}
 	
 		_createClass(PrototypeScreen, [{
+			key: 'initGame',
+			value: function initGame() {
+				this.speedUpValue = 1;
+				for (var i = this.spawnerList.length - 1; i >= 0; i--) {
+					this.spawnerList[i].start();
+				}
+			}
+		}, {
+			key: 'addEnemy',
+			value: function addEnemy(type, position, waypoints, team) {
+	
+				var tempEnemy = new _StandardEnemy2.default(this, team);
+	
+				tempEnemy.setWaypoints(waypoints);
+	
+				this.entityContainer.addChild(tempEnemy);
+				this.addOnUpdateList(tempEnemy);
+	
+				tempEnemy.x = position.x;
+				tempEnemy.y = position.y;
+	
+				tempEnemy.build();
+	
+				// tempEnemy.setTarget({x:this.towerList[0].x,y:this.towerList[0].y})
+				this.enemyList.push(tempEnemy);
+			}
+		}, {
 			key: 'build',
 			value: function build() {
 				this.lastAction = null;
 				_get(PrototypeScreen.prototype.__proto__ || Object.getPrototypeOf(PrototypeScreen.prototype), 'build', this).call(this);
 	
-				console.log(this.worldCollision(this.cupcake));
+				this.camera.follow(this.cupcake);
 			}
 		}, {
 			key: 'update',
 			value: function update(delta) {
-				_get(PrototypeScreen.prototype.__proto__ || Object.getPrototypeOf(PrototypeScreen.prototype), 'update', this).call(this, delta);
 	
-				this.camera.update(delta);
+				var newDelta = delta * this.speedUpValue;
+	
+				_get(PrototypeScreen.prototype.__proto__ || Object.getPrototypeOf(PrototypeScreen.prototype), 'update', this).call(this, newDelta);
+	
+				this.camera.update(newDelta);
 				this.inputManager.update();
 	
 				//let scaleFactor = 
@@ -28761,7 +28820,7 @@
 						var distFactor = entity.getExternalRadius() * 4;
 						if (dist < distFactor) {
 	
-							this.environmentList[i].updateAlpha(dist / distFactor * 0.8 + 0.2);
+							this.environmentList[i].updateAlpha(dist / distFactor * 0.9 + 0.1);
 	
 							// let angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14
 							// let ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
@@ -28816,7 +28875,7 @@
 			}
 		}, {
 			key: 'getExternalColisionList',
-			value: function getExternalColisionList(entity, type) {
+			value: function getExternalColisionList(entity, type, rival) {
 				if (!entity.collidable) {
 					return;
 				}
@@ -28825,16 +28884,18 @@
 	
 				for (var i = 0; i < entitiesList.length; i++) {
 					var colEnt = entitiesList[i];
-					if (colEnt.collidable) {
-						var dist = _utils2.default.distance(entity.x, entity.y, colEnt.x, colEnt.y);
-						if (dist < colEnt.getExternalRadius() + entity.getExternalRadius()) {
+					if (!rival || rival && entity.team != colEnt.team) {
+						if (colEnt.collidable) {
+							var dist = _utils2.default.distance(entity.x, entity.y, colEnt.x, colEnt.y);
+							if (dist < colEnt.getExternalRadius() + entity.getExternalRadius()) {
 	
-							var angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14;
-							var ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
-							var left = Math.abs(angle) > 150 && entity.side == 1;
-							var right = Math.abs(angle) < 30 && entity.side == -1;
+								var angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14;
+								var ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
+								var left = Math.abs(angle) > 150 && entity.side == 1;
+								var right = Math.abs(angle) < 30 && entity.side == -1;
 	
-							collideList.push({ entity: colEnt, angle: angle, dist: dist, ableToHit: ableToHit, left: left, right: right });
+								collideList.push({ entity: colEnt, angle: angle, dist: dist, ableToHit: ableToHit, left: left, right: right });
+							}
 						}
 					}
 				}
@@ -28844,7 +28905,7 @@
 			}
 		}, {
 			key: 'getColisionList',
-			value: function getColisionList(entity, type) {
+			value: function getColisionList(entity, type, rival) {
 				if (!entity.collidable) {
 					return;
 				}
@@ -28853,27 +28914,29 @@
 				// console.log(entitiesList);
 				for (var i = 0; i < entitiesList.length; i++) {
 					var colEnt = entitiesList[i];
-					if (colEnt.collidable) {
-						var dist = _utils2.default.distance(entity.x, entity.y, colEnt.x, colEnt.y);
-						if (dist < colEnt.getRadius() + entity.getRadius()) {
-							var angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14;
-							var ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
-							var left = Math.abs(angle) > 150 && entity.side == 1;
-							var right = Math.abs(angle) < 30 && entity.side == -1;
+					if (!rival || rival && entity.team != colEnt.team) {
+						if (colEnt.collidable) {
+							var dist = _utils2.default.distance(entity.x, entity.y, colEnt.x, colEnt.y);
+							if (dist < colEnt.getRadius() + entity.getRadius()) {
+								var angle = Math.atan2(entity.y - colEnt.y, entity.x - colEnt.x) * 180 / 3.14;
+								var ableToHit = Math.abs(angle) > 150 || Math.abs(angle) < 30;
+								var left = Math.abs(angle) > 150 && entity.side == 1;
+								var right = Math.abs(angle) < 30 && entity.side == -1;
 	
-							var trueLeft = Math.abs(angle) > 150;
-							var trueRight = Math.abs(angle) < 30;
+								var trueLeft = Math.abs(angle) > 150;
+								var trueRight = Math.abs(angle) < 30;
 	
-							collideList.push({
-								entity: colEnt,
-								angle: angle,
-								dist: dist,
-								ableToHit: ableToHit,
-								left: left,
-								right: right,
-								trueLeft: trueLeft,
-								trueRight: trueRight
-							});
+								collideList.push({
+									entity: colEnt,
+									angle: angle,
+									dist: dist,
+									ableToHit: ableToHit,
+									left: left,
+									right: right,
+									trueLeft: trueLeft,
+									trueRight: trueRight
+								});
+							}
 						}
 					}
 					collideList.sort(_utils2.default.distCompare);
@@ -28882,10 +28945,14 @@
 			}
 		}, {
 			key: 'getSimpleEntityCollision',
-			value: function getSimpleEntityCollision(entity1, entity2) {
+			value: function getSimpleEntityCollision(entity1, entity2, rival) {
 				if (!entity1.collidable) {
 					return;
 				}
+				if (rival && entity1.team == entity2.team) {
+					return;
+				}
+	
 				var collideList = [];
 				var colEnt = entity2;
 				if (colEnt.collidable) {
@@ -28950,11 +29017,27 @@
 				this.setScales(bullet);
 			}
 		}, {
+			key: 'addTowerBullet',
+			value: function addTowerBullet(pos, vel, life, power, team) {
+				var bullet = new _TowerBullet2.default(this, vel, life, power, team);
+				this.entityContainer.addChild(bullet);
+				this.addOnUpdateList(bullet);
+				bullet.position.x = pos.x;
+				bullet.position.y = pos.y;
+	
+				this.bulletList.push(bullet);
+	
+				this.setScales(bullet);
+			}
+		}, {
 			key: 'updateKeyDown',
 			value: function updateKeyDown() {
+				this.speedUpValue = 1;
+	
 				for (var i = 0; i < this.inputManager.keys.length; i++) {
 					if (this.inputManager.keys[i] == 'action1') {
 						//console.log('space');
+	
 	
 						this.lastAction = this.inputManager.keys[i];
 						this.cupcake.attack();
@@ -28983,6 +29066,13 @@
 					if (this.inputManager.keys[i] == 'action6') {
 						//console.log('space');
 						this.lastAction = this.inputManager.keys[i];
+						this.speedUpValue = 5;
+						// this.cupcake.die();
+					}
+					if (this.inputManager.keys[i] == 'action7') {
+						//console.log('space');
+						this.lastAction = this.inputManager.keys[i];
+						this.speedUpValue = 10;
 						// this.cupcake.die();
 					}
 				}
@@ -37260,6 +37350,7 @@
 			this.gamepadMap.push({ label: 'x', id: [3, 0, 3] });
 			this.gamepadMap.push({ label: 'r', id: [7, 6, 5] });
 			this.gamepadMap.push({ label: 'l', id: [6, 4, 4] });
+			this.gamepadMap.push({ label: 'l2', id: [8, 7, 7] });
 	
 			// window.addEventListener("gamepadconnected", function(e) {
 			//   var gp = navigator.getGamepads()[0];
@@ -37423,6 +37514,13 @@
 					this.usingGamepad = true;
 				} else {
 					this.stopAct('action6');
+				}
+	
+				if (navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('l2', this.gamePadType)].value) {
+					this.act('action7');
+					this.usingGamepad = true;
+				} else {
+					this.stopAct('action7');
 				}
 	
 				if (this.leftAxes[0] < -0.1) {
@@ -37662,6 +37760,7 @@
 			value: function follow(entity) {
 				this.entityFollow = entity;
 	
+				console.log('FOLLOW');
 				this.updatePosition(true);
 	
 				this.startDelay = 1;
@@ -37784,8 +37883,12 @@
 				// console.log(this.worldMap.x, globalEntityPosition.x);
 	
 				if (force) {
-					this.worldMap.x = _config2.default.width / 2 - globalEntityPosition.x + globalWorldPosition.x;
-					this.worldMap.y = _config2.default.height / 2 - globalEntityPosition.y + globalWorldPosition.y;
+					this.worldMap.x = _config2.default.width / 2 - globalEntityPosition.x * this.worldMap.scale.x + globalWorldPosition.x * this.worldMap.scale.x;
+					this.worldMap.y = _config2.default.height / 2 - globalEntityPosition.y * this.worldMap.scale.y + globalWorldPosition.y * this.worldMap.scale.y;
+	
+					//			TweenLite.to(this.worldMap, 0.1 ,{x:config.width / 2 - globalEntityPosition.x +  globalWorldPosition.x, y:config.height / 2 - globalEntityPosition.y +  globalWorldPosition.y});
+	
+					console.log(this.worldMap.x, force);
 					return;
 				}
 	
@@ -37899,13 +38002,16 @@
 	var Cupcake = function (_Entity) {
 	    _inherits(Cupcake, _Entity);
 	
-	    function Cupcake(game, startPosition) {
+	    function Cupcake(game, startPosition, team) {
 	        _classCallCheck(this, Cupcake);
+	
+	        console.log(startPosition);
 	
 	        var _this = _possibleConstructorReturn(this, (Cupcake.__proto__ || Object.getPrototypeOf(Cupcake)).call(this));
 	
 	        _this.type = 'hero';
 	        _this.game = game;
+	        _this.team = team;
 	        _this.startPosition = startPosition;
 	
 	        _this.base = new _pixi2.default.Container();
@@ -38175,7 +38281,7 @@
 	            speedUp: 1.5,
 	            dashSpeed: 5,
 	            hitFeedback: 0.2,
-	            life: 50,
+	            maxLife: 50,
 	            attack: 0.5
 	        };
 	        _this.side = 1;
@@ -38257,12 +38363,16 @@
 	            this.x = this.startPosition.x;
 	            this.y = this.startPosition.y;
 	
+	            this.maxLife = this.entityModel.maxLife;
 	            this.life = this.entityModel.life;
 	            //this.scale.set(this.standardScale)
+	
+	            this.addLifeBar({ x: 0, y: -250 }, { w: 120, h: 15 }, this.team == 0 ? 0x0000FF : 0x00FF00);
 	        }
 	    }, {
 	        key: 'dead',
 	        value: function dead() {
+	            this.removeLifeBar();
 	            this.collidable = false;
 	            if (this.animationManager.changeState('killBack', true)) {
 	                this.animationContainer.y = 0;
@@ -38295,12 +38405,12 @@
 	        key: 'areaAttackCollision',
 	        value: function areaAttackCollision() {
 	            this.areaAttackTimer = -1;
-	            var collisionList = this.game.getExternalColisionList(this, 'enemy');
+	            var collisionList = this.game.getExternalColisionList(this, 'enemy', true);
 	            if (collisionList) {
 	                for (var i = 0; i < collisionList.length; i++) {
 	                    // if(collisionList[i].front || collisionList[i].back){
 	                    collisionList[i].entity.side = this.side * -1;
-	                    collisionList[i].entity.hit(5);
+	                    collisionList[i].entity.hit(2);
 	                    // }
 	                }
 	            }
@@ -38308,7 +38418,7 @@
 	    }, {
 	        key: 'dashAttackCollision',
 	        value: function dashAttackCollision() {
-	            var collisionList = this.game.getColisionList(this, 'enemy');
+	            var collisionList = this.game.getColisionList(this, 'enemy', true);
 	            if (collisionList) {
 	                for (var i = 0; i < collisionList.length; i++) {
 	                    //if(collisionList[i].right || collisionList[i].left){
@@ -38324,7 +38434,7 @@
 	    }, {
 	        key: 'meleeAttackCollision',
 	        value: function meleeAttackCollision() {
-	            var collisionList = this.game.getColisionList(this, 'enemy');
+	            var collisionList = this.game.getColisionList(this, 'enemy', true);
 	            if (collisionList) {
 	                for (var i = 0; i < collisionList.length; i++) {
 	                    if (collisionList[i].right || collisionList[i].left) {
@@ -38567,7 +38677,7 @@
 	    }, {
 	        key: 'hit',
 	        value: function hit(power, forceSide) {
-	            if (this.life < 0) {
+	            if (this.life < 0 || this.areaAttackTimer > 0) {
 	                return false;
 	            }
 	
@@ -38590,6 +38700,8 @@
 	                this.dead();
 	                //return false;
 	            }
+	
+	            this.updateLifeBar();
 	
 	            return true;
 	        }
@@ -38980,12 +39092,55 @@
 	        _this.externalRadius = 100;
 	        _this.static = false;
 	        _this.side = 1;
+	        _this.maxLife = 5;
 	        _this.life = 5;
 	        _this.collidable = true;
+	
 	        return _this;
 	    }
 	
 	    _createClass(Entity, [{
+	        key: 'removeLifeBar',
+	        value: function removeLifeBar() {
+	            if (this.barContainer && this.barContainer.parent) {
+	                this.barContainer.parent.removeChild(this.barContainer);
+	            }
+	        }
+	    }, {
+	        key: 'updateLifeBar',
+	        value: function updateLifeBar() {
+	            if (this.backBarGreen && this.backBarGreen.parent) {
+	                this.backBarGreen.scale.x = this.life / this.maxLife;
+	                this.barContainer.scale.x = this.side;
+	            }
+	        }
+	    }, {
+	        key: 'addLifeBar',
+	        value: function addLifeBar(pos, size, color) {
+	            this.barContainer = new _pixi2.default.Container();
+	            this.addChild(this.barContainer);
+	            this.barContainer.x = pos.x;
+	            this.barContainer.y = pos.y;
+	
+	            this.backBar = new _pixi2.default.Graphics();
+	            this.backBar.beginFill(0);
+	            this.backBar.drawRect(-4, -4, size.w + 8, size.h + 8);
+	
+	            this.backBarRed = new _pixi2.default.Graphics();
+	            this.backBarRed.beginFill(0xFF0000);
+	            this.backBarRed.drawRect(0, 0, size.w, size.h);
+	
+	            this.backBarGreen = new _pixi2.default.Graphics();
+	            this.backBarGreen.beginFill(color);
+	            this.backBarGreen.drawRect(0, 0, size.w, size.h);
+	
+	            this.barContainer.addChild(this.backBar);
+	            this.barContainer.addChild(this.backBarRed);
+	            this.barContainer.addChild(this.backBarGreen);
+	
+	            this.barContainer.pivot.set((size.w + 8) / 2, (size.h + 8) / 2);
+	        }
+	    }, {
 	        key: 'hit',
 	        value: function hit(power) {
 	            this.life -= power;
@@ -39030,7 +39185,8 @@
 	    }, {
 	        key: 'setDistance',
 	        value: function setDistance(value) {
-	            this.standardScale = (value * 0.35 + 0.15) * this.scaleFator;
+	            this.standardScale = (value * this.starterScale * 0.7 + this.starterScale * 0.3) * this.scaleFator;
+	            // this.standardScale = (value * 0.35 + 0.15) * this.scaleFator;
 	            this.speedScale = this.standardScale / this.starterScale;
 	            this.updateScale();
 	            // this.updateTint(value);
@@ -39101,7 +39257,7 @@
 	var StandardEnemy = function (_Entity) {
 	    _inherits(StandardEnemy, _Entity);
 	
-	    function StandardEnemy(game) {
+	    function StandardEnemy(game, team) {
 	        _classCallCheck(this, StandardEnemy);
 	
 	        var _this = _possibleConstructorReturn(this, (StandardEnemy.__proto__ || Object.getPrototypeOf(StandardEnemy)).call(this));
@@ -39109,6 +39265,8 @@
 	        _this.type = 'enemy';
 	
 	        _this.game = game;
+	        _this.team = team;
+	
 	        _this.base = new _pixi2.default.Container();
 	        _this.roundBase = new _pixi2.default.Graphics();
 	        _this.roundBase.beginFill(0xffffff);
@@ -39249,6 +39407,14 @@
 	            this.externalRadius = 160;
 	            // this.debugCollision();
 	
+	
+	            // this.debugCollision();
+	            this.reset();
+	            this.start();
+	        }
+	    }, {
+	        key: 'reset',
+	        value: function reset() {
 	            this.killed = false;
 	
 	            // this.animationManager.showJust(['idle','attack'])
@@ -39269,23 +39435,71 @@
 	
 	            this.targetPosition = { x: -1, y: -10 };
 	            this.followTarget = false;
+	            this.waypointID = 0;
+	            this.updateable = false;
+	
+	            this.maxLife = 5;
+	            this.life = 5;
+	
+	            this.disapearTimerMax = 20;
+	            this.disapearTimer = this.disapearTimerMax;
+	            this.disapearing = false;
+	
+	            this.addLifeBar({ x: 0, y: -150 }, { w: 80, h: 10 }, this.team == 0 ? 0x0000FF : 0x00FF00);
+	        }
+	    }, {
+	        key: 'start',
+	        value: function start() {
+	            this.updateable = true;
 	            this.move();
+	            this.setTarget(this.waypoints[this.waypointID]);
 	        }
 	    }, {
 	        key: 'wait',
 	        value: function wait() {
+	            return;
+	            this.attacking = false;
 	            this.velocity.x = 0;
 	            this.velocity.y = 0;
 	            this.animationManager.changeState('idle');
 	
-	            this.actionTimer = 0.1; //Math.random() * 3 + 1;
+	            this.actionTimer = 0.05; //Math.random() * 3 + 1;
 	            this.action = this.move;
 	        }
 	    }, {
+	        key: 'updateWaypointsSame',
+	        value: function updateWaypointsSame() {
+	            if (this.waypointID >= this.waypoints.length) {
+	                this.wait();
+	                return;
+	            }
+	            this.setTarget(this.waypoints[this.waypointID]);
+	        }
+	    }, {
+	        key: 'updateWaypoints',
+	        value: function updateWaypoints(same) {
+	            if (!same) {
+	                this.waypointID++;
+	            }
+	            if (this.waypointID >= this.waypoints.length) {
+	                this.wait();
+	                return;
+	            }
+	            this.setTarget(this.waypoints[this.waypointID]);
+	        }
+	    }, {
+	        key: 'setWaypoints',
+	        value: function setWaypoints(waypoints) {
+	            this.waypoints = waypoints;
+	            this.waypointID = 0;
+	        }
+	    }, {
 	        key: 'setTarget',
-	        value: function setTarget(position) {
-	            this.targetPosition.x = position.x;
-	            this.targetPosition.y = position.y;
+	        value: function setTarget(position, isEnemy) {
+	            this.isEnemy = isEnemy;
+	            var angle = Math.random() * 360 / 180 * 3.14;
+	            this.targetPosition.x = position.x + Math.sin(angle) * 20;
+	            this.targetPosition.y = position.y + Math.cos(angle) * 20;
 	            this.followTarget = true;
 	            this.move();
 	        }
@@ -39336,8 +39550,10 @@
 	            this.attackTimer = this.attackSpeed;
 	            // console.log(this.entityToAttack);
 	            var newList = this.game.getSimpleEntityCollision(this, this.entityToAttack.entity);
+	
 	            // console.log('ATTACK', newList);
 	            if (newList.length) {
+	                // console.log( this.entityToAttack.entity.team, this.team, newList);
 	                this.entityToAttack.entity.hit(1);
 	            }
 	            // this.attacking = false;
@@ -39377,7 +39593,9 @@
 	                return;
 	            }
 	
+	            // this.updateWaypointsSame();
 	            this.animationManager.changeState('idle', true);
+	            this.attacking = false;
 	        }
 	    }, {
 	        key: 'hit',
@@ -39406,6 +39624,7 @@
 	                //return false;
 	            }
 	
+	            this.updateLifeBar();
 	            return true;
 	        }
 	    }, {
@@ -39417,7 +39636,8 @@
 	    }, {
 	        key: 'dead',
 	        value: function dead() {
-	
+	            this.disapearing = true;
+	            this.removeLifeBar();
 	            TweenLite.to(this.base, 0.5, { alpha: 0 });
 	            this.collidable = false;
 	
@@ -39446,14 +39666,24 @@
 	        key: 'update',
 	        value: function update(delta) {
 	
-	            if (this.killed) {
+	            if (this.disapearing) {
+	                this.disapearTimer -= delta;
+	                if (this.disapearTimer <= 0) {
+	                    this.kill = true;
+	                }
+	                var value = this.disapearTimer / this.disapearTimerMax;
+	                this.alpha = value;
+	                this.animationContainer.scale.set(value * 0.5 + 0.5);
+	            }
+	
+	            if (this.killed || !this.updateable) {
 	                return;
 	            }
 	            // console.log(this.followTarget);
 	
 	
 	            if (!this.attacking) {
-	                var entityCollisions = this.game.getColisionList(this, ['tower', 'player']);
+	                var entityCollisions = this.game.getColisionList(this, ['tower', 'player', 'enemy'], true);
 	                // console.log(entityCollisions);
 	                if (entityCollisions && entityCollisions.length) {
 	                    if (entityCollisions[0].ableToHit || entityCollisions[0].entity.type == 'tower') {
@@ -39473,6 +39703,7 @@
 	                    this.attacking = false;
 	                }
 	            }
+	
 	            // console.log(this.velocity);
 	            if (this.actionTimer > 0) {
 	                this.actionTimer -= delta;
@@ -39490,11 +39721,14 @@
 	                    this.endHit();
 	                }
 	            }
-	
-	            if (this.followTarget) {
-	                if (_utils2.default.distance(this.targetPosition.x, this.targetPosition.y, this.x, this.y) < 20) {
+	            // console.log(this.attacking);
+	            if (this.isEnemy && this.followTarget || this.followTarget && !this.attacking) {
+	                if (_utils2.default.distance(this.targetPosition.x, this.targetPosition.y, this.x, this.y) < this.getRadius()) {
+	                    if (!this.isEnemy) {
+	                        this.updateWaypoints();
+	                    }
 	                    //this.followTarget = false;
-	                    this.wait();
+	                    //this.wait();
 	                } else {
 	                    // console.log('MOVE');
 	                    this.move();
@@ -39502,13 +39736,15 @@
 	            }
 	
 	            this.updateBaseColor();
+	            if (this.hitting) {
+	                return;
+	            }
 	
 	            if (this.game.worldCollision(this.x, this.y)) {
 	                this.moveBack(delta);
 	                return;
 	            }
 	            // console.log(this.velocity);
-	
 	            this.x += this.velocity.x * delta * this.speedScale;
 	            this.y += this.velocity.y * delta * this.speedScale;
 	        }
@@ -39752,10 +39988,10 @@
 	var Rock = function (_StandardEnvironmentE) {
 	    _inherits(Rock, _StandardEnvironmentE);
 	
-	    function Rock(game) {
+	    function Rock(game, flatten) {
 	        _classCallCheck(this, Rock);
 	
-	        return _possibleConstructorReturn(this, (Rock.__proto__ || Object.getPrototypeOf(Rock)).call(this, game));
+	        return _possibleConstructorReturn(this, (Rock.__proto__ || Object.getPrototypeOf(Rock)).call(this, game, flatten));
 	    }
 	
 	    _createClass(Rock, [{
@@ -39765,18 +40001,6 @@
 	            var idRock = Math.floor(Math.random() * 2) + 1;
 	
 	            this.animationModel = [];
-	            this.animationModel.push({
-	                label: 'idle',
-	                src: 'rock' + idRock + '00',
-	                totalFrames: idRock == 1 ? 17 : 16,
-	                startFrame: 0,
-	                animationSpeed: 0.3,
-	                movieClip: null,
-	                position: { x: 0, y: 0 },
-	                anchor: { x: 0.5, y: 0.95 },
-	                loop: false,
-	                haveCallback: true
-	            });
 	            this.animationModel.push({
 	                label: 'static',
 	                src: 'rock' + idRock + '00',
@@ -39789,6 +40013,20 @@
 	                loop: false,
 	                haveCallback: false
 	            });
+	            if (!this.flatten) {
+	                this.animationModel.push({
+	                    label: 'idle',
+	                    src: 'rock' + idRock + '00',
+	                    totalFrames: idRock == 1 ? 17 : 16,
+	                    startFrame: 0,
+	                    animationSpeed: 0.3,
+	                    movieClip: null,
+	                    position: { x: 0, y: 0 },
+	                    anchor: { x: 0.5, y: 0.95 },
+	                    loop: false,
+	                    haveCallback: true
+	                });
+	            }
 	
 	            this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
 	
@@ -39847,11 +40085,12 @@
 	var StandardEnvironmentEntity = function (_Entity) {
 	        _inherits(StandardEnvironmentEntity, _Entity);
 	
-	        function StandardEnvironmentEntity(game) {
+	        function StandardEnvironmentEntity(game, flatten) {
 	                _classCallCheck(this, StandardEnvironmentEntity);
 	
 	                var _this = _possibleConstructorReturn(this, (StandardEnvironmentEntity.__proto__ || Object.getPrototypeOf(StandardEnvironmentEntity)).call(this));
 	
+	                _this.flatten = flatten;
 	                _this.game = game;
 	                // this.base = new PIXI.Container();
 	                // this.roundBase = new PIXI.Graphics();
@@ -39921,6 +40160,9 @@
 	        }, {
 	                key: 'update',
 	                value: function update(delta) {
+	                        if (this.flatten) {
+	                                return;
+	                        }
 	                        // console.log('this');
 	                        if (this.waitingNext > 0) {
 	                                this.waitingNext -= delta;
@@ -39993,10 +40235,10 @@
 	var Pine = function (_StandardEnvironmentE) {
 	    _inherits(Pine, _StandardEnvironmentE);
 	
-	    function Pine(game) {
+	    function Pine(game, flatten) {
 	        _classCallCheck(this, Pine);
 	
-	        return _possibleConstructorReturn(this, (Pine.__proto__ || Object.getPrototypeOf(Pine)).call(this, game));
+	        return _possibleConstructorReturn(this, (Pine.__proto__ || Object.getPrototypeOf(Pine)).call(this, game, flatten));
 	    }
 	
 	    _createClass(Pine, [{
@@ -40018,18 +40260,20 @@
 	                loop: false,
 	                haveCallback: false
 	            });
-	            this.animationModel.push({
-	                label: 'idle',
-	                src: 'pine' + idRock + '00',
-	                totalFrames: 22,
-	                startFrame: 0,
-	                animationSpeed: 0.5,
-	                movieClip: null,
-	                position: { x: 10, y: 0 },
-	                anchor: { x: 0.5, y: 1 },
-	                loop: false,
-	                haveCallback: true
-	            });
+	            if (!this.flatten) {
+	                this.animationModel.push({
+	                    label: 'idle',
+	                    src: 'pine' + idRock + '00',
+	                    totalFrames: 22,
+	                    startFrame: 0,
+	                    animationSpeed: 0.5,
+	                    movieClip: null,
+	                    position: { x: 10, y: 0 },
+	                    anchor: { x: 0.5, y: 1 },
+	                    loop: false,
+	                    haveCallback: true
+	                });
+	            }
 	
 	            this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
 	
@@ -40096,10 +40340,10 @@
 	var Bush = function (_StandardEnvironmentE) {
 	    _inherits(Bush, _StandardEnvironmentE);
 	
-	    function Bush(game) {
+	    function Bush(game, flatten) {
 	        _classCallCheck(this, Bush);
 	
-	        return _possibleConstructorReturn(this, (Bush.__proto__ || Object.getPrototypeOf(Bush)).call(this, game));
+	        return _possibleConstructorReturn(this, (Bush.__proto__ || Object.getPrototypeOf(Bush)).call(this, game, flatten));
 	    }
 	
 	    _createClass(Bush, [{
@@ -40121,18 +40365,20 @@
 	                loop: false,
 	                haveCallback: false
 	            });
-	            this.animationModel.push({
-	                label: 'idle',
-	                src: 'bush' + idRock + '00',
-	                totalFrames: 18,
-	                startFrame: 0,
-	                animationSpeed: 0.4,
-	                movieClip: null,
-	                position: { x: 0, y: 0 },
-	                anchor: { x: 0.5, y: 1 },
-	                loop: false,
-	                haveCallback: true
-	            });
+	            if (!this.flatten) {
+	                this.animationModel.push({
+	                    label: 'idle',
+	                    src: 'bush' + idRock + '00',
+	                    totalFrames: 18,
+	                    startFrame: 0,
+	                    animationSpeed: 0.4,
+	                    movieClip: null,
+	                    position: { x: 0, y: 0 },
+	                    anchor: { x: 0.5, y: 1 },
+	                    loop: false,
+	                    haveCallback: true
+	                });
+	            }
 	
 	            this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
 	
@@ -40193,12 +40439,16 @@
 	var Tower = function (_Entity) {
 	    _inherits(Tower, _Entity);
 	
-	    function Tower(game) {
+	    function Tower(game, team) {
 	        _classCallCheck(this, Tower);
 	
 	        var _this = _possibleConstructorReturn(this, (Tower.__proto__ || Object.getPrototypeOf(Tower)).call(this, game));
 	
 	        _this.type = 'tower';
+	        _this.name = 'tower';
+	        _this.team = team;
+	
+	        _this.game = game;
 	
 	        _this.scaleFator = 2;
 	
@@ -40222,28 +40472,60 @@
 	
 	        _this.static = true;
 	
-	        _this.waitingNext = 5 * Math.random() + 1;
-	        _this.sinScale = Math.random();
-	        _this.life = 10000;
+	        if (_this.team == 1) {
+	            _this.tint = 0x0000FF;
+	        }
 	
-	        _this.enemiesList = [];
-	        // this.build();
-	
-	
-	        _this.hitting = false;
-	        _this.hitTimer = -1;
-	
-	        _this.slotsAttack = [];
-	
+	        _this.reset();
 	        return _this;
 	    }
 	
 	    _createClass(Tower, [{
+	        key: 'reset',
+	        value: function reset() {
+	            this.addLifeBar({ x: 20, y: -this.height * 0.4 }, { w: 200, h: 20 }, this.team == 0 ? 0x0000FF : 0x00FF00);
+	
+	            this.waitingNext = 5 * Math.random() + 1;
+	            this.sinScale = Math.random();
+	            this.maxLife = 50;
+	            this.life = 50;
+	
+	            this.enemiesList = [];
+	            // this.build();
+	
+	
+	            this.hitting = false;
+	            this.hitTimer = -1;
+	
+	            this.slotsAttack = [];
+	
+	            this.attacking = false;
+	            this.attackTimer = -1;
+	            this.attackSpeed = 0.75;
+	
+	            this.updateable = true;
+	        }
+	    }, {
+	        key: 'dead',
+	        value: function dead() {
+	            this.removeLifeBar();
+	            this.updateable = false;
+	            TweenLite.to(this.base, 0.5, { alpha: 0 });
+	            TweenLite.to(this, 0.5, { alpha: 0 });
+	            this.collidable = false;
+	
+	            for (var i = this.enemiesList.length - 1; i >= 0; i--) {
+	                this.enemiesList[i].updateWaypoints(true);
+	            }
+	            //this.kill = true;
+	        }
+	    }, {
 	        key: 'hit',
 	        value: function hit(power) {
 	            _get(Tower.prototype.__proto__ || Object.getPrototypeOf(Tower.prototype), 'hit', this).call(this, power);
 	            this.hitTimer = 0.5;
 	            this.hitting = true;
+	            this.updateLifeBar();
 	        }
 	    }, {
 	        key: 'addEnemy',
@@ -40267,7 +40549,7 @@
 	            this.slotsAttack[id].entity = enemy;
 	            var randomRadius = this.slotsAttack[id].radius;
 	            var targetPosition = { x: this.x + Math.sin(angle) * randomRadius, y: this.y + Math.cos(angle) * randomRadius };
-	            enemy.setTarget(targetPosition);
+	            enemy.setTarget(targetPosition, true);
 	
 	            // this.base = new PIXI.Container();
 	            // this.roundBase = new PIXI.Graphics();
@@ -40296,7 +40578,7 @@
 	            this.animationModel = [];
 	            this.animationModel.push({
 	                label: 'static',
-	                src: 'pine' + idRock + '00',
+	                src: 'tower1/idle/tower',
 	                totalFrames: 1,
 	                startFrame: 0,
 	                animationSpeed: 0.4,
@@ -40304,20 +40586,21 @@
 	                position: { x: 10, y: 0 },
 	                anchor: { x: 0.5, y: 1 },
 	                loop: false,
-	                haveCallback: false
+	                haveCallback: false,
+	                singleFrame: true
 	            });
-	            this.animationModel.push({
-	                label: 'idle',
-	                src: 'pine' + idRock + '00',
-	                totalFrames: 22,
-	                startFrame: 0,
-	                animationSpeed: 0.5,
-	                movieClip: null,
-	                position: { x: 10, y: 0 },
-	                anchor: { x: 0.5, y: 1 },
-	                loop: false,
-	                haveCallback: true
-	            });
+	            // this.animationModel.push({
+	            //     label:'idle',
+	            //     src:'pine'+idRock+'00',
+	            //     totalFrames:22,
+	            //     startFrame:0,
+	            //     animationSpeed:0.5,
+	            //     movieClip:null,
+	            //     position:{x:10,y:0},
+	            //     anchor:{x:0.5,y:1},
+	            //     loop:false,
+	            //     haveCallback:true,
+	            // });
 	
 	            this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
 	
@@ -40327,25 +40610,62 @@
 	
 	            this.collidable = true;
 	
-	            console.log(this.getRadius());
-	            var maxAngle = 360;
+	            var maxAngle = 180;
+	            var startAngle = -90;
 	            var totFixed = 10;
 	            for (var i = 1; i < 80; i++) {
 	                if (i <= totFixed) {
-	                    var angle = maxAngle / totFixed * i;
-	                    this.slotsAttack.push({ angle: angle, entity: null, radius: Math.random() * this.getRadius() / 4 + this.getRadius() / 4 });
+	                    var angle = maxAngle / totFixed * i + startAngle;
+	                    this.slotsAttack.push({ angle: angle, entity: null, radius: Math.random() * this.getRadius() / 3 + this.getRadius() / 3 });
 	                    _utils2.default.shuffle(this.slotsAttack);
 	                } else {
 	
-	                    this.slotsAttack.push({ angle: Math.random() * maxAngle, entity: null, radius: Math.random() * this.getRadius() / 3 + this.getRadius() / 3 });
+	                    this.slotsAttack.push({ angle: Math.random() * maxAngle, entity: null, radius: Math.random() * this.getRadius() / 4 + this.getRadius() / 4 });
 	                }
 	            }
 	            // this.debugCollision()
 	        }
 	    }, {
+	        key: 'attack',
+	        value: function attack(entity) {
+	            if (this.team == entity.team) {
+	                return;
+	            }
+	            this.attackTimer = this.attackSpeed;
+	
+	            var bulletPosition = { x: this.x, y: this.y - this.getRadius() };
+	
+	            var angle = Math.atan2(entity.y - bulletPosition.y, entity.x - bulletPosition.x);
+	
+	            var bulletSpeed = { x: Math.cos(angle) * 600, y: Math.sin(angle) * 600 };
+	
+	            var power = 2;
+	
+	            this.game.addTowerBullet(bulletPosition, bulletSpeed, 1, power, this.team);
+	        }
+	    }, {
 	        key: 'update',
 	        value: function update(delta) {
+	            if (!this.updateable) {
+	                return;
+	            }
 	            _get(Tower.prototype.__proto__ || Object.getPrototypeOf(Tower.prototype), 'update', this).call(this, delta);
+	
+	            if (this.attackTimer > 0) {
+	                this.attackTimer -= delta;
+	                // if(this.attackTimer <=0 ){
+	                //     this.hitting = false;
+	                // }
+	            }
+	
+	            if (this.attackTimer < 0) {
+	                var entityCollisions = this.game.getExternalColisionList(this, ['enemy', 'player'], true);
+	                if (entityCollisions && entityCollisions.length) {
+	                    // console.log(entityCollisions.length);
+	                    this.attack(entityCollisions[0].entity);
+	                }
+	            }
+	            // console.log(entityCollisions);
 	
 	            if (this.hitTimer > 0) {
 	                this.hitTimer -= delta;
@@ -40361,6 +40681,388 @@
 	}(_Entity3.default);
 	
 	exports.default = Tower;
+
+/***/ },
+/* 157 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	        value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(148);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _Entity2 = __webpack_require__(149);
+	
+	var _Entity3 = _interopRequireDefault(_Entity2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Spawner = function (_Entity) {
+	        _inherits(Spawner, _Entity);
+	
+	        function Spawner(game, team) {
+	                _classCallCheck(this, Spawner);
+	
+	                var _this = _possibleConstructorReturn(this, (Spawner.__proto__ || Object.getPrototypeOf(Spawner)).call(this, game));
+	
+	                _this.game = game;
+	                _this.type = 'spawner';
+	                _this.name = 'tower';
+	
+	                _this.team = team;
+	
+	                _this.scaleFator = 2;
+	
+	                _this.base = new _pixi2.default.Container();
+	                _this.roundBase = new _pixi2.default.Graphics();
+	                _this.roundBase.beginFill(0xFFFFFF);
+	                _this.roundBase.drawCircle(0, 0, 100);
+	                _this.roundBase.scale.y = 0.4;
+	                _this.roundBase.alpha = 0.1;
+	                _this.base.addChild(_this.roundBase);
+	                _this.addChild(_this.base);
+	
+	                _this.animationContainer = new _pixi2.default.Container();
+	                _this.animationContainer.x = 0;
+	                _this.animationContainer.y = 0;
+	                _this.addChild(_this.animationContainer);
+	
+	                _this.radius = 150;
+	                _this.externalRadius = 600;
+	                _this.debugCollision();
+	
+	                _this.static = true;
+	
+	                _this.waitingNext = 5 * Math.random() + 1;
+	                _this.sinScale = Math.random();
+	                _this.life = 10000;
+	
+	                _this.enemiesList = [];
+	                // this.build();
+	
+	
+	                _this.hitting = false;
+	                _this.hitTimer = -1;
+	
+	                _this.slotsAttack = [];
+	
+	                _this.attacking = false;
+	                _this.attackTimer = 1;
+	                _this.waypointList = [];
+	
+	                _this.spawnTime = 30;
+	
+	                _this.spawnQuant = 5;
+	                _this.spawDistance = 1;
+	
+	                _this.currentWave = 0;
+	
+	                _this.actionTimer = -1;
+	                _this.action = null;
+	
+	                return _this;
+	        }
+	
+	        _createClass(Spawner, [{
+	                key: 'hit',
+	                value: function hit(power) {
+	                        _get(Spawner.prototype.__proto__ || Object.getPrototypeOf(Spawner.prototype), 'hit', this).call(this, power);
+	                        this.hitTimer = 0.5;
+	                        this.hitting = true;
+	                }
+	        }, {
+	                key: 'addWaypoint',
+	                value: function addWaypoint(x, y) {
+	                        this.waypointList.push({ x: x, y: y });
+	                }
+	        }, {
+	                key: 'startSpawn',
+	                value: function startSpawn() {
+	                        this.currentWave = 0;
+	                        this.addEntity();
+	                }
+	        }, {
+	                key: 'addEntity',
+	                value: function addEntity() {
+	
+	                        this.currentWave++;
+	
+	                        if (this.currentWave > this.spawnQuant) {
+	                                this.actionTimer = this.spawnTime;
+	                                this.action = this.startSpawn;
+	                                return;
+	                        }
+	                        // TweenLite.from(this.animationContainer.scale, 0.8, {x:0.9, y:0.9, ease:'easeOutElastic'})
+	                        this.game.addEnemy('tomato', { x: this.x, y: this.y + Math.random() * this.getRadius() - this.getRadius() / 2 }, this.waypointList, this.team);
+	                        this.actionTimer = this.spawDistance;
+	                        this.action = this.addEntity;
+	                }
+	        }, {
+	                key: 'updateBaseColor',
+	                value: function updateBaseColor() {
+	                        if (this.hitting) {
+	                                this.roundBase.tint = 0xFF0000;
+	                        } else {
+	                                this.roundBase.tint = 0;
+	                        }
+	                }
+	        }, {
+	                key: 'start',
+	                value: function start() {
+	                        this.action = this.startSpawn;
+	                        this.actionTimer = 3;
+	                        //this.addEntity();
+	                }
+	        }, {
+	                key: 'build',
+	                value: function build() {
+	
+	                        var idRock = 1; // Math.floor(Math.random()*2) + 1;
+	
+	                        this.animationModel = [];
+	                        this.animationModel.push({
+	                                label: 'static',
+	                                src: 'spawner1/idle/spawner1',
+	                                totalFrames: 1,
+	                                startFrame: 0,
+	                                animationSpeed: 0.4,
+	                                movieClip: null,
+	                                position: { x: 10, y: 0 },
+	                                anchor: { x: 0.5, y: 1 },
+	                                loop: false,
+	                                haveCallback: false,
+	                                singleFrame: true
+	                        });
+	                        // this.animationModel.push({
+	                        //     label:'idle',
+	                        //     src:'pine'+idRock+'00',
+	                        //     totalFrames:22,
+	                        //     startFrame:0,
+	                        //     animationSpeed:0.5,
+	                        //     movieClip:null,
+	                        //     position:{x:10,y:0},
+	                        //     anchor:{x:0.5,y:1},
+	                        //     loop:false,
+	                        //     haveCallback:true,
+	                        // });
+	
+	                        this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
+	
+	                        this.animationManager.hideAll();
+	                        this.animationManager.stopAll();
+	                        this.animationManager.changeState('static');
+	
+	                        this.collidable = true;
+	
+	                        console.log(this.getRadius());
+	                        var maxAngle = 360;
+	                        var totFixed = 10;
+	                        for (var i = 1; i < 80; i++) {
+	                                if (i <= totFixed) {
+	                                        var angle = maxAngle / totFixed * i;
+	                                        this.slotsAttack.push({ angle: angle, entity: null, radius: Math.random() * this.getRadius() / 4 + this.getRadius() / 4 });
+	                                        _utils2.default.shuffle(this.slotsAttack);
+	                                } else {
+	
+	                                        this.slotsAttack.push({ angle: Math.random() * maxAngle, entity: null, radius: Math.random() * this.getRadius() / 3 + this.getRadius() / 3 });
+	                                }
+	                        }
+	                        // this.debugCollision()
+	                }
+	        }, {
+	                key: 'update',
+	                value: function update(delta) {
+	                        _get(Spawner.prototype.__proto__ || Object.getPrototypeOf(Spawner.prototype), 'update', this).call(this, delta);
+	
+	                        if (this.actionTimer > 0) {
+	                                this.actionTimer -= delta;
+	                                if (this.actionTimer <= 0) {
+	                                        this.action();
+	                                }
+	                        }
+	
+	                        if (this.hitTimer > 0) {
+	                                this.hitTimer -= delta;
+	                                if (this.hitTimer <= 0) {
+	                                        this.hitting = false;
+	                                }
+	                        }
+	                        this.updateBaseColor();
+	                }
+	        }]);
+	
+	        return Spawner;
+	}(_Entity3.default);
+	
+	exports.default = Spawner;
+
+/***/ },
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	        value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(148);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _Entity = __webpack_require__(149);
+	
+	var _Entity2 = _interopRequireDefault(_Entity);
+	
+	var _StandardBullet2 = __webpack_require__(151);
+	
+	var _StandardBullet3 = _interopRequireDefault(_StandardBullet2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var TowerBullet = function (_StandardBullet) {
+	        _inherits(TowerBullet, _StandardBullet);
+	
+	        function TowerBullet(game, velocity, lifeTime, power, team) {
+	                _classCallCheck(this, TowerBullet);
+	
+	                var _this = _possibleConstructorReturn(this, (TowerBullet.__proto__ || Object.getPrototypeOf(TowerBullet)).call(this));
+	
+	                _this.game = game;
+	                _this.lifeTime = lifeTime;
+	                _this.power = power;
+	                _this.team = team;
+	                _this.base = new _pixi2.default.Container();
+	                _this.roundBase = new _pixi2.default.Graphics();
+	                _this.roundBase.beginFill(0);
+	                _this.roundBase.drawCircle(0, 0, 20);
+	                _this.roundBase.scale.y = 0.4;
+	                _this.roundBase.alpha = 0.1;
+	                _this.roundBase.x = 0;
+	                _this.base.addChild(_this.roundBase);
+	
+	                _this.addChild(_this.base);
+	                _this.animationContainer = new _pixi2.default.Container();
+	                _this.animationContainer.x = 0;
+	                _this.animationContainer.y = -135;
+	                _this.addChild(_this.animationContainer);
+	
+	                // this.sprite = new PIXI.Sprite(PIXI.Texture.fromFrame('cherry.png'))    
+	                // this.sprite.anchor.set(0.6);
+	
+	                var idCherry = Math.floor(Math.random() * 2) + 1;
+	
+	                _this.animationModel = [];
+	                _this.animationModel.push({
+	                        label: 'idle',
+	                        src: 'cherryBullet' + idCherry + '00',
+	                        totalFrames: 1,
+	                        startFrame: 0,
+	                        animationSpeed: 0.4,
+	                        movieClip: null,
+	                        position: { x: 0, y: 0 },
+	                        anchor: { x: 0.5, y: 0.5 },
+	                        loop: false
+	                });
+	
+	                _this.animationModel.push({
+	                        label: 'explode',
+	                        src: 'cherryBullet' + idCherry + '00',
+	                        totalFrames: 6,
+	                        startFrame: 0,
+	                        animationSpeed: 0.4,
+	                        movieClip: null,
+	                        position: { x: 0, y: 0 },
+	                        anchor: { x: 0.5, y: 0.5 },
+	                        loop: false
+	                });
+	
+	                _this.animationManager = new _AnimationManager2.default(_this.animationModel, _this.animationContainer);
+	
+	                // this.animationContainer.addChild(this.sprite);
+	
+	                _this.velocity = velocity;
+	                _this.spriteVelocity = { x: 0, y: 0 };
+	
+	                _this.standardScale = 1;
+	                _this.speedScale = 1;
+	                _this.starterScale = 0.5;
+	                _this.gravity = 15;
+	                // this.scale.set(0);
+	                _this.kill2 = false;
+	
+	                _this.animationManager.hideAll();
+	                _this.animationManager.stopAll();
+	                _this.animationManager.changeState('idle');
+	
+	                _this.radius = 10;
+	                _this.externalRadius = 0;
+	                // this.debugCollision();
+	
+	                console.log('BULLET TOWER');
+	
+	                // this.sprite.scale.set(this.starterScale)
+	                return _this;
+	        }
+	
+	        _createClass(TowerBullet, [{
+	                key: 'bulletAttackCollision',
+	                value: function bulletAttackCollision() {
+	                        var collisionList = this.game.getColisionList(this, ['enemy', 'player'], true);
+	                        if (collisionList) {
+	                                for (var i = 0; i < collisionList.length; i++) {
+	                                        if (collisionList[i].entity.hit(this.power)) {
+	                                                return true;
+	                                        }
+	                                }
+	                        }
+	                        return false;
+	                }
+	        }]);
+	
+	        return TowerBullet;
+	}(_StandardBullet3.default);
+	
+	exports.default = TowerBullet;
 
 /***/ }
 /******/ ]);

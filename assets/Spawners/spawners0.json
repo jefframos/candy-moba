@@ -1,0 +1,21 @@
+{"frames": {
+
+"spawner1/idle/spawner1.png":
+{
+	"frame": {"x":1,"y":1,"w":225,"h":486},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":225,"h":486},
+	"sourceSize": {"w":225,"h":486},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "spawners0.png",
+	"format": "RGBA8888",
+	"size": {"w":227,"h":488},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:f7736ff2566e5ef3048ce68d69893723:2d29eae5a059d5099d2bae3d8bfe0f2a:e81edfe26d47661eab158ccf993331d2$"
+}
+}

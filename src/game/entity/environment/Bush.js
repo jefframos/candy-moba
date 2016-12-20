@@ -5,9 +5,9 @@ import Entity  from './../Entity';
 import StandardEnvironmentEntity  from './StandardEnvironmentEntity';
 export default class Bush extends StandardEnvironmentEntity {
 
-    constructor(game) {
+    constructor(game, flatten) {
 
-    	super(game);
+    	super(game, flatten);
 
     }
 
@@ -28,18 +28,20 @@ export default class Bush extends StandardEnvironmentEntity {
             loop:false,
             haveCallback:false,
         });
-        this.animationModel.push({
-            label:'idle',
-            src:'bush'+idRock+'00',
-            totalFrames:18,
-            startFrame:0,
-            animationSpeed:0.4,
-            movieClip:null,
-            position:{x:0,y:0},
-            anchor:{x:0.5,y:1},
-            loop:false,
-            haveCallback:true,
-        });
+        if(!this.flatten){
+            this.animationModel.push({
+                label:'idle',
+                src:'bush'+idRock+'00',
+                totalFrames:18,
+                startFrame:0,
+                animationSpeed:0.4,
+                movieClip:null,
+                position:{x:0,y:0},
+                anchor:{x:0.5,y:1},
+                loop:false,
+                haveCallback:true,
+            });
+        }
 
         this.animationManager = new AnimationManager(this.animationModel, this.animationContainer);       
 

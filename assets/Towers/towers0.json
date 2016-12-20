@@ -1,0 +1,21 @@
+{"frames": {
+
+"tower1/idle/tower.png":
+{
+	"frame": {"x":1,"y":1,"w":250,"h":412},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":412},
+	"sourceSize": {"w":250,"h":412},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "towers0.png",
+	"format": "RGBA8888",
+	"size": {"w":252,"h":414},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:9c97c040c7c96f5cfb4568c19bed5787:7f93a451390ca0b2a6c2171fe0e29858:a776dce5e50f88a4fc66f3f413cb5f5f$"
+}
+}

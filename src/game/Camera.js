@@ -25,6 +25,7 @@ export default class Camera{
 	follow(entity){
 		this.entityFollow = entity;
 
+		console.log('FOLLOW');
 		this.updatePosition(true);
 
 		this.startDelay = 1;
@@ -144,8 +145,12 @@ export default class Camera{
 		// console.log(this.worldMap.x, globalEntityPosition.x);
 
 		if(force){
-			this.worldMap.x = config.width / 2 - globalEntityPosition.x +  globalWorldPosition.x;
-			this.worldMap.y = config.height / 2 - globalEntityPosition.y +  globalWorldPosition.y;
+			this.worldMap.x = (config.width / 2) - (globalEntityPosition.x)* this.worldMap.scale.x +  (globalWorldPosition.x) * this.worldMap.scale.x;
+			this.worldMap.y = (config.height / 2) - (globalEntityPosition.y)* this.worldMap.scale.y +  (globalWorldPosition.y)  * this.worldMap.scale.y;
+
+//			TweenLite.to(this.worldMap, 0.1 ,{x:config.width / 2 - globalEntityPosition.x +  globalWorldPosition.x, y:config.height / 2 - globalEntityPosition.y +  globalWorldPosition.y});
+
+		console.log(this.worldMap.x, force);
 			return
 		}
 

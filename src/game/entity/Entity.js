@@ -13,10 +13,49 @@ export default class Entity extends PIXI.Container {
         this.externalRadius = 100;
         this.static = false;
         this.side = 1;
+        this.maxLife = 5;
         this.life = 5;
         this.collidable = true;
+
+
+
+    }
+    removeLifeBar() {
+        if(this.barContainer && this.barContainer.parent){
+            this.barContainer.parent.removeChild(this.barContainer);
+        }
+    }
+    updateLifeBar() {
+        if(this.backBarGreen && this.backBarGreen.parent){
+            this.backBarGreen.scale.x = this.life / this.maxLife;
+            this.barContainer.scale.x = this.side;
+        }
     }
 
+    addLifeBar(pos, size, color) {
+        this.barContainer = new PIXI.Container();
+        this.addChild(this.barContainer);
+        this.barContainer.x = pos.x;
+        this.barContainer.y = pos.y;
+
+        this.backBar = new PIXI.Graphics()
+        this.backBar.beginFill(0);
+        this.backBar.drawRect(-4, -4, size.w + 8, size.h + 8);
+
+        this.backBarRed = new PIXI.Graphics()
+        this.backBarRed.beginFill(0xFF0000);
+        this.backBarRed.drawRect(0, 0, size.w, size.h);
+
+        this.backBarGreen = new PIXI.Graphics()
+        this.backBarGreen.beginFill(color);
+        this.backBarGreen.drawRect(0, 0, size.w, size.h);
+
+        this.barContainer.addChild(this.backBar);
+        this.barContainer.addChild(this.backBarRed);
+        this.barContainer.addChild(this.backBarGreen);
+
+        this.barContainer.pivot.set((size.w + 8)/2, (size.h + 8)/2);
+    }
     hit(power) {
         this.life -= power;
         if(this.life <= 0){
@@ -52,7 +91,8 @@ export default class Entity extends PIXI.Container {
         return this.standardScale * this.externalRadius;
     }
     setDistance(value) {
-        this.standardScale = (value * 0.35 + 0.15) * this.scaleFator;
+        this.standardScale = (value * this.starterScale*0.7 + this.starterScale*0.3) * this.scaleFator;
+        // this.standardScale = (value * 0.35 + 0.15) * this.scaleFator;
         this.speedScale = this.standardScale / this.starterScale;
         this.updateScale();
         // this.updateTint(value);

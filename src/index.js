@@ -14,6 +14,8 @@ PIXI.loader
 	.add('./assets/Cupcake/cupcake3.json')
 	.add('./assets/Environment/environment0.json')
 	.add('./assets/Effects/effects0.json')
+	.add('./assets/Towers/towers0.json')
+	.add('./assets/Spawners/spawners0.json')
 	.load(configGame);
 
 function configGame(){

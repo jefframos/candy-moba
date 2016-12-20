@@ -4,13 +4,15 @@ import AnimationManager  from './../utils/AnimationManager';
 import Entity  from './../Entity';
 export default class StandardEnemy extends Entity {
 
-    constructor(game) {
+    constructor(game, team) {
 
     	super();
 
         this.type = 'enemy';
 
         this.game = game;
+        this.team = team;
+
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
         this.roundBase.beginFill(0xffffff);
@@ -150,6 +152,14 @@ export default class StandardEnemy extends Entity {
         this.externalRadius = 160;
         // this.debugCollision();
 
+
+        // this.debugCollision();
+        this.reset();
+        this.start();
+    }
+
+
+    reset ( ) {
         this.killed = false;
 
         // this.animationManager.showJust(['idle','attack'])
@@ -170,22 +180,61 @@ export default class StandardEnemy extends Entity {
 
         this.targetPosition = {x:-1,y:-10};
         this.followTarget = false;
-        this.move();
+        this.waypointID = 0;
+        this.updateable = false;
 
+        this.maxLife = 5;
+        this.life = 5;
+
+        this.disapearTimerMax = 20;
+        this.disapearTimer = this.disapearTimerMax;
+        this.disapearing = false;
+
+        this.addLifeBar({x:0, y:-150}, {w:80, h:10}, this.team == 0?0x0000FF:0x00FF00);
     }
 
-
+    start ( ) {
+        this.updateable = true;
+        this.move();
+        this.setTarget(this.waypoints[this.waypointID]);
+    }
     wait ( ) {
+        return
+        this.attacking = false;
         this.velocity.x = 0;
         this.velocity.y = 0;
         this.animationManager.changeState('idle');
         
-        this.actionTimer = 0.1//Math.random() * 3 + 1;
+        this.actionTimer = 0.05//Math.random() * 3 + 1;
         this.action = this.move;
     }
-    setTarget (position) {
-        this.targetPosition.x = position.x;
-        this.targetPosition.y = position.y;
+    updateWaypointsSame () {
+        if(this.waypointID >= this.waypoints.length){
+            this.wait();
+            return;
+        }
+        this.setTarget(this.waypoints[this.waypointID]);
+    }
+    updateWaypoints (same) {
+        if(!same){
+            this.waypointID ++;
+        }
+        if(this.waypointID >= this.waypoints.length){
+            this.wait();
+            return;
+        }
+        this.setTarget(this.waypoints[this.waypointID]);
+    }
+    setWaypoints (waypoints) {
+        this.waypoints = waypoints;
+        this.waypointID = 0;
+        
+    }
+    setTarget (position, isEnemy) {
+        this.isEnemy = isEnemy;
+        var angle = Math.random() * 360 / 180 * 3.14
+        this.targetPosition.x = position.x + Math.sin(angle)*20;
+        this.targetPosition.y = position.y + Math.cos(angle)*20;
         this.followTarget = true;
         this.move();
     }
@@ -232,8 +281,12 @@ export default class StandardEnemy extends Entity {
         this.attackTimer = this.attackSpeed;
         // console.log(this.entityToAttack);
         let newList = this.game.getSimpleEntityCollision(this, this.entityToAttack.entity);
+
+
+
         // console.log('ATTACK', newList);
         if(newList.length){
+            // console.log( this.entityToAttack.entity.team, this.team, newList);
             this.entityToAttack.entity.hit(1);
         }
         // this.attacking = false;
@@ -272,7 +325,9 @@ export default class StandardEnemy extends Entity {
             return;
         }
 
+        // this.updateWaypointsSame();
         this.animationManager.changeState('idle', true);
+        this.attacking = false;
     }
     hit(power, forceSide) {
         if(this.life < 0){
@@ -299,7 +354,7 @@ export default class StandardEnemy extends Entity {
             //return false;
         }
 
-
+        this.updateLifeBar();
         return true;
     }
 
@@ -309,7 +364,8 @@ export default class StandardEnemy extends Entity {
     }
 
     dead() {
-
+        this.disapearing = true;
+        this.removeLifeBar();
         TweenLite.to(this.base,0.5,{alpha:0})
         this.collidable = false;
         
@@ -334,16 +390,24 @@ export default class StandardEnemy extends Entity {
     }
     update ( delta ) {
 
+        if(this.disapearing){
+            this.disapearTimer -= delta;
+            if(this.disapearTimer <= 0){
+                this.kill = true;
+            }
+            let value = this.disapearTimer / this.disapearTimerMax;
+            this.alpha = value;
+            this.animationContainer.scale.set(value * 0.5 + 0.5)
+        }
 
-
-        if(this.killed){
+        if(this.killed || !this.updateable){
             return;
         }
         // console.log(this.followTarget);
         
 
         if(!this.attacking){
-            let entityCollisions = this.game.getColisionList(this,['tower','player']);
+            let entityCollisions = this.game.getColisionList(this,['tower','player','enemy'], true);
             // console.log(entityCollisions);
             if(entityCollisions && entityCollisions.length){
                 if(entityCollisions[0].ableToHit || entityCollisions[0].entity.type == 'tower'){
@@ -363,6 +427,7 @@ export default class StandardEnemy extends Entity {
                 this.attacking = false;
             }
         }
+
         // console.log(this.velocity);
         if(this.actionTimer > 0){
             this.actionTimer -= delta;
@@ -380,11 +445,14 @@ export default class StandardEnemy extends Entity {
                 this.endHit();
             }
         }
-
-        if(this.followTarget){
-            if(utils.distance(this.targetPosition.x, this.targetPosition.y, this.x, this.y) < 20){
+        // console.log(this.attacking);
+        if((this.isEnemy && this.followTarget) || this.followTarget && !this.attacking){
+            if(utils.distance(this.targetPosition.x, this.targetPosition.y, this.x, this.y) < this.getRadius()){
+                if(!this.isEnemy){
+                    this.updateWaypoints();
+                }
                 //this.followTarget = false;
-                this.wait();
+                //this.wait();
             }else{
                 // console.log('MOVE');
                 this.move();
@@ -393,13 +461,15 @@ export default class StandardEnemy extends Entity {
 
 
         this.updateBaseColor();
+        if(this.hitting){
+            return
+        }
 
         if(this.game.worldCollision(this.x , this.y)){
             this.moveBack(delta);
             return
         }
         // console.log(this.velocity);
-
         this.x += this.velocity.x * delta * this.speedScale;
         this.y += this.velocity.y * delta * this.speedScale;
     }	
