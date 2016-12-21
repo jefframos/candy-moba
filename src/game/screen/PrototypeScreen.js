@@ -533,6 +533,20 @@ export default class PrototypeScreen extends Screen{
 				//this.speedUpValue = 10;
 				// this.cupcake.die();
 			}
+			if(this.inputManager.keys[i] == 'zoomIn'){
+				//console.log('space');
+				this.lastAction = this.inputManager.keys[i];
+				this.camera.zoom2(0.1);
+				//this.speedUpValue = 10;
+				// this.cupcake.die();
+			}
+			if(this.inputManager.keys[i] == 'zoomOut'){
+				//console.log('space');
+				this.lastAction = this.inputManager.keys[i];
+				this.camera.zoom2(-0.1);
+				//this.speedUpValue = 10;
+				// this.cupcake.die();
+			}
 		}
 
 		// console.log('axes',this.inputManager.leftAxes);

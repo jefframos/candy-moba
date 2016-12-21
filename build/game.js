@@ -29108,6 +29108,20 @@
 						//this.speedUpValue = 10;
 						// this.cupcake.die();
 					}
+					if (this.inputManager.keys[i] == 'zoomIn') {
+						//console.log('space');
+						this.lastAction = this.inputManager.keys[i];
+						this.camera.zoom2(0.1);
+						//this.speedUpValue = 10;
+						// this.cupcake.die();
+					}
+					if (this.inputManager.keys[i] == 'zoomOut') {
+						//console.log('space');
+						this.lastAction = this.inputManager.keys[i];
+						this.camera.zoom2(-0.1);
+						//this.speedUpValue = 10;
+						// this.cupcake.die();
+					}
 				}
 	
 				// console.log('axes',this.inputManager.leftAxes);
@@ -37642,10 +37656,20 @@
 				} else if (e.keyCode === 86) {
 					this.addKey('action5');
 					this.usingGamepad = false;
+				} else if (e.keyCode === 107 || e.keyCode === 187) {
+					this.addKey('zoomIn');
+					// this.usingGamepad = false;
+				} else if (e.keyCode === 189 || e.keyCode === 109) {
+					this.addKey('zoomOut');
+					// this.usingGamepad = false;
+				} else if (e.keyCode === 16 || e.keyCode === 16) {
+					this.addKey('action7');
+					// this.usingGamepad = false;
 				}
+				// console.log(e.keyCode);
 				// if(!this.keys){
 				// 	this.usingGamepad = true;
-				// }
+				// }107 187+ 189 109 -
 				this.updateKeyboardInput();
 				this.game.updateKeyDown();
 			}
@@ -37668,7 +37692,7 @@
 							break;
 					}
 				}
-				console.log(this.keys);
+				// console.log(this.keys);
 			}
 		}, {
 			key: 'removeKey',
@@ -37742,6 +37766,18 @@
 					this.removeKey('action5');
 					this.usingGamepad = false;
 					key = 'action5';
+				} else if (e.keyCode === 107 || e.keyCode === 187) {
+					this.removeKey('zoomIn');
+					key = 'zoomIn';
+					// this.usingGamepad = false;
+				} else if (e.keyCode === 189 || e.keyCode === 109) {
+					this.removeKey('zoomOut');
+					key = 'zoomOut';
+					// this.usingGamepad = false;
+				} else if (e.keyCode === 16 || e.keyCode === 16) {
+					this.removeKey('action7');
+					key = 'action7';
+					// this.usingGamepad = false;
 				}
 	
 				this.updateKeyboardInput();

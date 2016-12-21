@@ -283,9 +283,20 @@ export default class InputManager{
 			this.addKey('action5')
 			this.usingGamepad = false;
 		}
+		else if(e.keyCode === 107 || e.keyCode === 187){
+			this.addKey('zoomIn')
+			// this.usingGamepad = false;
+		}else if(e.keyCode === 189 || e.keyCode === 109){
+			this.addKey('zoomOut')
+			// this.usingGamepad = false;
+		}else if(e.keyCode === 16 || e.keyCode === 16){
+			this.addKey('action7')
+			// this.usingGamepad = false;
+		}
+		// console.log(e.keyCode);
 		// if(!this.keys){
 		// 	this.usingGamepad = true;
-		// }
+		// }107 187+ 189 109 -
 		this.updateKeyboardInput()
 		this.game.updateKeyDown()
     }
@@ -307,7 +318,7 @@ export default class InputManager{
     			break;			
     		}
     	}
-    	console.log(this.keys);
+    	// console.log(this.keys);
     }
     removeKey(key){
     	for (var i = 0; i < this.keys.length; i++) {
@@ -383,6 +394,18 @@ export default class InputManager{
 			this.removeKey('action5')
 			this.usingGamepad = false;
 			key = 'action5';
+		}else if(e.keyCode === 107 || e.keyCode === 187){
+			this.removeKey('zoomIn')
+			key = 'zoomIn';
+			// this.usingGamepad = false;
+		}else if(e.keyCode === 189 || e.keyCode === 109){
+			this.removeKey('zoomOut')
+			key = 'zoomOut';
+			// this.usingGamepad = false;
+		}else if(e.keyCode === 16 || e.keyCode === 16){
+			this.removeKey('action7')
+			key = 'action7';
+			// this.usingGamepad = false;
 		}
 
 		this.updateKeyboardInput();
