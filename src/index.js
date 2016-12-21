@@ -7,7 +7,8 @@ import PrototypeScreen from './game/screen/PrototypeScreen';
 
 
 PIXI.loader
-	.add('./assets/Enemies/tomato0.json')
+	.add('./assets/Enemies/enemies0.json')
+	.add('./assets/Enemies/enemies1.json')
 	.add('./assets/Cupcake/cupcake0.json')
 	.add('./assets/Cupcake/cupcake1.json')
 	.add('./assets/Cupcake/cupcake2.json')
@@ -16,11 +17,12 @@ PIXI.loader
 	.add('./assets/Effects/effects0.json')
 	.add('./assets/Towers/towers0.json')
 	.add('./assets/Spawners/spawners0.json')
+	.add('./assets/UI/ui0.json')
 	.load(configGame);
 
 function configGame(){
 
-	let game = new Game(config);
+	window.game = new Game(config);
 	
 	//create screen manager
 	let screenManager = new ScreenManager();

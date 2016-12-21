@@ -67,6 +67,7 @@ export default class Entity extends PIXI.Container {
         this.kill = true;
     }
     debugCollision() {
+        return
         this.colisionCircle = new PIXI.Graphics();
         this.colisionCircle.lineStyle(1,0xFF0000);
         this.colisionCircle.drawCircle(0,0,this.radius);

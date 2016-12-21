@@ -1,0 +1,48 @@
+{"frames": {
+
+"ingame/backtower.png":
+{
+	"frame": {"x":1,"y":1,"w":136,"h":68},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":8,"w":136,"h":68},
+	"sourceSize": {"w":136,"h":76},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"ingame/deadTomatto.png":
+{
+	"frame": {"x":221,"y":1,"w":25,"h":29},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":29},
+	"sourceSize": {"w":25,"h":29},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"ingame/smallTomatto.png":
+{
+	"frame": {"x":221,"y":32,"w":25,"h":29},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":29},
+	"sourceSize": {"w":25,"h":29},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"ingame/tower.png":
+{
+	"frame": {"x":139,"y":1,"w":80,"h":81},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":7,"w":80,"h":81},
+	"sourceSize": {"w":91,"h":88},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "ui0.png",
+	"format": "RGBA8888",
+	"size": {"w":247,"h":83},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:81710e278154c368ca703d39904e1960:5a1f2db29c235b6bbccfe4389afc65a1:27e295425c2b40d53ac283ae145401cd$"
+}
+}

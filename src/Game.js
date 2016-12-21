@@ -12,6 +12,8 @@ export default class Game {
 		this.animationLoop = new PIXI.AnimationLoop(window.renderer);
 		this.animationLoop.on('prerender', this.update.bind(this));
 		this.resize();
+
+		this.frameskip = 1;
 	}
 	resize() {
 		if (window.innerWidth / window.innerHeight >= this.ratio) {
@@ -26,9 +28,11 @@ export default class Game {
 	}
 
 	update(){
-		for(let i = 0; i < this.stage.children.length; i++){
-			if(this.stage.children[i].update){
-				this.stage.children[i].update(this.animationLoop.delta);
+		for (var i = this.frameskip - 1; i >= 0; i--) {
+			for(let i = 0; i < this.stage.children.length; i++){
+				if(this.stage.children[i].update){
+					this.stage.children[i].update(this.animationLoop.delta);
+				}
 			}
 		}
 	}

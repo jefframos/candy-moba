@@ -122,6 +122,7 @@ export default class InputManager{
 		}
 
 		this.leftAxes = [0, 0];
+		this.rightAxes = [0, 0];
 		if(this.currentGamepad < 0){
 			return;
 		}
@@ -141,6 +142,12 @@ export default class InputManager{
 		//get axis
 		let hAxe = navigator.getGamepads()[this.currentGamepad].axes[0].toFixed(2);
 		let vAxe = navigator.getGamepads()[this.currentGamepad].axes[1].toFixed(2);
+
+		if(navigator.getGamepads()[this.currentGamepad].axes && navigator.getGamepads()[this.currentGamepad].axes.length >= 5){
+			let RhAxe = navigator.getGamepads()[this.currentGamepad].axes[2].toFixed(2);
+			let RvAxe = navigator.getGamepads()[this.currentGamepad].axes[5].toFixed(2);
+			this.rightAxes = [RhAxe, RvAxe];
+		}
 		
 		this.leftAxes = [hAxe, vAxe];
 

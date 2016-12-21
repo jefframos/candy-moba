@@ -32,18 +32,27 @@ export default class StandardEnemy extends Entity {
         this.actionTimer = -1;
         this.action = null;
         
-
+        this.entityModel = {
+            maxLife:5,
+            power:1,
+            // sp
+        }
         // this.build();
 
         // this.sprite.scale.set(this.starterScale)
     }
 
     build () {
-
+        let enemieType = '';
+        if(this.team == 0){
+            enemieType = Math.random() <0.5?'Candy1':'Candy2';
+        }else{
+            enemieType = Math.random() <0.5?'Tomato':'Potato';
+        }
         this.animationModel = [];
         this.animationModel.push({
             label:'idle',
-            src:'idle/tomatoIdle00',
+            src:enemieType+'/idle/idle00',
             totalFrames:15,
             startFrame:0,
             animationSpeed:0.4,
@@ -54,7 +63,7 @@ export default class StandardEnemy extends Entity {
 
         this.animationModel.push({
             label:'killBack',
-            src:'dead1/tomatoDead100',
+            src:enemieType+'/dead1/dead00',
             totalFrames:12,
             startFrame:0,
             animationSpeed:0.65,
@@ -67,7 +76,7 @@ export default class StandardEnemy extends Entity {
 
         this.animationModel.push({
             label:'killFront',
-            src:'dead1/tomatoDead100',
+            src:enemieType+'/dead1/dead00',
             totalFrames:12,
             startFrame:0,
             animationSpeed:0.65,
@@ -80,7 +89,7 @@ export default class StandardEnemy extends Entity {
 
         this.animationModel.push({
             label:'hurt',
-            src:'hurt/tomatoHurt00',
+            src:enemieType+'/hurt/hurt00',
             totalFrames:10,
             startFrame:0,
             animationSpeed:0.6,
@@ -93,7 +102,7 @@ export default class StandardEnemy extends Entity {
 
         this.animationModel.push({
             label:'attackIn',
-            src:'attack/tomatoAttack00',
+            src:enemieType+'/attack/attack00',
             totalFrames:10,
             startFrame:0,
             animationSpeed:0.6,
@@ -106,7 +115,7 @@ export default class StandardEnemy extends Entity {
 
         this.animationModel.push({
             label:'attackOut',
-            src:'attack/tomatoAttack00',
+            src:enemieType+'/attack/attack00',
             totalFrames:23,
             startFrame:11,
             animationSpeed:0.6,
@@ -119,7 +128,7 @@ export default class StandardEnemy extends Entity {
 
           this.animationModel.push({
             label:'walk',
-            src:'walk/tomatoWalk00',
+            src:enemieType+'/walk/walk00',
             totalFrames:17,
             startFrame:0,
             animationSpeed:0.6,
@@ -148,7 +157,7 @@ export default class StandardEnemy extends Entity {
         this.animationManager.hideAll();
         this.animationManager.stopAll();
         this.animationManager.changeState('idle');
-        this.radius = 120;
+        this.radius = 120 + Math.random() * 10;
         this.externalRadius = 160;
         // this.debugCollision();
 
@@ -226,6 +235,7 @@ export default class StandardEnemy extends Entity {
         this.setTarget(this.waypoints[this.waypointID]);
     }
     setWaypoints (waypoints) {
+        //console.log(waypoints);
         this.waypoints = waypoints;
         this.waypointID = 0;
         
@@ -246,6 +256,8 @@ export default class StandardEnemy extends Entity {
         if(this.followTarget){
 
             let angle = Math.atan2(this.targetPosition.y - this.y, this.targetPosition.x - this.x);
+
+            //console.log('follow',angle * 180 / 3.14);
             this.velocity.x = Math.cos(angle) * this.speed.x;
             this.velocity.y = Math.sin(angle) * this.speed.x;
 
@@ -407,7 +419,7 @@ export default class StandardEnemy extends Entity {
         
 
         if(!this.attacking){
-            let entityCollisions = this.game.getColisionList(this,['tower','player','enemy'], true);
+            let entityCollisions = this.game.getCollisionList(this,['tower','player','enemy'], true);
             // console.log(entityCollisions);
             if(entityCollisions && entityCollisions.length){
                 if(entityCollisions[0].ableToHit || entityCollisions[0].entity.type == 'tower'){

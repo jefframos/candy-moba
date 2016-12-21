@@ -19,6 +19,9 @@ export default class Camera{
 		this.cameraMoving = {x:false};
 		this.fixCamera = false;
 		this.startDelay = -1;
+		this.currentZoom = 1;
+		this.maxZoom = 1.2;
+		this.minZoom = 0.1;
 		//se a distancia minima da camera for pequena, parece que o cara ta bebado
 	}
 	
@@ -42,124 +45,72 @@ export default class Camera{
 	unfollow(){
 		this.entityFollow = null;
 	}
-	// updateX(globalEntityPosition){
+	
+	zoomOut(value){
+		return
+		this.currentZoom -= value?value:0.1;
+		if(this.currentZoom < this.minZoom){
+			this.currentZoom = this.minZoom;
+		}
+		this.zoom(this.currentZoom)
+	}
+	zoom2(value){
+		this.currentZoom += value;
+		if(this.currentZoom > this.maxZoom){
+			this.currentZoom = this.maxZoom;
+		}
+		if(this.currentZoom < this.minZoom){
+			this.currentZoom = this.minZoom;
+		}
+		this.zoom(this.currentZoom)
+	}
+	zoom(value, time, delay){
 
-	// 	// this.cameraStopping.x = false;
-	// 	if(globalEntityPosition.x < (config.width/2 - config.width * 0.2)){
-	// 		this.virtualVelocity.x = this.cameraSpeed.x * 2;
-	// 	}else if(globalEntityPosition.x > (config.width/2  + config.width * 0.2)){
-	// 		this.virtualVelocity.x = -this.cameraSpeed.x * 2;
-	// 	}else if(globalEntityPosition.x < (config.width/2 - this.cameraSpeed.x/this.acceleration.x)){
-	// 		this.virtualVelocity.x = this.cameraSpeed.x;
-	// 	}else if(globalEntityPosition.x > (config.width/2 + this.cameraSpeed.x/this.acceleration.x)){
-	// 		this.virtualVelocity.x = -this.cameraSpeed.x;
-	// 	}else if(this.entityFollow.velocity.x == 0){//} if(this.cameraDelay.x <= 0){
 
-	// 		console.log('STOP CAMERA');
-	// 		// this.cameraStopping.x = true;
-	// 		this.virtualVelocity.x = 0;
-	// 		this.velocityPlus.x = 0;
-	// 	}
-
-	// 	// if(this.virtualVelocity.x != 0 && this.cameraDelay.x <= 0){
-	// 	// 	this.cameraDelay.x = this.cameraDelayStandard.x;
-	// 	// }
-
-	// 	if(this.velocity.x < this.virtualVelocity.x){
-	// 		if(this.velocity.x > 0){
-	// 			// this.velocity.x += this.acceleration.x;
-	// 		}
-	// 		this.velocity.x += this.acceleration.x;
-	// 		if(this.entityFollow.velocity && this.entityFollow.velocity.x){
-	// 			//this.velocityPlus.x = -this.entityFollow.velocity.x;
-	// 		}
-	// 		if(this.velocity.x > this.virtualVelocity.x){
-	// 			this.velocity.x = this.virtualVelocity.x;
-	// 		}
-	// 	}else if (this.velocity.x > this.virtualVelocity.x){
-	// 		if(this.velocity.x < 0){
-	// 			// this.velocity.x -= this.acceleration.x;
-	// 		}
-	// 		if(this.velocity.x > this.virtualVelocity.x){
-	// 			this.velocity.x -= this.acceleration.x;
-	// 			if(this.entityFollow.velocity && this.entityFollow.velocity.x){
-	// 				//this.velocityPlus.x = this.entityFollow.velocity.x;
-	// 			}
-	// 			if(this.velocity.x < this.virtualVelocity.x){
-	// 				this.velocity.x = this.virtualVelocity.x;
-	// 			}
-	// 		}
-	// 	}else{
-	// 		this.velocityPlus.x = 0;
-	// 	}
-
-	// 	// if(this.velocity.x)
-	// }
-
-	// updateY(globalEntityPosition){
-	// 	if(globalEntityPosition.y < (config.height/2 - config.height * 0.2)){
-	// 		this.virtualVelocity.y = this.cameraSpeed.y * 2;
-	// 	}else if(globalEntityPosition.y > (config.height/2  + config.height * 0.2)){
-	// 		this.virtualVelocity.y = -this.cameraSpeed.y * 2;
-	// 	}else if(globalEntityPosition.y < (config.height/2 - config.height * this.cameraSpeed.y*this.acceleration.y)){
-	// 		this.virtualVelocity.y = this.cameraSpeed.y;
-	// 	}else if(globalEntityPosition.y > (config.height/2 + config.height * this.cameraSpeed.y*this.acceleration.y)){
-	// 		this.virtualVelocity.y = -this.cameraSpeed.y;
-	// 	}else{
-	// 		this.virtualVelocity.y = 0;
-	// 		this.velocityPlus.y = 0;
-	// 	}
-
-	// 	if(this.velocity.y < this.virtualVelocity.y){
-	// 		if(this.velocity.y > 0){
-	// 			// this.velocity.y += this.acceleration.y;
-	// 		}
-	// 		this.velocity.y += this.acceleration.y;
-	// 		if(this.entityFollow.velocity && this.entityFollow.velocity.y){
-	// 			this.velocityPlus.y = -this.entityFollow.velocity.y;
-	// 		}
-	// 		if(this.velocity.y > this.virtualVelocity.y){
-	// 			this.velocity.y = this.virtualVelocity.y;
-	// 		}
-	// 	}else if (this.velocity.y > this.virtualVelocity.y){
-	// 		if(this.velocity.y > this.virtualVelocity.y){
-	// 			if(this.velocity.y < 0){
-	// 				// this.velocity.y -= this.acceleration.y;
-	// 			}
-	// 			this.velocity.y -= this.acceleration.y;
-	// 			if(this.entityFollow.velocity && this.entityFollow.velocity.y){
-	// 				//this.velocityPlus.y = this.entityFollow.velocity.y;
-	// 			}
-	// 			if(this.velocity.y < this.virtualVelocity.y){
-	// 				this.velocity.y = this.virtualVelocity.y;
-	// 			}
-	// 		}
-	// 	}else{
-	// 		this.velocityPlus.y = 0;
-	// 	}
-	// }
-
+		this.currentZoom = value;		
+		TweenLite.to(this.worldMap.scale, time?time:0.5, {delay:delay?delay:0, x:this.currentZoom, y:this.currentZoom});//, onUpdate:this.updatePosition.bind(this), onUpdateParams:[true]});
+		//this.worldMap.scale.set(value);//, onUpdate:this.updatePosition.bind(this), onUpdateParams:[true]});
+	}
 	updatePosition(force){
+
+		if(force){
+			console.log('force');
+		}
 		let globalEntityPosition = this.entityFollow.toGlobal(new PIXI.Point());
 		let globalWorldPosition = this.worldMap.toGlobal(new PIXI.Point());
 		// console.log(this.worldMap.x, globalEntityPosition.x);
 
 		if(force){
-			this.worldMap.x = (config.width / 2) - (globalEntityPosition.x)* this.worldMap.scale.x +  (globalWorldPosition.x) * this.worldMap.scale.x;
-			this.worldMap.y = (config.height / 2) - (globalEntityPosition.y)* this.worldMap.scale.y +  (globalWorldPosition.y)  * this.worldMap.scale.y;
+			//this.worldMap.x = (config.width / 2) - (globalEntityPosition.x)* this.worldMap.scale.x +  (globalWorldPosition.x) * this.worldMap.scale.x;
+			//this.worldMap.y = (config.height / 2) - (globalEntityPosition.y)* this.worldMap.scale.y +  (globalWorldPosition.y)  * this.worldMap.scale.y;
 
 //			TweenLite.to(this.worldMap, 0.1 ,{x:config.width / 2 - globalEntityPosition.x +  globalWorldPosition.x, y:config.height / 2 - globalEntityPosition.y +  globalWorldPosition.y});
 
-		console.log(this.worldMap.x, force);
+			// let tempW = this.worldMap.width/this.worldMap.scale.x;
+			// let tempH = this.worldMap.height/this.worldMap.scale.y;
+
+			this.worldMap.pivot.x =this.entityFollow.x// -(this.entityFollow.x - tempW)// * this.worldMap.scale.x//((config.width / 2) - (globalEntityPosition.x) +  (globalWorldPosition.x))/2 
+			this.worldMap.pivot.y = this.entityFollow.y//-(this.entityFollow.y - tempH) //* this.worldMap.scale.y//((config.height / 2) - (globalEntityPosition.y) +  (globalWorldPosition.y))/2
+
+			this.worldMap.x = config.width / 2//-this.worldMap.pivot.x/2;
+			this.worldMap.y = config.height / 2//-this.worldMap.pivot.y/2;
+
+
+			// console.log(this.worldMap.width/this.worldMap.scale.x);
+		//console.log(this.worldMap.x, force);
 			return
 		}
 
 		let middleDistance = utils.distance(globalEntityPosition.x, globalEntityPosition.y, config.width/2, config.height/2);
 		// console.log(middleDistance);
 		if(middleDistance > 20){
+			// this.worldMap.pivot.x =this.entityFollow.x
+			// this.worldMap.pivot.y = this.entityFollow.y
 			// this.worldMap.x = config.width / 2 - globalEntityPosition.x
 			// console.log(config.width / 2 , globalEntityPosition.x, globalWorldPosition.x);
-			TweenLite.to(this.worldMap, 1 ,{x:config.width / 2 - globalEntityPosition.x +  globalWorldPosition.x, y:config.height / 2 - globalEntityPosition.y +  globalWorldPosition.y});
+			TweenLite.to(this.worldMap.pivot, 1 ,{x:this.entityFollow.x, y:this.entityFollow.y});
+			TweenLite.to(this.worldMap, 1 ,{x:config.width / 2, y:config.height / 2});
+			//TweenLite.to(this.worldMap, 1 ,{x:config.width / 2 - globalEntityPosition.x +  globalWorldPosition.x, y:config.height / 2 - globalEntityPosition.y +  globalWorldPosition.y});
 		}
 	}
 	update(delta){

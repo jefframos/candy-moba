@@ -90,7 +90,8 @@ export default class Spawner extends Entity {
             return
         }
         // TweenLite.from(this.animationContainer.scale, 0.8, {x:0.9, y:0.9, ease:'easeOutElastic'})
-        this.game.addEnemy('tomato', {x:this.x, y:this.y + Math.random() * this.getRadius() - this.getRadius()/2}, this.waypointList, this.team);
+        this.game.addEnemy('tomato', {x:this.x, y:this.y}, this.waypointList, this.team);
+        //this.game.addEnemy('tomato', {x:this.x, y:this.y + Math.random() * this.getRadius() - this.getRadius()/2}, this.waypointList, this.team);
         this.actionTimer = this.spawDistance;
         this.action = this.addEntity;
     }
@@ -149,6 +150,8 @@ export default class Spawner extends Entity {
 
         this.collidable = true;
 
+        this.animationManager.scale.set(0.5)
+
         console.log(this.getRadius());
         let maxAngle = 360
         let totFixed = 10
@@ -162,7 +165,6 @@ export default class Spawner extends Entity {
                 this.slotsAttack.push({angle:Math.random() * maxAngle, entity:null, radius: Math.random() * this.getRadius()/3 + this.getRadius()/3});
             }
         }
-        // this.debugCollision()
 
     }
     

@@ -220,11 +220,17 @@ export default class Tower extends Entity {
             // }
         }
 
-        if(this.attackTimer < 0){
+        if(this.attackTimer <= 0){
             let entityCollisions = this.game.getExternalColisionList(this,['enemy', 'player'], true);
+
             if(entityCollisions && entityCollisions.length){
+                //console.log(this.name, entityCollisions);
                 // console.log(entityCollisions.length);
-                this.attack(entityCollisions[0].entity);
+                if(entityCollisions.length > 1 && entityCollisions[0].entity.type == 'hero'){
+                    this.attack(entityCollisions[1].entity);
+                }else{
+                    this.attack(entityCollisions[0].entity);
+                }
             }
         }
         // console.log(entityCollisions);

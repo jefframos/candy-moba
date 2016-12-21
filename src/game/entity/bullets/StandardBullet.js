@@ -6,10 +6,16 @@ export default class StandardBullet extends Entity {
 
     constructor(game, velocity, lifeTime) {
 
-    	super();
+        super();
 
         this.game = game;
         this.lifeTime = lifeTime;
+        this.velocity = velocity;
+
+        this.build();
+        
+    }
+    build(){
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
         this.roundBase.beginFill(0);
@@ -33,7 +39,7 @@ export default class StandardBullet extends Entity {
         this.animationModel = [];
         this.animationModel.push({
             label:'idle',
-            src:'cherryBullet'+idCherry+'00',
+            src:'cupcake/bullet/cherryBullet'+idCherry+'00',
             totalFrames:1,
             startFrame:0,
             animationSpeed:0.4,
@@ -45,7 +51,7 @@ export default class StandardBullet extends Entity {
 
         this.animationModel.push({
             label:'explode',
-            src:'cherryBullet'+idCherry+'00',
+            src:'cupcake/bullet/cherryBullet'+idCherry+'00',
             totalFrames:6,
             startFrame:0,
             animationSpeed:0.4,
@@ -59,7 +65,6 @@ export default class StandardBullet extends Entity {
 
         // this.animationContainer.addChild(this.sprite);
        
-        this.velocity = velocity;
         this.spriteVelocity = {x:0,y:0};
 
         this.standardScale = 1;
@@ -67,7 +72,7 @@ export default class StandardBullet extends Entity {
         this.starterScale = 0.5;
         this.gravity = 15;
         // this.scale.set(0);
-        this.kill2 = false
+        this.killed = false
 
         this.animationManager.hideAll();
         this.animationManager.stopAll();
@@ -75,13 +80,14 @@ export default class StandardBullet extends Entity {
 
         this.radius = 10;
         this.externalRadius = 0;
-        // this.debugCollision();
 
-        // this.sprite.scale.set(this.starterScale)
+        this.disapearTimerMax = 20;
+        this.disapearTimer = this.disapearTimerMax;
+        this.disapearing = false;
     }
 
     bulletAttackCollision() {
-        let collisionList = this.game.getColisionList(this,'enemy');
+        let collisionList = this.game.getCollisionList(this,'enemy');
         if(collisionList){
             for (var i = 0; i < collisionList.length; i++) {
                 if((collisionList[i].trueLeft && this.velocity.x > 0)||
@@ -99,6 +105,16 @@ export default class StandardBullet extends Entity {
 
     update ( delta ) {
 
+        if(this.disapearing){
+            this.disapearTimer -= delta;
+            if(this.disapearTimer <= 0){
+                this.kill = true;
+            }
+            let value = this.disapearTimer / this.disapearTimerMax;
+            this.alpha = value;
+            this.animationContainer.scale.set(value * 0.8 + 0.2)
+        }
+
         if(this.killTimer){
             this.killTimer -= delta;
             this.velocity.x *= 0.7;
@@ -107,7 +123,7 @@ export default class StandardBullet extends Entity {
             }
         }
 
-        if(this.kill2){
+        if(this.killed){
             return;
         }
 
@@ -118,7 +134,7 @@ export default class StandardBullet extends Entity {
             this.base.visible = false;
             this.collidable = false;
             
-            //this.kill2 = true;
+            //this.killed = true;
             this.killTimer = 0.2;
         }
 
@@ -130,7 +146,8 @@ export default class StandardBullet extends Entity {
                 this.animationContainer.rotation = 0;
                 this.animationManager.changeState('explode');
                 this.base.visible = false;
-                this.kill2 = true;
+                this.killed = true;
+                this.disapearing = true;
             }
         }else{
             this.lifeTime -= delta;

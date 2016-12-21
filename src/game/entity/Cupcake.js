@@ -28,11 +28,11 @@ export default class Cupcake extends Entity {
         this.animationContainer.x = 25
         this.addChild(this.animationContainer);
 
-
+        let type = 'cupcake';
         this.animationModel = [];
         this.animationModel.push({
             label:'idle',
-            src:'idle00',
+            src:type+'/idle/idle00',
             totalFrames:14,
             startFrame:0,
             animationSpeed:0.4,
@@ -43,7 +43,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'run',
-            src:'run00',
+            src:type+'/run/run00',
             totalFrames:24,
             startFrame:8,
             animationSpeed:0.4,
@@ -54,7 +54,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'runFast',
-            src:'speedUp00',
+            src:type+'/speedUp/speedUp00',
             totalFrames:24,
             startFrame:8,
             animationSpeed:0.4,
@@ -65,7 +65,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'meleeAttack1',
-            src:'meleeAttack100',
+            src:type+'/meleeAttack1/meleeAttack100',
             totalFrames:16,
             startFrame:7,
             animationSpeed:0.65,
@@ -78,7 +78,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'meleeAttack2',
-            src:'meleeAttack200',
+            src:type+'/meleeAttack2/meleeAttack200',
             totalFrames:16,
             startFrame:7,
             animationSpeed:0.65,
@@ -91,7 +91,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'meleeAttack3',
-            src:'meleeAttack300',
+            src:type+'/meleeAttack3/meleeAttack300',
             totalFrames:28,
             startFrame:12,
             animationSpeed:0.65,
@@ -104,7 +104,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'meleeAttack4',
-            src:'meleeAttack400',
+            src:type+'/meleeAttack4/meleeAttack400',
             totalFrames:38,
             startFrame:16,
             animationSpeed:0.7,
@@ -117,7 +117,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'jumpIn',
-            src:'jump00',
+            src:type+'/jump/jump00',
             totalFrames:7,
             startFrame:0,
             animationSpeed:0.6,
@@ -130,7 +130,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'jumpFalling',
-            src:'jump00',
+            src:type+'/jump/jump00',
             totalFrames:13,
             startFrame:7,
             animationSpeed:0.3,
@@ -143,7 +143,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'jumpOut',
-            src:'jump00',
+            src:type+'/jump/jump00',
             totalFrames:20,
             startFrame:13,
             animationSpeed:0.3,
@@ -156,7 +156,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'rangeAttack',
-            src:'rangeAttack100',
+            src:type+'/rangeAttack1/rangeAttack100',
             totalFrames:15,
             startFrame:0,
             animationSpeed:0.65,
@@ -169,7 +169,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'rangeAttackEnd',
-            src:'rangeAttack100',
+            src:type+'/rangeAttack1/rangeAttack100',
             totalFrames:33,
             startFrame:15,
             animationSpeed:0.65,
@@ -182,7 +182,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'areaAttack',
-            src:'areaAttack100',
+            src:type+'/areaAttack1/areaAttack100',
             totalFrames:30,
             startFrame:0,
             animationSpeed:0.65,
@@ -195,7 +195,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'killBack',
-            src:'kill100',
+            src:type+'/kill1/kill100',
             totalFrames:22,
             startFrame:0,
             animationSpeed:0.65,
@@ -208,7 +208,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'revive',
-            src:'areaAttack100',
+            src:type+'/areaAttack1/areaAttack100',
             totalFrames:30,
             startFrame:23,
             animationSpeed:0.65,
@@ -221,7 +221,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'speedAttack',
-            src:'speedAttack00',
+            src:type+'/speedAttack/speedAttack00',
             totalFrames:8,
             startFrame:0,
             animationSpeed:0.65,
@@ -234,7 +234,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'speedAttackLoop',
-            src:'speedAttack00',
+            src:type+'/speedAttack/speedAttack00',
             totalFrames:8,
             startFrame:7,
             animationSpeed:0.5,
@@ -246,7 +246,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'speedAttackEnd',
-            src:'speedAttack00',
+            src:type+'/speedAttack/speedAttack00',
             totalFrames:14,
             startFrame:8,
             animationSpeed:0.65,
@@ -259,7 +259,7 @@ export default class Cupcake extends Entity {
 
         this.animationModel.push({
             label:'hit1',
-            src:'hurt100',
+            src:type+'/hurt1/hurt100',
             totalFrames:18,
             startFrame:0,
             animationSpeed:0.65,
@@ -373,7 +373,7 @@ export default class Cupcake extends Entity {
         this.y = this.startPosition.y;
 
         this.maxLife = this.entityModel.maxLife;
-        this.life = this.entityModel.life;
+        this.life = this.maxLife;
         //this.scale.set(this.standardScale)
 
         this.addLifeBar({x:0, y:-250}, {w:120, h:15}, this.team == 0?0x0000FF:0x00FF00);
@@ -419,7 +419,7 @@ export default class Cupcake extends Entity {
         }
     }
     dashAttackCollision() {
-        let collisionList = this.game.getColisionList(this,'enemy', true);
+        let collisionList = this.game.getCollisionList(this,'enemy', true);
         if(collisionList){
             for (var i = 0; i < collisionList.length; i++) {
                 //if(collisionList[i].right || collisionList[i].left){
@@ -433,7 +433,7 @@ export default class Cupcake extends Entity {
         return false
     }
     meleeAttackCollision() {
-        let collisionList = this.game.getColisionList(this,'enemy', true);
+        let collisionList = this.game.getCollisionList(this,'enemy', true);
         if(collisionList){
             for (var i = 0; i < collisionList.length; i++) {
                 if(collisionList[i].right || collisionList[i].left){
@@ -659,6 +659,9 @@ export default class Cupcake extends Entity {
         this.hitTime = -1;
     }
     hit(power, forceSide) {
+
+        //rever condicoes de hit
+        console.log('rever condicoes de hit');
         if(this.life < 0 || this.areaAttackTimer > 0){
             return false;
         }
@@ -684,7 +687,7 @@ export default class Cupcake extends Entity {
             //return false;
         }
 
-        this.updateLifeBar();
+        
 
         return true;
     }
@@ -733,7 +736,10 @@ export default class Cupcake extends Entity {
     }
   
     update ( delta ) {
+
         this.animationManager.updateAnimations();
+
+        this.updateLifeBar();
 
         if(this.dying){
             return;
@@ -814,10 +820,10 @@ export default class Cupcake extends Entity {
             return
         }
 
-        if(this.game.worldCollision(this.x + this.velocity.x * delta, this.y)){
+        if(this.game.worldCollision(this.x + (this.velocity.x * 1.1) * delta, this.y)){
             this.velocity.x = 0;
         }
-        if(this.game.worldCollision(this.x, this.y + this.velocity.y * delta)){
+        if(this.game.worldCollision(this.x, this.y + (this.velocity.y * 1.1) * delta)){
             this.velocity.y = 0;
         }
         // if(this.velocity.x < 0 &&  this.virtualVelocity.x){

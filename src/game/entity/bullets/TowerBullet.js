@@ -7,12 +7,16 @@ export default class TowerBullet extends StandardBullet {
 
     constructor(game, velocity, lifeTime, power, team) {
 
-    	super();
+        super(game,velocity,lifeTime);
 
-        this.game = game;
-        this.lifeTime = lifeTime;
+        
         this.power = power;
         this.team = team;
+
+        // this.build();
+    }
+
+    buid(){
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
         this.roundBase.beginFill(0);
@@ -62,7 +66,6 @@ export default class TowerBullet extends StandardBullet {
 
         // this.animationContainer.addChild(this.sprite);
        
-        this.velocity = velocity;
         this.spriteVelocity = {x:0,y:0};
 
         this.standardScale = 1;
@@ -78,15 +81,10 @@ export default class TowerBullet extends StandardBullet {
 
         this.radius = 10;
         this.externalRadius = 0;
-        // this.debugCollision();
-
-        console.log('BULLET TOWER');
-
-        // this.sprite.scale.set(this.starterScale)
     }
 
     bulletAttackCollision() {
-        let collisionList = this.game.getColisionList(this,['enemy', 'player'], true);
+        let collisionList = this.game.getCollisionList(this,['enemy', 'player'], true);
         if(collisionList){
         for (var i = 0; i < collisionList.length; i++) {
                 if(collisionList[i].entity.hit(this.power)){
