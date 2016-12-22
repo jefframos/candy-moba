@@ -33,7 +33,7 @@ export default class Spawner extends Entity {
 
         this.radius = 150;
         this.externalRadius = 600;
-        this.debugCollision();
+        // this.debugCollision();
 
         this.static = true;
 
@@ -56,7 +56,7 @@ export default class Spawner extends Entity {
 
         this.spawnTime = 30;
 
-        this.spawnQuant = this.team == 1?8:5;
+        this.spawnQuant = 7//this.team == 1?8:5;
         this.spawDistance = 1;
 
         this.currentWave = 0;
@@ -98,7 +98,8 @@ export default class Spawner extends Entity {
         }
         this.totalEntities ++;
         // TweenLite.from(this.animationContainer.scale, 0.8, {x:0.9, y:0.9, ease:'easeOutElastic'})
-        let ent = this.game.addEnemy('tomato', {x:this.x, y:this.y}, this.waypointList, this.team);
+        let type = this.currentWave > this.spawnQuant -2?'tanker':'standard';
+        let ent = this.game.addEnemy(type, {x:this.x, y:this.y}, this.waypointList, this.team);
         //this.game.addEnemy('tomato', {x:this.x, y:this.y + Math.random() * this.getRadius() - this.getRadius()/2}, this.waypointList, this.team);
         this.actionTimer = this.spawDistance;
         this.action = this.addEntity;

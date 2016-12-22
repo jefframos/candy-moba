@@ -20,8 +20,9 @@ export default class Camera{
 		this.fixCamera = false;
 		this.startDelay = -1;
 		this.currentZoom = 1;
-		this.maxZoom = 1.2;
-		this.minZoom = 0.1;
+		this.maxZoom = 1.1;
+		// this.maxZoom = 1.2;
+		this.minZoom = 0.055;
 		//se a distancia minima da camera for pequena, parece que o cara ta bebado
 	}
 	

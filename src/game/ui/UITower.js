@@ -62,6 +62,7 @@ export default class UITower extends Entity {
             this.backShape.tint = 0xFF0000;
             this.x = - 20 * this.scale.x;
             this.updateable = false;
+            this.visible = false;
         }
         if(this.backBarGreen && this.backBarGreen.parent){
             this.backBarGreen.scale.x = this.entity.life / this.entity.maxLife;

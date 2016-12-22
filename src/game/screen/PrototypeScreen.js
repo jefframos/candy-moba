@@ -7,12 +7,15 @@ import InputManager from '../InputManager';
 import Camera from '../Camera';
 import Cupcake from '../entity/Cupcake';
 import StandardEnemy from '../entity/enemies/StandardEnemy';
+import NestEntity from '../entity/enemies/NestEntity';
+import Tanker from '../entity/enemies/Tanker';
 import StandardBullet from '../entity/bullets/StandardBullet';
 import TowerBullet from '../entity/bullets/TowerBullet';
 import Rock from '../entity/environment/Rock';
 import Pine from '../entity/environment/Pine';
 import Bush from '../entity/environment/Bush';
 import Tower from '../entity/towers/Tower';
+import Nest from '../entity/nest/Nest';
 import Spawner from '../entity/spawner/Spawner';
 import UITower from '../ui/UITower';
 import UISpawner from '../ui/UISpawner';
@@ -66,6 +69,12 @@ export default class PrototypeScreen extends Screen{
 		this.addOnUpdateList(this.cupcake)
 
 
+		this.enemyList = [];
+		this.environmentList = [];
+		this.bulletList = [];
+		this.uiList = [];
+
+
 
 		this.spawnerList = [];
 		for (var i = 0; i < config.spawnerList.length; i++) {
@@ -108,10 +117,33 @@ export default class PrototypeScreen extends Screen{
 				tower.build();
 			}
 		}
-		this.enemyList = [];
-		this.environmentList = [];
-		this.bulletList = [];
-		this.uiList = [];
+
+
+		this.nestList = [];
+		// for (var i = 0; i < config.nestList.length; i++) {
+			console.log(config.nestList[0]);
+			for (var j = 0; j < config.nestList.length; j++) {
+				var nestData = config.nestList[j];
+				// console.log('nestdata -- ',config.nestList[0][j]);
+				console.log('nestdata',nestData);
+
+				let nest = new Nest(this);
+				nest.name = nestData[0];
+
+				this.entityContainer.addChild(nest)
+				this.addOnUpdateList(nest)
+				this.nestList.push(nest);
+
+				nest.x = nestData[1];
+				nest.y = nestData[2];
+				console.log('nest',nest.x,nest.y);
+				this.setScales(nest);
+
+				nest.build();
+			}
+		// }
+
+		
 		// for (var i = 0; i < config.environmentList.length; i++) {
 		// 	var envData = config.environmentList[i];
 		// 	// console.log(envData);
@@ -151,10 +183,16 @@ export default class PrototypeScreen extends Screen{
 		this.camera = new Camera(this, this.gameContainer);
 		this.speedUpValue = 1;
 
+
+		this.timer = 0;
+
 		this.initUI();
 
 		this.initGame();
 
+	}
+	gameOver(){
+		this.updateable = false;
 	}
 	updateUI(delta){
 		for (var i = 0; i < this.uiList.length; i++) {
@@ -163,9 +201,30 @@ export default class PrototypeScreen extends Screen{
 			}
 		}
 	}
+	formatDate(sec){
+		var seconds = sec;
+		// multiply by 1000 because Date() requires miliseconds
+		var date = new Date(seconds * 1000);
+		var hh = date.getUTCHours();
+		var mm = date.getUTCMinutes();
+		var ss = date.getSeconds();
+		// If you were building a timestamp instead of a duration, you would uncomment the following line to get 12-hour (not 24) time
+		// if (hh > 12) {hh = hh % 12;}
+		// These lines ensure you have two-digits
+		if (hh < 10) {hh = "0"+hh;}
+		if (mm < 10) {mm = "0"+mm;}
+		if (ss < 10) {ss = "0"+ss;}
+		// This formats your string to HH:MM:SS
+		var t = hh+":"+mm+":"+ss;
+		return t
+	}
 	initUI(){
 		this.UIContainer = new PIXI.Container();
 		this.addChild(this.UIContainer);
+
+		this.timerLabel = new PIXI.Text('0');
+		this.addChild(this.timerLabel);
+
 		let t1acc = 0;
 		let t2acc = 0;
 		let acc = 0;
@@ -227,7 +286,14 @@ export default class PrototypeScreen extends Screen{
 	}
 	addEnemy(type, position, waypoints, team){
 
-		let tempEnemy = new StandardEnemy(this, team);
+		var tempEnemy;
+		if(type == 'standard'){
+			tempEnemy = new StandardEnemy(this, team);
+		}else if(type == 'tanker'){
+			tempEnemy = new Tanker(this, team);
+		}else{
+			tempEnemy = new NestEntity(this, team);
+		}
 
 
 		tempEnemy.setWaypoints(waypoints)
@@ -255,14 +321,20 @@ export default class PrototypeScreen extends Screen{
 		this.lastAction = null;
 		super.build();
 
-		this.camera.zoom(0.5, 1, 0.2);
+		this.camera.zoom(0.35, 1, 0.2);
 		this.camera.follow(this.cupcake);
 
 	}
 	update ( delta ) {
 
+		if(!this.updateable){
+			return;
+		}
 		let newDelta = delta * this.speedUpValue;
 
+
+		this.timer += newDelta;
+		this.timerLabel.text = this.formatDate(this.timer);
 		super.update(newDelta)
 
 

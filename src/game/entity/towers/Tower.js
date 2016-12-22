@@ -36,7 +36,7 @@ export default class Tower extends Entity {
 
         this.radius = 100;
         this.externalRadius = 300;
-        this.debugCollision();
+        // this.debugCollision();
 
         this.static = true;
 
@@ -52,8 +52,8 @@ export default class Tower extends Entity {
 
         this.waitingNext = 5 * Math.random() + 1;
         this.sinScale = Math.random();
-        this.maxLife = 50;
-        this.life = 50;
+        this.maxLife = 80;
+        this.life = 80;
 
         this.enemiesList = [];
         // this.build();
@@ -74,6 +74,10 @@ export default class Tower extends Entity {
      }
      dead() {
         this.removeLifeBar();
+
+        if(this.finalBase){
+            this.game.gameOver();
+        }
         this.killed = true;
         this.updateable = false;
         TweenLite.to(this.base,0.5,{alpha:0})
@@ -136,7 +140,11 @@ export default class Tower extends Entity {
     }
 
     build ( ) {
-
+        this.finalBase = false;
+        if(this.name.indexOf('AA') !== -1){
+            this.finalBase = true;
+        }
+        console.log(this.name, this.finalBase);
         let team = this.team+1// Math.floor(Math.random()*2) + 1;
         console.log(team);
         this.animationModel = [];

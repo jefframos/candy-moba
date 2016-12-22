@@ -35,6 +35,7 @@ export default class StandardEnemy extends Entity {
         this.entityModel = {
             maxLife:5,
             power:1,
+            attackSpeed: 3
             // sp
         }
         // this.build();
@@ -149,7 +150,7 @@ export default class StandardEnemy extends Entity {
 
         this.standardScale = 1;
         this.speedScale = 1;
-        this.starterScale = 0.5;
+        this.starterScale = 0.4 + Math.random() * 0.1;
         this.gravity = 15;
         // this.scale.set(0);
         this.kill2 = false
@@ -178,7 +179,7 @@ export default class StandardEnemy extends Entity {
         this.side = -1;//Math.random() < 0.5?1:-1;
 
         this.attackTimer = -1;
-        this.attackSpeed = 3;
+        this.attackSpeed = this.entityModel.attackSpeed;
         this.attacking = false;
 
         this.ableToMove = true;
@@ -299,7 +300,7 @@ export default class StandardEnemy extends Entity {
         // console.log('ATTACK', newList);
         if(newList.length){
             // console.log( this.entityToAttack.entity.team, this.team, newList);
-            this.entityToAttack.entity.hit(1);
+            this.entityToAttack.entity.hit(this.entityModel.power);
         }
         // this.attacking = false;
     }
@@ -444,11 +445,10 @@ export default class StandardEnemy extends Entity {
         if(this.actionTimer > 0){
             this.actionTimer -= delta;
             if(this.actionTimer <= 0){
-                //this.actionTimer = Math.random() * 3 + 1;
-                //this.side *= -1;
                 this.action();   
             }
         }
+
         this.animationManager.updateAnimations();
 
         if(this.hitTime > 0){
@@ -464,7 +464,7 @@ export default class StandardEnemy extends Entity {
                     this.updateWaypoints();
                 }
                 //this.followTarget = false;
-                //this.wait();
+                this.wait();
             }else{
                 // console.log('MOVE');
                 this.move();
