@@ -28306,7 +28306,7 @@
 		// ['player0',1402.1,963.3]
 	
 		["player0", 6825.1, 952.5]],
-		nestList: [["nestDown_100_1", 2014.45, 2930], ["nestDown_200_2", 3721.3, 2656.25], ["nestDown_300_3", 5516.7, 2946.1], ["nestDown_400_3", 7923.95, 2954.2], ["nestDown_500_2", 9928.7, 2680.45], ["nestDown_600_1", 11563.05, 2962.25], ["nestUp_100_1", 2674.7, -8.7], ["nestUp_200_10", 6820.9, -48.85], ["nestUp_300_1", 11152.5, -121.3]],
+		nestList: [["nestDown_100_1", 2014.45, 2930], ["nestDown_200_2", 3721.3, 2656.25], ["nestDown_300_3", 5516.7, 2946.1], ["nestDown_400_3", 7923.95, 2954.2], ["nestDown_500_2", 9928.7, 2680.45], ["nestDown_600_1", 11563.05, 2962.25], ["nestUp_100_1", 3479.8, -193.9], ["nestUp_200_10", 6820.9, -48.85], ["nestUp_300_1", 10339.35, -226]],
 		towerList: [[["towerA1", 2387.3, 1481.55, 0], ["towerA0", 2413.15, 243, 0], ["towerAA", 829.15, 1145.4, 0], ["towerB1", 5133.15, 1398.75, 0], ["towerB0", 5978.5, 617.75, 0]], [["tower2A1", 11286.9, 1473.5, 1], ["tower2A0", 11261.05, 243, 1], ["tower2AA", 12792.75, 1127.3, 1], ["tower2B1", 8549.2, 1398.75, 1], ["tower2B0", 7703.8, 617.75, 1]]],
 		worldBounds: [691.2, 418.4, 1440.15, 47, 2200.65, 31, 2577.95, -368, 3012.15, -691.05, 4303.3, -680.4, 3854.15, -330.25, 4844.55, 275.5, 4837.65, 458.25, 5911.75, 467.15, 6601.1, 27.1, 5771, -518.7, 6804.65, -1146.65, 7753.85, -657.2, 7171.1, 40.5, 7891.05, 434.05, 8987.1, 436.55, 9945.2, -370.5, 10421.95, -1066.85, 11423.25, -803.8, 11261.7, -376.05, 11606.85, 6.9, 12375.4, 14.75, 13124.35, 402.25, 13428, 1206.65, 13171.5, 1876.25, 11930.25, 1921.15, 11922, 2295.5, 12592.1, 2754.95, 11971.9, 3472.35, 9850.25, 3312.2, 7927.3, 3569.85, 7506.9, 2972.7, 7459.15, 2222.05, 8285.5, 2158.1, 8481.2, 1862.7, 5286, 1870.75, 5530.05, 2166.15, 6541.55, 2061.05, 6799.8, 2924.35, 5872.15, 3602.05, 2781.75, 3529.55, 941.9, 3045.65, 981.95, 2577.8, 1885.5, 2231.05, 1869.2, 1945.3, 660.1, 1940.7, 339.25, 1279.1],
 		wayPath: [[798.8, 421.4, 1319.5, 258.7, 3179.4, 237.5, 4178.4, 584.7, 5980.4, 634.45, 6587.2, 260.3, 7092.6, 260.3, 7699.4, 634.45, 9501.4, 584.7, 10500.4, 237.5, 12706.05, 218.5, 13078, 517.9, 13289.45, 916.2, 12526.35, 910.65, 11404.5, 544.9, 9533, 811.6, 7388.65, 806.9, 6929.75, 549.25, 6750.05, 549.25, 6291.15, 806.9, 4146.8, 811.6, 3124.55, 492.85, 1497.95, 522.1, 990.95, 948.4, 612.45, 912.1], [632.1, 979.3, 988.35, 984.35, 1641.7, 1474.7, 3815.45, 1451.8, 5128.45, 1412.55, 6836.75, 1378, 8551, 1412.55, 9864, 1451.8, 11925.55, 1482.75, 12518.8, 968.35, 13294.75, 987.35, 13373.5, 1301.2, 12726.4, 1789, 10748.15, 1787.65, 9492.4, 1776.3, 8343.15, 1768.25, 6846.65, 1666.95, 5336.3, 1768.25, 4187.05, 1776.3, 2931.3, 1787.65, 957.05, 1849.3, 477, 1232.85]],
@@ -38453,7 +38453,7 @@
 	            attackSpeed: 0.2, //std 0.4
 	            dashTime: 0.5,
 	            speedUp: 1.5,
-	            dashSpeed: 5,
+	            dashSpeed: 2,
 	            hitFeedback: 0.2,
 	            maxLife: 50,
 	            attack: 0.5
@@ -38490,6 +38490,8 @@
 	
 	        _this.radius = 100;
 	        _this.externalRadius = 160;
+	
+	        _this.invencible = -1;
 	        // this.debugCollision();
 	
 	
@@ -38534,6 +38536,8 @@
 	            this.dashTime = -1;
 	            this.hitTime = -1;
 	
+	            this.dashSpeed = 1;
+	
 	            this.x = this.startPosition.x;
 	            this.y = this.startPosition.y;
 	
@@ -38566,6 +38570,13 @@
 	    }, {
 	        key: 'speedUp',
 	        value: function speedUp() {
+	
+	            if (this.speedFactor == 1) {
+	                this.invencible = 0.1;
+	            }
+	
+	            console.log('WOTK ON DASH SPEED AQUI, O PROBLEMA EH NO MOVE');
+	
 	            if (this.speedAttacking) {
 	                //console.log('apwws');
 	                this.speedFactor = this.entityModel.speedUp * this.entityModel.dashSpeed;
@@ -38690,6 +38701,7 @@
 	        key: 'endSpeedUpAttack',
 	        value: function endSpeedUpAttack() {
 	
+	            this.dashSpeed = 1;
 	            this.dashTime = -1;
 	
 	            this.speedFactor = this.entityModel.speedUp;
@@ -38722,10 +38734,11 @@
 	                return;
 	            }
 	
-	            if (this.speedFactor > 1 && Math.abs(this.velocity.x) + Math.abs(this.velocity.y) > 0) {
+	            if (this.speedFactor > 1 && Math.abs(this.velocity.x) + Math.abs(this.velocity.y) >= this.entityModel.speed.x * 0.9) {
 	                this.animationManager.changeState('speedAttack');
 	                this.speedAttacking = true;
 	                this.dashTime = this.entityModel.dashTime;
+	                this.dashSpeed = this.entityModel.dashSpeed;
 	                return;
 	            }
 	
@@ -38853,10 +38866,14 @@
 	        value: function hit(power, forceSide) {
 	
 	            //rever condicoes de hit
-	            console.log('rever condicoes de hit');
-	            if (this.life < 0 || this.areaAttackTimer > 0) {
+	            // console.log('rever condicoes de hit');
+	            //console.log(this.areaAttackTimer,this.jumping , this.rangeAttacking , this.invencible , this.jumpingOut);
+	            if (this.life < 0 || this.areaAttackTimer > 0 || this.jumping || this.rangeAttacking || this.invencible > 0) {
 	                return false;
 	            }
+	
+	            this.jumpingOut = false;
+	            this.speedAttacking = false;
 	
 	            this.hitting = true;
 	            this.velocity.x = 0;
@@ -38903,8 +38920,8 @@
 	                return;
 	            }
 	            // console.log(value, this.entityModel.speed, this.speedScale, this.speedFactor);
-	            this.velocity.x = this.entityModel.speed.x * value[0] * (this.speedScale * this.speedScale) * this.speedFactor;
-	            this.velocity.y = this.entityModel.speed.y * value[1] * (this.speedScale * this.speedScale) * this.speedFactor;
+	            this.velocity.x = this.entityModel.speed.x * value[0] * (this.speedScale * this.speedScale) * this.speedFactor * this.dashSpeed;
+	            this.velocity.y = this.entityModel.speed.y * value[1] * (this.speedScale * this.speedScale) * this.speedFactor * this.dashSpeed;
 	            if (Math.abs(this.velocity.x) + Math.abs(this.velocity.y) < 0.05) {
 	                this.stopMove();
 	            } else {
@@ -38938,7 +38955,10 @@
 	            if (this.dying) {
 	                return;
 	            }
-	
+	            // console.log(this.invencible);
+	            if (this.invencible >= 0) {
+	                this.invencible -= delta;
+	            }
 	            if (this.comboTimer > 0) {
 	                this.comboTimer -= delta;
 	            } else {
@@ -42001,6 +42021,9 @@
 	
 	                _this.currentEntities = [];
 	
+	                _this.actionTimer = 3;
+	                _this.action = _this.testCollisions;
+	
 	                return _this;
 	        }
 	
@@ -42030,11 +42053,11 @@
 	
 	                        this.currentWave++;
 	
-	                        if (this.currentWave > this.spawnQuant) {
-	                                this.actionTimer = this.spawnTime;
-	                                //this.action = this.startSpawn;
-	                                return;
-	                        }
+	                        // if(this.currentWave > this.spawnQuant){
+	                        //     this.actionTimer = this.spawnTime;
+	                        //     //this.action = this.startSpawn;
+	                        //     return
+	                        // }
 	                        this.totalEntities++;
 	                        // TweenLite.from(this.animationContainer.scale, 0.8, {x:0.9, y:0.9, ease:'easeOutElastic'})
 	                        var type = 'nest'; //this.currentWave > this.spawnQuant -2?'tanker':'standard';
@@ -42048,8 +42071,8 @@
 	                        ent.setNestCenter({ x: this.x, y: this.y }, this.getExternalRadius());
 	                        this.currentSlot++;
 	                        //this.game.addEnemy('tomato', {x:this.x, y:this.y + Math.random() * this.getRadius() - this.getRadius()/2}, this.waypointList, this.team);
-	                        this.actionTimer = this.spawDistance;
-	                        this.action = this.addEntity;
+	                        // this.actionTimer = this.spawDistance;
+	                        // this.action = this.addEntity;
 	
 	                        this.currentEntities.push(ent);
 	
@@ -42067,7 +42090,7 @@
 	        }, {
 	                key: 'start',
 	                value: function start() {
-	                        this.action = this.startSpawn;
+	                        //this.action = this.startSpawn;
 	                        this.actionTimer = 3;
 	                        //this.addEntity();
 	                }
@@ -42129,6 +42152,33 @@
 	
 	                        for (var i = 0; i < this.spawnQuant; i++) {
 	                                this.addEntity();
+	                        }
+	                }
+	        }, {
+	                key: 'testCollisions',
+	                value: function testCollisions() {
+	
+	                        this.actionTimer = 0.3;
+	                        var entityCollisions = this.game.getExternalColisionList(this, ['player']);
+	                        // console.log(entityCollisions);
+	                        if (entityCollisions && entityCollisions.length) {
+	                                this.ableCollision();
+	                        } else {
+	                                this.removeCollisions();
+	                        }
+	                }
+	        }, {
+	                key: 'removeCollisions',
+	                value: function removeCollisions() {
+	                        for (var i = 0; i < this.currentEntities.length; i++) {
+	                                this.currentEntities[i].testCollisions = false;
+	                        }
+	                }
+	        }, {
+	                key: 'ableCollision',
+	                value: function ableCollision() {
+	                        for (var i = 0; i < this.currentEntities.length; i++) {
+	                                this.currentEntities[i].testCollisions = true;
 	                        }
 	                }
 	        }, {
@@ -42237,7 +42287,8 @@
 	        _this.entityModel = {
 	            maxLife: 10,
 	            power: 2,
-	            attackSpeed: 4.5
+	            attackSpeed: 4.5,
+	            speedUp: 1.5
 	            // sp
 	        };
 	
@@ -42253,7 +42304,7 @@
 	        key: 'setNestCenter',
 	        value: function setNestCenter(pos, radius) {
 	            this.nestCenter = pos;
-	            this.nestRadius = radius;
+	            this.nestRadius = radius * 0.9 + Math.random() * radius * 0.1;
 	        }
 	    }, {
 	        key: 'build',
@@ -42375,6 +42426,8 @@
 	
 	            // this.debugCollision();
 	            this.reset();
+	
+	            this.testCollisions = false;
 	            // this.start();
 	        }
 	    }, {
@@ -42392,7 +42445,7 @@
 	        value: function update(delta) {
 	            _get(NestEntity.prototype.__proto__ || Object.getPrototypeOf(NestEntity.prototype), 'update', this).call(this, delta);
 	
-	            if (!this.attacking) {
+	            if (this.testCollisions && !this.attacking) {
 	                var entityCollisions = this.game.getExternalColisionList(this, ['player'], true);
 	                // console.log(entityCollisions);
 	                if (entityCollisions && entityCollisions.length) {
@@ -42450,8 +42503,8 @@
 	                var angle = Math.atan2(this.targetPosition.y - this.y, this.targetPosition.x - this.x);
 	
 	                //console.log('follow',angle * 180 / 3.14);
-	                this.velocity.x = Math.cos(angle) * this.speed.x;
-	                this.velocity.y = Math.sin(angle) * this.speed.x;
+	                this.velocity.x = Math.cos(angle) * this.speed.x * this.entityModel.speedUp;
+	                this.velocity.y = Math.sin(angle) * this.speed.x * this.entityModel.speedUp;
 	
 	                if (this.velocity.x < 0) {
 	                    this.side = -1;

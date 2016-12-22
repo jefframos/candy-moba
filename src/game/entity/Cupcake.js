@@ -287,7 +287,7 @@ export default class Cupcake extends Entity {
             attackSpeed:0.2,//std 0.4
             dashTime: 0.5,
             speedUp:1.5,
-            dashSpeed:5,
+            dashSpeed:2,
             hitFeedback:0.2,
             maxLife:50,
             attack:0.5,
@@ -327,6 +327,8 @@ export default class Cupcake extends Entity {
 
         this.radius = 100;
         this.externalRadius = 160;
+
+        this.invencible = -1;
         // this.debugCollision();
        
 
@@ -361,6 +363,7 @@ export default class Cupcake extends Entity {
         this.updateable = true;
 
 
+
         this.collidable = true;
 
         this.areaAttackTimer = -1;
@@ -370,6 +373,8 @@ export default class Cupcake extends Entity {
         this.rangeTime = -1;
         this.dashTime = -1;
         this.hitTime = -1;
+
+        this.dashSpeed = 1;
 
         this.x = this.startPosition.x;
         this.y = this.startPosition.y;
@@ -398,10 +403,17 @@ export default class Cupcake extends Entity {
         let animModel = this.animationManager.getAnimation('run');
         animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
     }
-    speedUp() {        
+    speedUp() {
+
+        if(this.speedFactor == 1){
+            this.invencible = 0.1;
+        }
+
+        console.log('WOTK ON DASH SPEED AQUI, O PROBLEMA EH NO MOVE');
+
         if(this.speedAttacking){            
             //console.log('apwws');
-            this.speedFactor = this.entityModel.speedUp * this.entityModel.dashSpeed;
+            this.speedFactor = this.entityModel.speedUp * this.entityModel.dashSpeed;            
         }else{
             this.speedFactor = this.entityModel.speedUp;
         }
@@ -509,6 +521,7 @@ export default class Cupcake extends Entity {
     }
     endSpeedUpAttack() {
 
+        this.dashSpeed = 1;
         this.dashTime = -1;
 
         this.speedFactor = this.entityModel.speedUp;
@@ -539,10 +552,11 @@ export default class Cupcake extends Entity {
             return;
         }
 
-        if( this.speedFactor > 1 && (Math.abs(this.velocity.x) + Math.abs(this.velocity.y)) > 0){
+        if( this.speedFactor > 1 && ((Math.abs(this.velocity.x) + Math.abs(this.velocity.y)) >= this.entityModel.speed.x *0.9 )){
             this.animationManager.changeState('speedAttack');
             this.speedAttacking = true;
             this.dashTime = this.entityModel.dashTime;
+            this.dashSpeed = this.entityModel.dashSpeed;
             return
         }
 
@@ -663,11 +677,14 @@ export default class Cupcake extends Entity {
     hit(power, forceSide) {
 
         //rever condicoes de hit
-        console.log('rever condicoes de hit');
-        if(this.life < 0 || this.areaAttackTimer > 0){
+        // console.log('rever condicoes de hit');
+        //console.log(this.areaAttackTimer,this.jumping , this.rangeAttacking , this.invencible , this.jumpingOut);
+        if(this.life < 0 || this.areaAttackTimer > 0 || this.jumping || this.rangeAttacking || this.invencible > 0){
             return false;
         }
 
+        this.jumpingOut = false;
+        this.speedAttacking  = false
 
         this.hitting = true;
         this.velocity.x = 0;
@@ -713,8 +730,8 @@ export default class Cupcake extends Entity {
             return;
         }
         // console.log(value, this.entityModel.speed, this.speedScale, this.speedFactor);
-        this.velocity.x = this.entityModel.speed.x * (value[0]) * (this.speedScale * this.speedScale) * this.speedFactor;
-        this.velocity.y = this.entityModel.speed.y * (value[1]) * (this.speedScale * this.speedScale) * this.speedFactor;
+        this.velocity.x = (this.entityModel.speed.x * (value[0]) * (this.speedScale * this.speedScale) * this.speedFactor )* this.dashSpeed;
+        this.velocity.y = (this.entityModel.speed.y * (value[1]) * (this.speedScale * this.speedScale) * this.speedFactor )* this.dashSpeed;
         if(Math.abs(this.velocity.x) + Math.abs(this.velocity.y) < 0.05){
             this.stopMove();
         }else{
@@ -746,7 +763,10 @@ export default class Cupcake extends Entity {
         if(this.dying){
             return;
         }
-
+        // console.log(this.invencible);
+        if(this.invencible >= 0){
+            this.invencible -= delta;
+        }
         if(this.comboTimer > 0){
             this.comboTimer -= delta;
         }else{

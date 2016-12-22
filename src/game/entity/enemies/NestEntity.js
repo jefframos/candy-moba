@@ -35,7 +35,8 @@ export default class NestEntity extends StandardEnemy {
         this.entityModel = {
             maxLife:10,
             power:2,
-            attackSpeed: 4.5
+            attackSpeed: 4.5,
+            speedUp: 1.5
             // sp
         }
 
@@ -48,7 +49,7 @@ export default class NestEntity extends StandardEnemy {
 
     setNestCenter (pos, radius) {
         this.nestCenter = pos;
-        this.nestRadius = radius;
+        this.nestRadius = radius *0.9 + (Math.random() *radius*0.1);
     }
     build () {
         let enemieType = 'Rock';
@@ -168,6 +169,8 @@ export default class NestEntity extends StandardEnemy {
 
         // this.debugCollision();
         this.reset();
+
+        this.testCollisions = false;
         // this.start();
     }
 
@@ -182,7 +185,7 @@ export default class NestEntity extends StandardEnemy {
     update(delta){
         super.update(delta);
 
-        if(!this.attacking){
+        if(this.testCollisions && !this.attacking){
             let entityCollisions = this.game.getExternalColisionList(this,['player'], true);
             // console.log(entityCollisions);
             if(entityCollisions && entityCollisions.length){                    
@@ -235,8 +238,8 @@ export default class NestEntity extends StandardEnemy {
             let angle = Math.atan2(this.targetPosition.y - this.y, this.targetPosition.x - this.x);
 
             //console.log('follow',angle * 180 / 3.14);
-            this.velocity.x = Math.cos(angle) * this.speed.x;
-            this.velocity.y = Math.sin(angle) * this.speed.x;
+            this.velocity.x = Math.cos(angle) * this.speed.x * this.entityModel.speedUp;
+            this.velocity.y = Math.sin(angle) * this.speed.x * this.entityModel.speedUp;
 
             if(this.velocity.x < 0){
                 this.side = -1;

@@ -71,7 +71,8 @@ export default class Nest extends Entity {
        
         this.currentEntities = [];
 
-
+        this.actionTimer = 3;
+        this.action = this.testCollisions;
         
     }
 
@@ -94,11 +95,11 @@ export default class Nest extends Entity {
         this.currentWave ++;
 
 
-        if(this.currentWave > this.spawnQuant){
-            this.actionTimer = this.spawnTime;
-            //this.action = this.startSpawn;
-            return
-        }
+        // if(this.currentWave > this.spawnQuant){
+        //     this.actionTimer = this.spawnTime;
+        //     //this.action = this.startSpawn;
+        //     return
+        // }
         this.totalEntities ++;
         // TweenLite.from(this.animationContainer.scale, 0.8, {x:0.9, y:0.9, ease:'easeOutElastic'})
         let type = 'nest'//this.currentWave > this.spawnQuant -2?'tanker':'standard';
@@ -112,8 +113,8 @@ export default class Nest extends Entity {
         ent.setNestCenter({x:this.x, y:this.y}, this.getExternalRadius());
         this.currentSlot ++;
         //this.game.addEnemy('tomato', {x:this.x, y:this.y + Math.random() * this.getRadius() - this.getRadius()/2}, this.waypointList, this.team);
-        this.actionTimer = this.spawDistance;
-        this.action = this.addEntity;
+        // this.actionTimer = this.spawDistance;
+        // this.action = this.addEntity;
 
         this.currentEntities.push(ent);
 
@@ -130,7 +131,7 @@ export default class Nest extends Entity {
     }
 
     start ( ) {
-        this.action = this.startSpawn;
+        //this.action = this.startSpawn;
         this.actionTimer = 3;
         //this.addEntity();
     }
@@ -201,8 +202,34 @@ export default class Nest extends Entity {
     }
     
 
+    testCollisions (  ) {
+
+        this.actionTimer = 0.3;
+        let entityCollisions = this.game.getExternalColisionList(this,['player']);
+        // console.log(entityCollisions);
+        if(entityCollisions && entityCollisions.length){                    
+            this.ableCollision();
+        }else{
+            this.removeCollisions();
+        }
+    }
+    removeCollisions (  ) {
+        for (var i = 0; i < this.currentEntities.length; i++) {
+            this.currentEntities[i].testCollisions = false;
+        }
+    }
+    ableCollision (  ) {
+        for (var i = 0; i < this.currentEntities.length; i++) {
+            this.currentEntities[i].testCollisions = true;
+        }
+    }
     update ( delta ) {
         super.update(delta);
+
+
+
+        
+
 
         if(this.actionTimer > 0){
             this.actionTimer -= delta;
