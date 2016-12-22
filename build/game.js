@@ -38451,9 +38451,9 @@
 	            jumpForce: 300,
 	            rangeSpeed: 2, //std 1
 	            attackSpeed: 0.2, //std 0.4
-	            dashTime: 0.5,
+	            dashTime: 0.06,
 	            speedUp: 1.5,
-	            dashSpeed: 2,
+	            dashSpeed: 5,
 	            hitFeedback: 0.2,
 	            maxLife: 50,
 	            attack: 0.5
@@ -38574,8 +38574,6 @@
 	            if (this.speedFactor == 1) {
 	                this.invencible = 0.1;
 	            }
-	
-	            console.log('WOTK ON DASH SPEED AQUI, O PROBLEMA EH NO MOVE');
 	
 	            if (this.speedAttacking) {
 	                //console.log('apwws');
@@ -38736,7 +38734,7 @@
 	
 	            if (this.speedFactor > 1 && Math.abs(this.velocity.x) + Math.abs(this.velocity.y) >= this.entityModel.speed.x * 0.9) {
 	                this.animationManager.changeState('speedAttack');
-	                this.speedAttacking = true;
+	                //this.speedAttacking = true;
 	                this.dashTime = this.entityModel.dashTime;
 	                this.dashSpeed = this.entityModel.dashSpeed;
 	                return;
@@ -38918,6 +38916,10 @@
 	        value: function move(value) {
 	            if (this.dying || this.speedAttacking || this.hitting) {
 	                return;
+	            }
+	
+	            if (this.dashSpeed > 1) {
+	                this.speedAttacking = true;
 	            }
 	            // console.log(value, this.entityModel.speed, this.speedScale, this.speedFactor);
 	            this.velocity.x = this.entityModel.speed.x * value[0] * (this.speedScale * this.speedScale) * this.speedFactor * this.dashSpeed;
