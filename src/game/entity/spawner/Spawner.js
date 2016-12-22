@@ -56,7 +56,7 @@ export default class Spawner extends Entity {
 
         this.spawnTime = 30;
 
-        this.spawnQuant = 5;
+        this.spawnQuant = this.team == 1?8:5;
         this.spawDistance = 1;
 
         this.currentWave = 0;
@@ -64,7 +64,12 @@ export default class Spawner extends Entity {
 
         this.actionTimer = -1;
         this.action = null;
+
+        this.totalEntities = 0;
+        this.totalWaves = 0;
+        this.totalKilled = 0;
        
+        this.currentEntities = [];
 
     }
 
@@ -78,22 +83,27 @@ export default class Spawner extends Entity {
     }
     startSpawn () {
         this.currentWave = 0;
+        this.totalWaves ++;
         this.addEntity();
     }
     addEntity () {
 
         this.currentWave ++;
 
+
         if(this.currentWave > this.spawnQuant){
             this.actionTimer = this.spawnTime;
             this.action = this.startSpawn;
             return
         }
+        this.totalEntities ++;
         // TweenLite.from(this.animationContainer.scale, 0.8, {x:0.9, y:0.9, ease:'easeOutElastic'})
-        this.game.addEnemy('tomato', {x:this.x, y:this.y}, this.waypointList, this.team);
+        let ent = this.game.addEnemy('tomato', {x:this.x, y:this.y}, this.waypointList, this.team);
         //this.game.addEnemy('tomato', {x:this.x, y:this.y + Math.random() * this.getRadius() - this.getRadius()/2}, this.waypointList, this.team);
         this.actionTimer = this.spawDistance;
         this.action = this.addEntity;
+
+        this.currentEntities.push(ent);
     }
 
 
@@ -146,13 +156,11 @@ export default class Spawner extends Entity {
 
         this.animationManager.hideAll();
         this.animationManager.stopAll();
-        this.animationManager.changeState('static');
+        // this.animationManager.changeState('static');
 
         this.collidable = true;
 
-        this.animationManager.scale.set(0.5)
 
-        console.log(this.getRadius());
         let maxAngle = 360
         let totFixed = 10
         for (var i = 1; i < 80; i++) {
@@ -183,6 +191,13 @@ export default class Spawner extends Entity {
             this.hitTimer -= delta;
             if(this.hitTimer <=0 ){
                 this.hitting = false;
+            }
+        }
+
+        for (var i = this.currentEntities.length - 1; i >= 0; i--) {
+            if(this.currentEntities[i].disapearing){
+                this.totalKilled ++;
+                this.currentEntities.splice(i,1);
             }
         }
         this.updateBaseColor();

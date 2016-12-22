@@ -14,6 +14,8 @@ import Pine from '../entity/environment/Pine';
 import Bush from '../entity/environment/Bush';
 import Tower from '../entity/towers/Tower';
 import Spawner from '../entity/spawner/Spawner';
+import UITower from '../ui/UITower';
+import UISpawner from '../ui/UISpawner';
 
 export default class PrototypeScreen extends Screen{
 	constructor(label){
@@ -106,37 +108,10 @@ export default class PrototypeScreen extends Screen{
 				tower.build();
 			}
 		}
-		// this.cupcake.x = this.worldBounds.w / 2 + this.worldBounds.x
-		// this.cupcake.y = this.worldBounds.h / 2 + this.worldBounds.y;
-
-		// this.cupcake.x = 300
-		// this.cupcake.y = 1000
-
-
 		this.enemyList = [];
-		// let acc = 50
-		// for (var i = 0; i < 25; i++) {
-
-		// 	let tempEnemy = new StandardEnemy(this);
-		// 	this.entityContainer.addChild(tempEnemy)
-		// 	this.addOnUpdateList(tempEnemy)
-
-
-		// 	let tempPos = {x:this.worldBounds.w * Math.random() + this.worldBounds.x, y:this.worldBounds.h * Math.random() + this.worldBounds.y}
-		// 	while(this.worldCollision(tempPos.x,tempPos.y)){
-		// 		tempPos = {x:this.worldBounds.w * Math.random() + this.worldBounds.x, y:this.worldBounds.h * Math.random() + this.worldBounds.y}
-		// 	}
-
-		// 	tempEnemy.x = 500 + acc * i;
-		// 	tempEnemy.y = 1000 + Math.random() + Math.random() * 50 - 25;
-		// 	tempEnemy.build();
-
-
-		// 	tempEnemy.setTarget({x:this.towerList[0].x,y:this.towerList[0].y})
-		// 	this.enemyList.push(tempEnemy);
-		// }
-
 		this.environmentList = [];
+		this.bulletList = [];
+		this.uiList = [];
 		// for (var i = 0; i < config.environmentList.length; i++) {
 		// 	var envData = config.environmentList[i];
 		// 	// console.log(envData);
@@ -171,20 +146,77 @@ export default class PrototypeScreen extends Screen{
 
 		this.updateable = true;
 
-		// var text = new PIXI.Text('HOLD Space to see attacks\nZ: Jump\nX: Range Attack\nJump + Attack: Range Attack',{fontFamily : 'Arial', fontSize: 12});
-		// this.addChild(text);
-		// text.x = 10
-		// text.y = 10
-
-		// text.scale.set(0.4)
-
-		this.bulletList = [];
 
 
 		this.camera = new Camera(this, this.gameContainer);
 		this.speedUpValue = 1;
 
+		this.initUI();
+
 		this.initGame();
+
+	}
+	updateUI(delta){
+		for (var i = 0; i < this.uiList.length; i++) {
+			if(this.uiList[i].updateable){
+				this.uiList[i].update(delta);
+			}
+		}
+	}
+	initUI(){
+		this.UIContainer = new PIXI.Container();
+		this.addChild(this.UIContainer);
+		let t1acc = 0;
+		let t2acc = 0;
+		let acc = 0;
+		for (var i = this.towerList.length - 1; i >= 0; i--) {
+			let tower = this.towerList[i]
+			let uiTower = new UITower(this, tower);
+			this.UIContainer.addChild(uiTower);
+			uiTower.scale.set(0.6)
+			if(tower.team == 0){
+				t1acc ++
+				acc = t1acc;
+			}else{
+				t2acc ++
+				acc = t2acc;
+				uiTower.x = config.width// - tower.width;
+				uiTower.scale.x *= -1
+			}
+
+			uiTower.y = acc * 75;
+
+			this.uiList.push(uiTower);
+		}
+
+		t1acc = 0;
+		t2acc = 0;
+		for (var i = this.spawnerList.length - 1; i >= 0; i--) {
+			let spawner = this.spawnerList[i]
+			let uiSpawner = new UISpawner(this, spawner);
+			this.UIContainer.addChild(uiSpawner);
+			uiSpawner.scale.set(0.6)
+
+			if(spawner.team == 0){
+			 	t1acc ++
+			 	acc = t1acc;
+				uiSpawner.x = (acc - 1) * 150 + 20
+			}else{
+			 	t2acc ++
+			 	acc = t2acc;
+			// 	uiTower.x = config.width// - tower.width;
+			 	//uiSpawner.scale.x *= -1
+				uiSpawner.x = -(acc - 1) * 150 - 20 + config.width - 120
+			}
+
+			uiSpawner.y = config.height - uiSpawner.height;
+
+
+			uiSpawner.build();
+
+			this.uiList.push(uiSpawner);
+		}
+
 
 	}
 	initGame(){
@@ -215,6 +247,8 @@ export default class PrototypeScreen extends Screen{
 
 		// tempEnemy.setTarget({x:this.towerList[0].x,y:this.towerList[0].y})
 		this.enemyList.push(tempEnemy);
+
+		return tempEnemy;
 
 	}
 	build(){
@@ -265,6 +299,7 @@ export default class PrototypeScreen extends Screen{
 		// if(this.enemyList)
 		// 	console.log(this.enemyList.length);
 		//console.log(this.worldCollision(this.cupcake));
+		this.updateUI(delta);
 		
 	}
 	worldCollision(x,y) {
@@ -529,7 +564,7 @@ export default class PrototypeScreen extends Screen{
 			if(this.inputManager.keys[i] == 'action7'){
 				//console.log('space');
 				this.lastAction = this.inputManager.keys[i];
-				window.game.frameskip = 6;
+				window.game.frameskip = 8;
 				//this.speedUpValue = 10;
 				// this.cupcake.die();
 			}

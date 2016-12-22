@@ -28551,29 +28551,37 @@
 	
 	var _StandardBullet2 = _interopRequireDefault(_StandardBullet);
 	
-	var _TowerBullet = __webpack_require__(158);
+	var _TowerBullet = __webpack_require__(152);
 	
 	var _TowerBullet2 = _interopRequireDefault(_TowerBullet);
 	
-	var _Rock = __webpack_require__(152);
+	var _Rock = __webpack_require__(153);
 	
 	var _Rock2 = _interopRequireDefault(_Rock);
 	
-	var _Pine = __webpack_require__(154);
+	var _Pine = __webpack_require__(155);
 	
 	var _Pine2 = _interopRequireDefault(_Pine);
 	
-	var _Bush = __webpack_require__(155);
+	var _Bush = __webpack_require__(156);
 	
 	var _Bush2 = _interopRequireDefault(_Bush);
 	
-	var _Tower = __webpack_require__(156);
+	var _Tower = __webpack_require__(157);
 	
 	var _Tower2 = _interopRequireDefault(_Tower);
 	
-	var _Spawner = __webpack_require__(157);
+	var _Spawner = __webpack_require__(158);
 	
 	var _Spawner2 = _interopRequireDefault(_Spawner);
+	
+	var _UITower = __webpack_require__(159);
+	
+	var _UITower2 = _interopRequireDefault(_UITower);
+	
+	var _UISpawner = __webpack_require__(160);
+	
+	var _UISpawner2 = _interopRequireDefault(_UISpawner);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28673,37 +28681,10 @@
 					tower.build();
 				}
 			}
-			// this.cupcake.x = this.worldBounds.w / 2 + this.worldBounds.x
-			// this.cupcake.y = this.worldBounds.h / 2 + this.worldBounds.y;
-	
-			// this.cupcake.x = 300
-			// this.cupcake.y = 1000
-	
-	
 			_this.enemyList = [];
-			// let acc = 50
-			// for (var i = 0; i < 25; i++) {
-	
-			// 	let tempEnemy = new StandardEnemy(this);
-			// 	this.entityContainer.addChild(tempEnemy)
-			// 	this.addOnUpdateList(tempEnemy)
-	
-	
-			// 	let tempPos = {x:this.worldBounds.w * Math.random() + this.worldBounds.x, y:this.worldBounds.h * Math.random() + this.worldBounds.y}
-			// 	while(this.worldCollision(tempPos.x,tempPos.y)){
-			// 		tempPos = {x:this.worldBounds.w * Math.random() + this.worldBounds.x, y:this.worldBounds.h * Math.random() + this.worldBounds.y}
-			// 	}
-	
-			// 	tempEnemy.x = 500 + acc * i;
-			// 	tempEnemy.y = 1000 + Math.random() + Math.random() * 50 - 25;
-			// 	tempEnemy.build();
-	
-	
-			// 	tempEnemy.setTarget({x:this.towerList[0].x,y:this.towerList[0].y})
-			// 	this.enemyList.push(tempEnemy);
-			// }
-	
 			_this.environmentList = [];
+			_this.bulletList = [];
+			_this.uiList = [];
 			// for (var i = 0; i < config.environmentList.length; i++) {
 			// 	var envData = config.environmentList[i];
 			// 	// console.log(envData);
@@ -28738,17 +28719,10 @@
 	
 			_this.updateable = true;
 	
-			// var text = new PIXI.Text('HOLD Space to see attacks\nZ: Jump\nX: Range Attack\nJump + Attack: Range Attack',{fontFamily : 'Arial', fontSize: 12});
-			// this.addChild(text);
-			// text.x = 10
-			// text.y = 10
-	
-			// text.scale.set(0.4)
-	
-			_this.bulletList = [];
-	
 			_this.camera = new _Camera2.default(_this, _this.gameContainer);
 			_this.speedUpValue = 1;
+	
+			_this.initUI();
 	
 			_this.initGame();
 	
@@ -28756,6 +28730,70 @@
 		}
 	
 		_createClass(PrototypeScreen, [{
+			key: 'updateUI',
+			value: function updateUI(delta) {
+				for (var i = 0; i < this.uiList.length; i++) {
+					if (this.uiList[i].updateable) {
+						this.uiList[i].update(delta);
+					}
+				}
+			}
+		}, {
+			key: 'initUI',
+			value: function initUI() {
+				this.UIContainer = new _pixi2.default.Container();
+				this.addChild(this.UIContainer);
+				var t1acc = 0;
+				var t2acc = 0;
+				var acc = 0;
+				for (var i = this.towerList.length - 1; i >= 0; i--) {
+					var tower = this.towerList[i];
+					var uiTower = new _UITower2.default(this, tower);
+					this.UIContainer.addChild(uiTower);
+					uiTower.scale.set(0.6);
+					if (tower.team == 0) {
+						t1acc++;
+						acc = t1acc;
+					} else {
+						t2acc++;
+						acc = t2acc;
+						uiTower.x = _config2.default.width; // - tower.width;
+						uiTower.scale.x *= -1;
+					}
+	
+					uiTower.y = acc * 75;
+	
+					this.uiList.push(uiTower);
+				}
+	
+				t1acc = 0;
+				t2acc = 0;
+				for (var i = this.spawnerList.length - 1; i >= 0; i--) {
+					var spawner = this.spawnerList[i];
+					var uiSpawner = new _UISpawner2.default(this, spawner);
+					this.UIContainer.addChild(uiSpawner);
+					uiSpawner.scale.set(0.6);
+	
+					if (spawner.team == 0) {
+						t1acc++;
+						acc = t1acc;
+						uiSpawner.x = (acc - 1) * 150 + 20;
+					} else {
+						t2acc++;
+						acc = t2acc;
+						// 	uiTower.x = config.width// - tower.width;
+						//uiSpawner.scale.x *= -1
+						uiSpawner.x = -(acc - 1) * 150 - 20 + _config2.default.width - 120;
+					}
+	
+					uiSpawner.y = _config2.default.height - uiSpawner.height;
+	
+					uiSpawner.build();
+	
+					this.uiList.push(uiSpawner);
+				}
+			}
+		}, {
 			key: 'initGame',
 			value: function initGame() {
 				this.speedUpValue = 1;
@@ -28781,6 +28819,8 @@
 	
 				// tempEnemy.setTarget({x:this.towerList[0].x,y:this.towerList[0].y})
 				this.enemyList.push(tempEnemy);
+	
+				return tempEnemy;
 			}
 		}, {
 			key: 'build',
@@ -28832,6 +28872,7 @@
 				// if(this.enemyList)
 				// 	console.log(this.enemyList.length);
 				//console.log(this.worldCollision(this.cupcake));
+				this.updateUI(delta);
 			}
 		}, {
 			key: 'worldCollision',
@@ -29104,7 +29145,7 @@
 					if (this.inputManager.keys[i] == 'action7') {
 						//console.log('space');
 						this.lastAction = this.inputManager.keys[i];
-						window.game.frameskip = 6;
+						window.game.frameskip = 8;
 						//this.speedUpValue = 10;
 						// this.cupcake.die();
 					}
@@ -37137,6 +37178,10 @@
 	        g.putImageData(imageData, x, y);
 	        return canvas;
 	    },
+	    getSprite: function getSprite(frame) {
+	        var texture = PIXI.Texture.fromFrame(frame);
+	        return new PIXI.Sprite(texture);
+	    },
 	    shuffle: function shuffle(a) {
 	        for (var i = a.length; i; i--) {
 	            var j = Math.floor(Math.random() * i);
@@ -38052,6 +38097,8 @@
 	        _this.team = team;
 	        _this.startPosition = startPosition;
 	
+	        _this.starterScale = 1;
+	
 	        _this.base = new _pixi2.default.Container();
 	        _this.roundBase = new _pixi2.default.Graphics();
 	        _this.roundBase.beginFill(0xFFFFFF);
@@ -38378,7 +38425,7 @@
 	            this.animationManager.ableToChangeAnimation = true;
 	
 	            this.comboTimer = 0;
-	            this.starterScale = 0.5;
+	            this.starterScale = 0.5; // 0.5;
 	            this.standardScale = this.starterScale;
 	            this.speedFactor = 1;
 	
@@ -39200,7 +39247,7 @@
 	    }, {
 	        key: 'debugCollision',
 	        value: function debugCollision() {
-	            return;
+	            // return
 	            this.colisionCircle = new _pixi2.default.Graphics();
 	            this.colisionCircle.lineStyle(1, 0xFF0000);
 	            this.colisionCircle.drawCircle(0, 0, this.radius);
@@ -40022,6 +40069,149 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
+	        value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(148);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _Entity = __webpack_require__(149);
+	
+	var _Entity2 = _interopRequireDefault(_Entity);
+	
+	var _StandardBullet2 = __webpack_require__(151);
+	
+	var _StandardBullet3 = _interopRequireDefault(_StandardBullet2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var TowerBullet = function (_StandardBullet) {
+	        _inherits(TowerBullet, _StandardBullet);
+	
+	        function TowerBullet(game, velocity, lifeTime, power, team) {
+	                _classCallCheck(this, TowerBullet);
+	
+	                var _this = _possibleConstructorReturn(this, (TowerBullet.__proto__ || Object.getPrototypeOf(TowerBullet)).call(this, game, velocity, lifeTime));
+	
+	                _this.power = power;
+	                _this.team = team;
+	
+	                // this.build();
+	                return _this;
+	        }
+	
+	        _createClass(TowerBullet, [{
+	                key: 'buid',
+	                value: function buid() {
+	                        this.base = new _pixi2.default.Container();
+	                        this.roundBase = new _pixi2.default.Graphics();
+	                        this.roundBase.beginFill(0);
+	                        this.roundBase.drawCircle(0, 0, 20);
+	                        this.roundBase.scale.y = 0.4;
+	                        this.roundBase.alpha = 0.1;
+	                        this.roundBase.x = 0;
+	                        this.base.addChild(this.roundBase);
+	
+	                        this.addChild(this.base);
+	                        this.animationContainer = new _pixi2.default.Container();
+	                        this.animationContainer.x = 0;
+	                        this.animationContainer.y = -135;
+	                        this.addChild(this.animationContainer);
+	
+	                        // this.sprite = new PIXI.Sprite(PIXI.Texture.fromFrame('cherry.png'))    
+	                        // this.sprite.anchor.set(0.6);
+	
+	                        var idCherry = Math.floor(Math.random() * 2) + 1;
+	
+	                        this.animationModel = [];
+	                        this.animationModel.push({
+	                                label: 'idle',
+	                                src: 'cherryBullet' + idCherry + '00',
+	                                totalFrames: 1,
+	                                startFrame: 0,
+	                                animationSpeed: 0.4,
+	                                movieClip: null,
+	                                position: { x: 0, y: 0 },
+	                                anchor: { x: 0.5, y: 0.5 },
+	                                loop: false
+	                        });
+	
+	                        this.animationModel.push({
+	                                label: 'explode',
+	                                src: 'cherryBullet' + idCherry + '00',
+	                                totalFrames: 6,
+	                                startFrame: 0,
+	                                animationSpeed: 0.4,
+	                                movieClip: null,
+	                                position: { x: 0, y: 0 },
+	                                anchor: { x: 0.5, y: 0.5 },
+	                                loop: false
+	                        });
+	
+	                        this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
+	
+	                        // this.animationContainer.addChild(this.sprite);
+	
+	                        this.spriteVelocity = { x: 0, y: 0 };
+	
+	                        this.standardScale = 1;
+	                        this.speedScale = 1;
+	                        this.starterScale = 0.5;
+	                        this.gravity = 15;
+	                        // this.scale.set(0);
+	                        this.kill2 = false;
+	
+	                        this.animationManager.hideAll();
+	                        this.animationManager.stopAll();
+	                        this.animationManager.changeState('idle');
+	
+	                        this.radius = 10;
+	                        this.externalRadius = 0;
+	                }
+	        }, {
+	                key: 'bulletAttackCollision',
+	                value: function bulletAttackCollision() {
+	                        var collisionList = this.game.getCollisionList(this, ['enemy', 'player'], true);
+	                        if (collisionList) {
+	                                for (var i = 0; i < collisionList.length; i++) {
+	                                        if (collisionList[i].entity.hit(this.power)) {
+	                                                return true;
+	                                        }
+	                                }
+	                        }
+	                        return false;
+	                }
+	        }]);
+	
+	        return TowerBullet;
+	}(_StandardBullet3.default);
+	
+	exports.default = TowerBullet;
+
+/***/ },
+/* 153 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	
@@ -40045,7 +40235,7 @@
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _StandardEnvironmentEntity = __webpack_require__(153);
+	var _StandardEnvironmentEntity = __webpack_require__(154);
 	
 	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
 	
@@ -40119,7 +40309,7 @@
 	exports.default = Rock;
 
 /***/ },
-/* 153 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40263,7 +40453,7 @@
 	exports.default = StandardEnvironmentEntity;
 
 /***/ },
-/* 154 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40292,7 +40482,7 @@
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _StandardEnvironmentEntity = __webpack_require__(153);
+	var _StandardEnvironmentEntity = __webpack_require__(154);
 	
 	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
 	
@@ -40368,7 +40558,7 @@
 	exports.default = Pine;
 
 /***/ },
-/* 155 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40397,7 +40587,7 @@
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _StandardEnvironmentEntity = __webpack_require__(153);
+	var _StandardEnvironmentEntity = __webpack_require__(154);
 	
 	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
 	
@@ -40471,7 +40661,7 @@
 	exports.default = Bush;
 
 /***/ },
-/* 156 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40524,6 +40714,8 @@
 	
 	        _this.scaleFator = 2;
 	
+	        _this.starterScale = 1;
+	
 	        _this.base = new _pixi2.default.Container();
 	        _this.roundBase = new _pixi2.default.Graphics();
 	        _this.roundBase.beginFill(0xFFFFFF);
@@ -40538,8 +40730,8 @@
 	        _this.animationContainer.y = 0;
 	        _this.addChild(_this.animationContainer);
 	
-	        _this.radius = 150;
-	        _this.externalRadius = 600;
+	        _this.radius = 100;
+	        _this.externalRadius = 300;
 	        _this.debugCollision();
 	
 	        _this.static = true;
@@ -40555,7 +40747,7 @@
 	    _createClass(Tower, [{
 	        key: 'reset',
 	        value: function reset() {
-	            this.addLifeBar({ x: 20, y: -this.height * 0.4 }, { w: 200, h: 20 }, this.team == 0 ? 0x0000FF : 0x00FF00);
+	            this.addLifeBar({ x: 20, y: -180 }, { w: 200, h: 15 }, this.team == 0 ? 0x0000FF : 0x00FF00);
 	
 	            this.waitingNext = 5 * Math.random() + 1;
 	            this.sinScale = Math.random();
@@ -40581,6 +40773,7 @@
 	        key: 'dead',
 	        value: function dead() {
 	            this.removeLifeBar();
+	            this.killed = true;
 	            this.updateable = false;
 	            TweenLite.to(this.base, 0.5, { alpha: 0 });
 	            TweenLite.to(this, 0.5, { alpha: 0 });
@@ -40645,12 +40838,12 @@
 	        key: 'build',
 	        value: function build() {
 	
-	            var idRock = 1; // Math.floor(Math.random()*2) + 1;
-	
+	            var team = this.team + 1; // Math.floor(Math.random()*2) + 1;
+	            console.log(team);
 	            this.animationModel = [];
 	            this.animationModel.push({
 	                label: 'static',
-	                src: 'tower1/idle/tower',
+	                src: 'tower' + team + '/idle/tower',
 	                totalFrames: 1,
 	                startFrame: 0,
 	                animationSpeed: 0.4,
@@ -40761,7 +40954,7 @@
 	exports.default = Tower;
 
 /***/ },
-/* 157 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40853,13 +41046,19 @@
 	
 	                _this.spawnTime = 30;
 	
-	                _this.spawnQuant = 5;
+	                _this.spawnQuant = _this.team == 1 ? 8 : 5;
 	                _this.spawDistance = 1;
 	
 	                _this.currentWave = 0;
 	
 	                _this.actionTimer = -1;
 	                _this.action = null;
+	
+	                _this.totalEntities = 0;
+	                _this.totalWaves = 0;
+	                _this.totalKilled = 0;
+	
+	                _this.currentEntities = [];
 	
 	                return _this;
 	        }
@@ -40880,6 +41079,7 @@
 	                key: 'startSpawn',
 	                value: function startSpawn() {
 	                        this.currentWave = 0;
+	                        this.totalWaves++;
 	                        this.addEntity();
 	                }
 	        }, {
@@ -40893,11 +41093,14 @@
 	                                this.action = this.startSpawn;
 	                                return;
 	                        }
+	                        this.totalEntities++;
 	                        // TweenLite.from(this.animationContainer.scale, 0.8, {x:0.9, y:0.9, ease:'easeOutElastic'})
-	                        this.game.addEnemy('tomato', { x: this.x, y: this.y }, this.waypointList, this.team);
+	                        var ent = this.game.addEnemy('tomato', { x: this.x, y: this.y }, this.waypointList, this.team);
 	                        //this.game.addEnemy('tomato', {x:this.x, y:this.y + Math.random() * this.getRadius() - this.getRadius()/2}, this.waypointList, this.team);
 	                        this.actionTimer = this.spawDistance;
 	                        this.action = this.addEntity;
+	
+	                        this.currentEntities.push(ent);
 	                }
 	        }, {
 	                key: 'updateBaseColor',
@@ -40952,13 +41155,10 @@
 	
 	                        this.animationManager.hideAll();
 	                        this.animationManager.stopAll();
-	                        this.animationManager.changeState('static');
+	                        // this.animationManager.changeState('static');
 	
 	                        this.collidable = true;
 	
-	                        this.animationManager.scale.set(0.5);
-	
-	                        console.log(this.getRadius());
 	                        var maxAngle = 360;
 	                        var totFixed = 10;
 	                        for (var i = 1; i < 80; i++) {
@@ -40990,6 +41190,13 @@
 	                                        this.hitting = false;
 	                                }
 	                        }
+	
+	                        for (var i = this.currentEntities.length - 1; i >= 0; i--) {
+	                                if (this.currentEntities[i].disapearing) {
+	                                        this.totalKilled++;
+	                                        this.currentEntities.splice(i, 1);
+	                                }
+	                        }
 	                        this.updateBaseColor();
 	                }
 	        }]);
@@ -41000,7 +41207,139 @@
 	exports.default = Spawner;
 
 /***/ },
-/* 158 */
+/* 159 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(148);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _Entity2 = __webpack_require__(149);
+	
+	var _Entity3 = _interopRequireDefault(_Entity2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var UITower = function (_Entity) {
+	    _inherits(UITower, _Entity);
+	
+	    function UITower(game, entity) {
+	        _classCallCheck(this, UITower);
+	
+	        var _this = _possibleConstructorReturn(this, (UITower.__proto__ || Object.getPrototypeOf(UITower)).call(this, game));
+	
+	        _this.entity = entity;
+	        _this.backShape = _utils2.default.getSprite('ingame/backtower.png');
+	
+	        var team = _this.entity.team + 1;
+	
+	        _this.towerSprite = _utils2.default.getSprite('ingame/tower' + team + '.png');
+	
+	        _this.backShape.tint = _this.entity.team == 0 ? 0x0000FF : 0x00FF00;
+	        _this.addChild(_this.backShape);
+	        _this.addChild(_this.towerSprite);
+	
+	        if (_this.entity.team == 0) {
+	            _this.towerSprite.y = -13;
+	        } else {
+	
+	            _this.towerSprite.y = -35;
+	        }
+	
+	        _this.reset();
+	        _this.pivot.y = _this.towerSprite.y;
+	
+	        return _this;
+	    }
+	
+	    _createClass(UITower, [{
+	        key: 'addLifeBar',
+	        value: function addLifeBar(pos, size, color) {
+	            var border = 1;
+	            this.barContainer = new _pixi2.default.Container();
+	            this.addChild(this.barContainer);
+	            this.barContainer.x = pos.x;
+	            this.barContainer.y = pos.y;
+	
+	            this.backBar = new _pixi2.default.Graphics();
+	            this.backBar.beginFill(0);
+	            this.backBar.drawRect(-border, -border, size.w + border * 2, size.h + border * 2);
+	
+	            this.backBarRed = new _pixi2.default.Graphics();
+	            this.backBarRed.beginFill(0xFF0000);
+	            this.backBarRed.drawRect(0, 0, size.w, size.h);
+	
+	            this.backBarGreen = new _pixi2.default.Graphics();
+	            this.backBarGreen.beginFill(color);
+	            this.backBarGreen.drawRect(0, 0, size.w, size.h);
+	
+	            this.barContainer.addChild(this.backBar);
+	            this.barContainer.addChild(this.backBarRed);
+	            this.barContainer.addChild(this.backBarGreen);
+	
+	            this.barContainer.pivot.set((size.w + border * 2) / 2, (size.h + border * 2) / 2);
+	        }
+	    }, {
+	        key: 'updateLifeBar',
+	        value: function updateLifeBar() {
+	            if (this.entity.killed) {
+	                this.backShape.tint = 0xFF0000;
+	                this.x = -20 * this.scale.x;
+	                this.updateable = false;
+	            }
+	            if (this.backBarGreen && this.backBarGreen.parent) {
+	                this.backBarGreen.scale.x = this.entity.life / this.entity.maxLife;
+	                this.barContainer.scale.x = this.scale.x < 0 ? -1 : 1;
+	            }
+	        }
+	    }, {
+	        key: 'reset',
+	        value: function reset() {
+	            this.addLifeBar({ x: this.backShape.width / 2, y: this.backShape.height + 2 }, { w: this.backShape.width, h: 5 }, this.entity.team == 0 ? 0x0000FF : 0x00FF00);
+	            this.updateable = true;
+	        }
+	    }, {
+	        key: 'build',
+	        value: function build() {}
+	    }, {
+	        key: 'update',
+	        value: function update(delta) {
+	            if (!this.updateable) {
+	                return;
+	            }
+	            this.updateLifeBar();
+	        }
+	    }]);
+	
+	    return UITower;
+	}(_Entity3.default);
+	
+	exports.default = UITower;
+
+/***/ },
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41023,13 +41362,9 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(149);
 	
-	var _Entity2 = _interopRequireDefault(_Entity);
-	
-	var _StandardBullet2 = __webpack_require__(151);
-	
-	var _StandardBullet3 = _interopRequireDefault(_StandardBullet2);
+	var _Entity3 = _interopRequireDefault(_Entity2);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -41039,108 +41374,166 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var TowerBullet = function (_StandardBullet) {
-	        _inherits(TowerBullet, _StandardBullet);
+	var UISpawner = function (_Entity) {
+	        _inherits(UISpawner, _Entity);
 	
-	        function TowerBullet(game, velocity, lifeTime, power, team) {
-	                _classCallCheck(this, TowerBullet);
+	        function UISpawner(game, entity) {
+	                _classCallCheck(this, UISpawner);
 	
-	                var _this = _possibleConstructorReturn(this, (TowerBullet.__proto__ || Object.getPrototypeOf(TowerBullet)).call(this, game, velocity, lifeTime));
+	                var _this = _possibleConstructorReturn(this, (UISpawner.__proto__ || Object.getPrototypeOf(UISpawner)).call(this, game));
 	
-	                _this.power = power;
-	                _this.team = team;
+	                _this.entity = entity;
+	                _this.backShape = _utils2.default.getSprite('ingame/backtower.png');
 	
-	                // this.build();
+	                var team = _this.entity.team + 1;
+	
+	                if (_this.entity.team == 0) {
+	                        _this.entSprite1 = _utils2.default.getSprite('ingame/candy1.png');
+	                        _this.entSprite2 = _utils2.default.getSprite('ingame/candy2dead.png');
+	                        _this.entSprite2.y = 42;
+	                } else {
+	                        _this.entSprite1 = _utils2.default.getSprite('ingame/veg1.png');
+	                        _this.entSprite2 = _utils2.default.getSprite('ingame/veg2dead.png');
+	                        _this.entSprite2.y = 38;
+	                }
+	
+	                _this.entSprite1.x = 10;
+	                _this.entSprite2.x = 105;
+	
+	                _this.entSprite1.y = 42;
+	
+	                _this.backShape.tint = _this.entity.team == 0 ? 0x0000FF : 0x00FF00;
+	
+	                var style = {
+	                        // fontFamily : 'Arial',
+	                        fontSize: '10px',
+	                        fill: _this.entity.team == 0 ? '#0000bb' : '#005500'
+	                };
+	
+	                _this.spawnedLabel = new _pixi2.default.Text('0', style);
+	                _this.killedLabel = new _pixi2.default.Text('0', style);
+	                _this.wavesLabel = new _pixi2.default.Text('0', style);
+	                _this.liveLabel = new _pixi2.default.Text('0', style);
+	
+	                _this.addChild(_this.backShape);
+	                _this.addChild(_this.entSprite1);
+	                _this.addChild(_this.entSprite2);
+	
+	                _this.addChild(_this.spawnedLabel);
+	                _this.addChild(_this.killedLabel);
+	                _this.addChild(_this.wavesLabel);
+	                _this.addChild(_this.liveLabel);
+	
+	                _this.wavesLabel.x = 5;
+	                _this.liveLabel.x = 105;
+	
+	                _this.spawnedLabel.x = 45;
+	
+	                _this.spawnedLabel.y = 42;
+	
+	                _this.killedLabel.x = 145;
+	                _this.killedLabel.y = 42;
+	                // if(this.entity.team == 0){
+	                //     this.towerSprite.y = -13
+	                // }else{
+	
+	                //     this.towerSprite.y = -35
+	                // }
+	
+	                _this.reset();
+	                // this.pivot.y = this.towerSprite.y
+	
 	                return _this;
 	        }
 	
-	        _createClass(TowerBullet, [{
-	                key: 'buid',
-	                value: function buid() {
-	                        this.base = new _pixi2.default.Container();
-	                        this.roundBase = new _pixi2.default.Graphics();
-	                        this.roundBase.beginFill(0);
-	                        this.roundBase.drawCircle(0, 0, 20);
-	                        this.roundBase.scale.y = 0.4;
-	                        this.roundBase.alpha = 0.1;
-	                        this.roundBase.x = 0;
-	                        this.base.addChild(this.roundBase);
+	        _createClass(UISpawner, [{
+	                key: 'addLifeBar',
+	                value: function addLifeBar(pos, size, color) {
+	                        var border = 1;
+	                        this.barContainer = new _pixi2.default.Container();
+	                        this.addChild(this.barContainer);
+	                        this.barContainer.x = pos.x;
+	                        this.barContainer.y = pos.y;
 	
-	                        this.addChild(this.base);
-	                        this.animationContainer = new _pixi2.default.Container();
-	                        this.animationContainer.x = 0;
-	                        this.animationContainer.y = -135;
-	                        this.addChild(this.animationContainer);
+	                        this.backBar = new _pixi2.default.Graphics();
+	                        this.backBar.beginFill(0);
+	                        this.backBar.drawRect(-border, -border, size.w + border * 2, size.h + border * 2);
 	
-	                        // this.sprite = new PIXI.Sprite(PIXI.Texture.fromFrame('cherry.png'))    
-	                        // this.sprite.anchor.set(0.6);
+	                        this.backBarRed = new _pixi2.default.Graphics();
+	                        this.backBarRed.beginFill(0xFF0000);
+	                        this.backBarRed.drawRect(0, 0, size.w, size.h);
 	
-	                        var idCherry = Math.floor(Math.random() * 2) + 1;
+	                        this.backBarGreen = new _pixi2.default.Graphics();
+	                        this.backBarGreen.beginFill(color);
+	                        this.backBarGreen.drawRect(0, 0, size.w, size.h);
 	
-	                        this.animationModel = [];
-	                        this.animationModel.push({
-	                                label: 'idle',
-	                                src: 'cherryBullet' + idCherry + '00',
-	                                totalFrames: 1,
-	                                startFrame: 0,
-	                                animationSpeed: 0.4,
-	                                movieClip: null,
-	                                position: { x: 0, y: 0 },
-	                                anchor: { x: 0.5, y: 0.5 },
-	                                loop: false
-	                        });
+	                        this.barContainer.addChild(this.backBar);
+	                        this.barContainer.addChild(this.backBarRed);
+	                        this.barContainer.addChild(this.backBarGreen);
 	
-	                        this.animationModel.push({
-	                                label: 'explode',
-	                                src: 'cherryBullet' + idCherry + '00',
-	                                totalFrames: 6,
-	                                startFrame: 0,
-	                                animationSpeed: 0.4,
-	                                movieClip: null,
-	                                position: { x: 0, y: 0 },
-	                                anchor: { x: 0.5, y: 0.5 },
-	                                loop: false
-	                        });
-	
-	                        this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
-	
-	                        // this.animationContainer.addChild(this.sprite);
-	
-	                        this.spriteVelocity = { x: 0, y: 0 };
-	
-	                        this.standardScale = 1;
-	                        this.speedScale = 1;
-	                        this.starterScale = 0.5;
-	                        this.gravity = 15;
-	                        // this.scale.set(0);
-	                        this.kill2 = false;
-	
-	                        this.animationManager.hideAll();
-	                        this.animationManager.stopAll();
-	                        this.animationManager.changeState('idle');
-	
-	                        this.radius = 10;
-	                        this.externalRadius = 0;
+	                        this.barContainer.pivot.set((size.w + border * 2) / 2, (size.h + border * 2) / 2);
 	                }
 	        }, {
-	                key: 'bulletAttackCollision',
-	                value: function bulletAttackCollision() {
-	                        var collisionList = this.game.getCollisionList(this, ['enemy', 'player'], true);
-	                        if (collisionList) {
-	                                for (var i = 0; i < collisionList.length; i++) {
-	                                        if (collisionList[i].entity.hit(this.power)) {
-	                                                return true;
-	                                        }
-	                                }
+	                key: 'updateLifeBar',
+	                value: function updateLifeBar() {
+	                        if (this.entity.killed) {
+	                                this.backShape.tint = 0xFF0000;
+	                                this.x = -20 * this.scale.x;
+	                                this.updateable = false;
 	                        }
-	                        return false;
+	                        if (this.backBarGreen && this.backBarGreen.parent) {
+	                                this.backBarGreen.scale.x = this.entity.life / this.entity.maxLife;
+	                                this.barContainer.scale.x = this.scale.x < 0 ? -1 : 1;
+	                        }
+	                }
+	        }, {
+	                key: 'reset',
+	                value: function reset() {
+	                        //this.addLifeBar({x:this.backShape.width / 2, y:this.backShape.height + 2}, {w:this.backShape.width, h:5}, this.entity.team == 0?0x0000FF:0x00FF00);
+	                        this.updateable = true;
+	                }
+	        }, {
+	                key: 'build',
+	                value: function build() {
+	                        if (this.scale.x < 0) {
+	                                this.spawnedLabel.scale.x = -1;
+	                                this.spawnedLabel.x += -this.spawnedLabel.width;
+	
+	                                this.killedLabel.scale.x = -1;
+	                                this.killedLabel.x += -this.killedLabel.width;
+	
+	                                this.wavesLabel.scale.x = -1;
+	                                this.wavesLabel.x += -this.wavesLabel.width;
+	
+	                                this.liveLabel.scale.x = -1;
+	                                this.liveLabel.x += -this.liveLabel.width;
+	                        }
+	
+	                        var scale = 0.6;
+	                        this.spawnedLabel.scale.set(scale);
+	                        this.killedLabel.scale.set(scale);
+	                        this.wavesLabel.scale.set(scale);
+	                        this.liveLabel.scale.set(scale);
+	                }
+	        }, {
+	                key: 'update',
+	                value: function update(delta) {
+	                        if (!this.updateable) {
+	                                return;
+	                        }
+	
+	                        this.killedLabel.text = this.entity.totalKilled;
+	                        this.spawnedLabel.text = this.entity.totalEntities;
+	                        this.wavesLabel.text = 'wave: ' + this.entity.totalWaves;
+	                        this.liveLabel.text = 'alive: ' + this.entity.currentEntities.length;
+	                        //this.updateLifeBar();
 	                }
 	        }]);
 	
-	        return TowerBullet;
-	}(_StandardBullet3.default);
+	        return UISpawner;
+	}(_Entity3.default);
 	
-	exports.default = TowerBullet;
+	exports.default = UISpawner;
 
 /***/ }
 /******/ ]);

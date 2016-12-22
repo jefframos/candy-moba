@@ -2,11 +2,20 @@
 
 "tower1/idle/tower.png":
 {
-	"frame": {"x":1,"y":1,"w":250,"h":412},
+	"frame": {"x":1,"y":1,"w":75,"h":124},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":412},
-	"sourceSize": {"w":250,"h":412},
+	"spriteSourceSize": {"x":0,"y":0,"w":75,"h":124},
+	"sourceSize": {"w":75,"h":124},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"tower2/idle/tower.png":
+{
+	"frame": {"x":78,"y":1,"w":75,"h":162},
+	"rotated": true,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":75,"h":162},
+	"sourceSize": {"w":75,"h":162},
 	"pivot": {"x":0.5,"y":0.5}
 }},
 "meta": {
@@ -14,8 +23,8 @@
 	"version": "1.0",
 	"image": "towers0.png",
 	"format": "RGBA8888",
-	"size": {"w":252,"h":414},
+	"size": {"w":241,"h":126},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:9c97c040c7c96f5cfb4568c19bed5787:7f93a451390ca0b2a6c2171fe0e29858:a776dce5e50f88a4fc66f3f413cb5f5f$"
+	"smartupdate": "$TexturePacker:SmartUpdate:aee64d90009dafeae1324bc1a8631ee0:f0500cc9a41e10069648e0e3716fd8f1:a776dce5e50f88a4fc66f3f413cb5f5f$"
 }
 }

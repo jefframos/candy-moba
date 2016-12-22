@@ -14,6 +14,8 @@ export default class Cupcake extends Entity {
         this.team = team;
         this.startPosition = startPosition;
 
+        this.starterScale = 1;
+
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
         this.roundBase.beginFill(0xFFFFFF);
@@ -347,7 +349,7 @@ export default class Cupcake extends Entity {
 
 
         this.comboTimer = 0;
-        this.starterScale = 0.5;
+        this.starterScale = 0.5;// 0.5;
         this.standardScale = this.starterScale;
         this.speedFactor = 1;
 

@@ -162,6 +162,11 @@ export default {
 	    return canvas;
 	},
 
+    getSprite(frame) {
+        let texture = PIXI.Texture.fromFrame(frame);
+        return new PIXI.Sprite(texture);
+    },
+
     shuffle(a) {
         for (let i = a.length; i; i--) {
             let j = Math.floor(Math.random() * i);

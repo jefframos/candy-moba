@@ -17,6 +17,8 @@ export default class Tower extends Entity {
 
         this.scaleFator = 2;
 
+        this.starterScale = 1;
+
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
         this.roundBase.beginFill(0xFFFFFF);
@@ -32,8 +34,8 @@ export default class Tower extends Entity {
         this.animationContainer.y = 0
         this.addChild(this.animationContainer);
 
-        this.radius = 150;
-        this.externalRadius = 600;
+        this.radius = 100;
+        this.externalRadius = 300;
         this.debugCollision();
 
         this.static = true;
@@ -46,7 +48,7 @@ export default class Tower extends Entity {
     }
 
      reset() {
-        this.addLifeBar({x:20, y:-this.height * 0.4}, {w:200, h:20}, this.team == 0?0x0000FF:0x00FF00);
+        this.addLifeBar({x:20, y:-180}, {w:200, h:15}, this.team == 0?0x0000FF:0x00FF00);
 
         this.waitingNext = 5 * Math.random() + 1;
         this.sinScale = Math.random();
@@ -72,6 +74,7 @@ export default class Tower extends Entity {
      }
      dead() {
         this.removeLifeBar();
+        this.killed = true;
         this.updateable = false;
         TweenLite.to(this.base,0.5,{alpha:0})
         TweenLite.to(this,0.5,{alpha:0})
@@ -134,12 +137,12 @@ export default class Tower extends Entity {
 
     build ( ) {
 
-        let idRock =1// Math.floor(Math.random()*2) + 1;
-
+        let team = this.team+1// Math.floor(Math.random()*2) + 1;
+        console.log(team);
         this.animationModel = [];
          this.animationModel.push({
             label:'static',
-            src:'tower1/idle/tower',
+            src:'tower'+team+'/idle/tower',
             totalFrames:1,
             startFrame:0,
             animationSpeed:0.4,
