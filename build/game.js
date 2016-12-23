@@ -28229,7 +28229,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	PIXI.loader.add('./assets/Enemies/enemies0.json').add('./assets/Enemies/enemies1.json').add('./assets/Cupcake/cupcake0.json').add('./assets/Cupcake/cupcake1.json').add('./assets/Cupcake/cupcake2.json').add('./assets/Cupcake/cupcake3.json').add('./assets/Environment/environment0.json').add('./assets/Effects/effects0.json').add('./assets/Towers/towers0.json').add('./assets/Spawners/spawners0.json').add('./assets/UI/ui0.json').load(configGame);
+	PIXI.loader.add('./assets/Enemies/enemies0.json').add('./assets/Enemies/enemies1.json').add('./assets/Cupcake/cupcake0.json').add('./assets/Cupcake/cupcake1.json').add('./assets/Cupcake/cupcake2.json').add('./assets/Cupcake/cupcake3.json').add('./assets/Environment/environment0.json').add('./assets/Effects/effects0.json').add('./assets/Towers/towers0.json').add('./assets/Spawners/spawners0.json').add('./assets/UI/ui0.json').add('./assets/data/map1Data.json').load(configGame);
 	
 	function configGame() {
 	
@@ -28543,55 +28543,55 @@
 	
 	var _Cupcake2 = _interopRequireDefault(_Cupcake);
 	
-	var _StandardEnemy = __webpack_require__(150);
+	var _StandardEnemy = __webpack_require__(152);
 	
 	var _StandardEnemy2 = _interopRequireDefault(_StandardEnemy);
 	
-	var _NestEntity = __webpack_require__(151);
+	var _NestEntity = __webpack_require__(153);
 	
 	var _NestEntity2 = _interopRequireDefault(_NestEntity);
 	
-	var _Tanker = __webpack_require__(152);
+	var _Tanker = __webpack_require__(154);
 	
 	var _Tanker2 = _interopRequireDefault(_Tanker);
 	
-	var _StandardBullet = __webpack_require__(153);
+	var _StandardBullet = __webpack_require__(155);
 	
 	var _StandardBullet2 = _interopRequireDefault(_StandardBullet);
 	
-	var _TowerBullet = __webpack_require__(154);
+	var _TowerBullet = __webpack_require__(156);
 	
 	var _TowerBullet2 = _interopRequireDefault(_TowerBullet);
 	
-	var _Rock = __webpack_require__(155);
+	var _Rock = __webpack_require__(157);
 	
 	var _Rock2 = _interopRequireDefault(_Rock);
 	
-	var _Pine = __webpack_require__(157);
+	var _Pine = __webpack_require__(159);
 	
 	var _Pine2 = _interopRequireDefault(_Pine);
 	
-	var _Bush = __webpack_require__(158);
+	var _Bush = __webpack_require__(160);
 	
 	var _Bush2 = _interopRequireDefault(_Bush);
 	
-	var _Tower = __webpack_require__(159);
+	var _Tower = __webpack_require__(161);
 	
 	var _Tower2 = _interopRequireDefault(_Tower);
 	
-	var _Nest = __webpack_require__(160);
+	var _Nest = __webpack_require__(162);
 	
 	var _Nest2 = _interopRequireDefault(_Nest);
 	
-	var _Spawner = __webpack_require__(161);
+	var _Spawner = __webpack_require__(163);
 	
 	var _Spawner2 = _interopRequireDefault(_Spawner);
 	
-	var _UITower = __webpack_require__(162);
+	var _UITower = __webpack_require__(164);
 	
 	var _UITower2 = _interopRequireDefault(_UITower);
 	
-	var _UISpawner = __webpack_require__(163);
+	var _UISpawner = __webpack_require__(165);
 	
 	var _UISpawner2 = _interopRequireDefault(_UISpawner);
 	
@@ -28611,166 +28611,256 @@
 	
 			var _this = _possibleConstructorReturn(this, (PrototypeScreen.__proto__ || Object.getPrototypeOf(PrototypeScreen)).call(this, label));
 	
-			_this.inputManager = new _InputManager2.default(_this);
+			var loader = new _pixi2.default.loaders.Loader(); // you can also create your own if you want
 	
-			_this.gameContainer = new _pixi2.default.Container();
-			_this.addChild(_this.gameContainer);
+			loader.add('./assets/data/map1Data.json');
 	
-			// this.gameContainer.scale.set(0.3)
+			loader.once('complete', _this.onAssetsLoaded.bind(_this));
 	
+			loader.load();
 	
-			_this.polyPts = _config2.default.worldBounds;
-			var worldBoundsGraphic = new _pixi2.default.Graphics();
-			worldBoundsGraphic.beginFill(0xffffff);
-			worldBoundsGraphic.alpha = 0.1;
-			worldBoundsGraphic.drawPolygon(_this.polyPts);
-			worldBoundsGraphic.endFill();
-	
-			_this.gameContainer.addChild(worldBoundsGraphic);
-	
-			for (var i = _config2.default.wayPath.length - 1; i >= 0; i--) {
-	
-				var wayGraphic = new _pixi2.default.Graphics();
-				wayGraphic.beginFill(0xffffff);
-				wayGraphic.alpha = 0.1;
-				wayGraphic.drawPolygon(_config2.default.wayPath[i]);
-				wayGraphic.endFill();
-	
-				_this.gameContainer.addChild(wayGraphic);
-			}
-	
-			_this.worldPolygon = new _pixi2.default.Polygon(_this.polyPts);
-			_this.worldBounds = { x: 0, y: 0, w: 6000, h: 2000 };
-	
-			_this.floorContainer = new _pixi2.default.Container();
-			_this.gameContainer.addChild(_this.floorContainer);
-	
-			_this.entityContainer = new _pixi2.default.Container();
-			_this.gameContainer.addChild(_this.entityContainer);
-	
-			_this.cupcake = new _Cupcake2.default(_this, { x: _config2.default.playerPositions[0][1], y: _config2.default.playerPositions[0][2] }, 0);
-			_this.entityContainer.addChild(_this.cupcake);
-			_this.addOnUpdateList(_this.cupcake);
-	
-			_this.enemyList = [];
-			_this.environmentList = [];
-			_this.bulletList = [];
-			_this.uiList = [];
-	
-			_this.spawnerList = [];
-			for (var i = 0; i < _config2.default.spawnerList.length; i++) {
-				var spawnerDataList = _config2.default.spawnerList[i];
-				for (var k = spawnerDataList.length - 1; k >= 0; k--) {
-					var spawnerData = spawnerDataList[k];
-					var team = 0;
-					if (spawnerData[0][0].indexOf('t2') !== -1) {
-						team = 1;
-					}
-					var spawner = new _Spawner2.default(_this, team);
-					_this.entityContainer.addChild(spawner);
-					_this.addOnUpdateList(spawner);
-					_this.spawnerList.push(spawner);
-					spawner.x = spawnerData[0][1];
-					spawner.y = spawnerData[0][2];
-					spawner.build();
-					_this.setScales(spawner);
-	
-					for (var j = 1; j < spawnerData.length; j++) {
-						spawner.addWaypoint(spawnerData[j][1], spawnerData[j][2]);
-					}
-				}
-			}
-	
-			_this.towerList = [];
-			for (var i = 0; i < _config2.default.towerList.length; i++) {
-				for (var j = 0; j < _config2.default.towerList[i].length; j++) {
-					var towerData = _config2.default.towerList[i][j];
-					var tower = new _Tower2.default(_this, towerData[3]);
-					tower.name = towerData[0];
-					_this.entityContainer.addChild(tower);
-					_this.addOnUpdateList(tower);
-					_this.towerList.push(tower);
-					tower.x = towerData[1];
-					tower.y = towerData[2];
-	
-					_this.setScales(tower);
-	
-					tower.build();
-				}
-			}
-	
-			_this.nestList = [];
-			// for (var i = 0; i < config.nestList.length; i++) {
-			// console.log(config.nestList[0]);
-			for (var j = 0; j < _config2.default.nestList.length; j++) {
-				var nestData = _config2.default.nestList[j];
-				// console.log('nestdata -- ',config.nestList[0][j]);
-				// console.log('nestdata',nestData);
-	
-				var nest = new _Nest2.default(_this);
-				nest.name = nestData[0];
-	
-				_this.entityContainer.addChild(nest);
-				_this.addOnUpdateList(nest);
-				_this.nestList.push(nest);
-	
-				nest.x = nestData[1];
-				nest.y = nestData[2];
-				// console.log('nest',nest.x,nest.y);
-				_this.setScales(nest);
-	
-				nest.build();
-			}
-			// }
-	
-	
-			// for (var i = 0; i < config.environmentList.length; i++) {
-			// 	var envData = config.environmentList[i];
-			// 	// console.log(envData);
-			// 	var environmentEntity;
-	
-			// 	if(envData[0] == 'pine'){
-			// 		environmentEntity = new Pine(this, true);
-			// 	}else if(envData[0].indexOf('rock') !== -1){
-			// 		console.log(envData[0]);
-			// 		environmentEntity = new Rock(this, true);
-			// 	}else if(envData[0].indexOf('bush') !== -1){
-			// 		environmentEntity = new Bush(this, true);
-			// 	}
-	
-			// 	this.entityContainer.addChild(environmentEntity)
-			// 	//this.addOnUpdateList(environmentEntity)
-	
-			// 	environmentEntity.x = envData[1];
-			// 	environmentEntity.y = envData[2];
-	
-			// 	environmentEntity.side = envData[3]
-			// 	environmentEntity.starterScale = envData[4] * 2
-	
-	
-			// 	// environmentEntity.y = Math.random() < 0.6? Math.random() * (config.height * 0.2) + config.height * 0.2: Math.random() * (this.worldBounds.h * 0.5) + config.height * 0.7;
-			// 	this.setScales(environmentEntity);
-	
-			// 	this.environmentList.push(environmentEntity);
-	
-			// }
-	
-	
-			_this.updateable = true;
-	
-			_this.camera = new _Camera2.default(_this, _this.gameContainer);
-			_this.speedUpValue = 1;
-	
-			_this.timer = 0;
-	
-			_this.initUI();
-	
-			_this.initGame();
+			_this.updateable = false;
 	
 			return _this;
 		}
 	
 		_createClass(PrototypeScreen, [{
+			key: 'onAssetsLoaded',
+			value: function onAssetsLoaded(evt) {
+				// console.log(evt.resources['./assets/data/map1Data.json'].data.layers)//.data.layers);
+				var mapLayers = evt.resources['./assets/data/map1Data.json'].data.layers;
+				_config2.default.worldBounds = [];
+				_config2.default.towerList = [];
+				_config2.default.spawnerList = [];
+				_config2.default.nestList = [];
+				for (var i = 0; i < mapLayers.length; i++) {
+					if (mapLayers[i].name == 'WorldBounds') {
+						var polyline = mapLayers[i].objects[0].polyline;
+						for (var j = 1; j < polyline.length; j++) {
+							_config2.default.worldBounds.push(polyline[j].x);
+							_config2.default.worldBounds.push(polyline[j].y);
+						}
+					}
+					// console.log(mapLayers[i].name);
+					if (mapLayers[i].name.indexOf('Towers') !== -1) {
+						var towers = mapLayers[i].objects;
+						// console.log(towers);
+						for (var j = 1; j < towers.length; j++) {
+							var tower = towers[j];
+							_config2.default.towerList.push({ name: tower.name, x: tower.x, y: tower.y, team: tower.properties.team });
+						}
+					}
+					if (mapLayers[i].name.indexOf('Nests') !== -1) {
+						for (var j = 0; j < mapLayers[i].objects.length; j++) {
+							var nest = mapLayers[i].objects[j];
+							_config2.default.nestList.push({ name: nest.name, x: nest.x, y: nest.y });
+						}
+					}
+					if (mapLayers[i].name.indexOf('Spawner') !== -1) {
+						var spawers = mapLayers[i].objects;
+						var spwPosition = { x: 0, y: 0 };
+						var spawnerObject = { pos: null, team: -1, waypoints: [] };
+						for (var j = 0; j < spawers.length; j++) {
+							var data = spawers[j];
+							if (data.name.indexOf('spawner') !== -1) {
+								spawnerObject.pos = { x: data.x, y: data.y };
+								spawnerObject.team = data.properties.team;
+							} else if (data.name.indexOf('waypoints') !== -1) {
+								var waypoints = [];
+								// console.log(data);
+								// if(data.properties.invertList){
+								// 	for (var k = data.polyline.length - 1; k >= 1; k--) {
+								// 	 	let wayPos = {x:data.polyline[k].x,y:data.polyline[k].y}
+								// 	 	spawnerObject.waypoints.push(wayPos);
+								// 	}
+								// }else{
+								for (var k = 1; k < data.polyline.length; k++) {
+									var wayPos = { x: data.polyline[k].x, y: data.polyline[k].y };
+									spawnerObject.waypoints.push(wayPos);
+								}
+								// }
+							}
+						}
+						// spawnerObject = {pos:spwPosition, team:data.propreties.team, waypoints:waypoints};
+						_config2.default.spawnerList.push(spawnerObject);
+						console.log(spawnerObject);
+						// for (var j = 1; j < towers.length; j++) {
+						// 	let tower = towers[j];
+						// 	config.towerList.push({name:tower.name, x:tower.x,y:tower.y,team:tower.properties.team});
+						// }
+					}
+				}
+	
+				this.configGame();
+			}
+		}, {
+			key: 'configGame',
+			value: function configGame() {
+				console.log('config');
+				// this.gameContainer.scale.set(0.3)
+	
+				this.inputManager = new _InputManager2.default(this);
+				this.gameContainer = new _pixi2.default.Container();
+				this.addChild(this.gameContainer);
+	
+				this.worldBounds = { x: 0, y: 0, w: 15000, h: 6000 };
+				this.polyPts = this.scaleArrayPoints(_config2.default.worldBounds);
+	
+				// this.scaleArrayPoints(this.polyPts)
+				var worldBoundsGraphic = new _pixi2.default.Graphics();
+				worldBoundsGraphic.beginFill(0xbbffff);
+				worldBoundsGraphic.alpha = 0.2;
+				worldBoundsGraphic.drawPolygon(this.polyPts);
+				worldBoundsGraphic.endFill();
+	
+				this.gameContainer.addChild(worldBoundsGraphic);
+	
+				for (var i = _config2.default.wayPath.length - 1; i >= 0; i--) {
+	
+					var wayGraphic = new _pixi2.default.Graphics();
+					wayGraphic.beginFill(0xffffff);
+					wayGraphic.alpha = 0.1;
+					wayGraphic.drawPolygon(this.scaleArrayPoints(_config2.default.wayPath[i]));
+					wayGraphic.endFill();
+	
+					//this.gameContainer.addChild(wayGraphic)
+				}
+	
+				this.worldPolygon = new _pixi2.default.Polygon(this.polyPts);
+	
+				this.floorContainer = new _pixi2.default.Container();
+				this.gameContainer.addChild(this.floorContainer);
+	
+				this.entityContainer = new _pixi2.default.Container();
+				this.gameContainer.addChild(this.entityContainer);
+	
+				this.cupcake = new _Cupcake2.default(this, { x: _config2.default.playerPositions[0][1], y: _config2.default.playerPositions[0][2] }, 0);
+				this.entityContainer.addChild(this.cupcake);
+				this.addOnUpdateList(this.cupcake);
+	
+				this.enemyList = [];
+				this.environmentList = [];
+				this.bulletList = [];
+				this.uiList = [];
+	
+				this.spawnerList = [];
+				for (var i = 0; i < _config2.default.spawnerList.length; i++) {
+					// let spawnerDataList = config.spawnerList[i];
+					// for (var k = spawnerDataList.length - 1; k >= 0; k--) {
+					var spawnerData = _config2.default.spawnerList[i];
+	
+					var spawner = new _Spawner2.default(this, spawnerData.team);
+					this.entityContainer.addChild(spawner);
+					this.addOnUpdateList(spawner);
+					this.spawnerList.push(spawner);
+					var tempPoint = this.scaleSinglePoint({ x: spawnerData.pos.x, y: spawnerData.pos.y });
+					spawner.x = tempPoint.x;
+					spawner.y = tempPoint.y;
+					spawner.build();
+					this.setScales(spawner);
+	
+					for (var j = 1; j < spawnerData.waypoints.length; j++) {
+						tempPoint = this.scaleSinglePoint({ x: spawnerData.waypoints[j].x, y: spawnerData.waypoints[j].y });
+						spawner.addWaypoint(tempPoint.x, tempPoint.y);
+					}
+					// }
+				}
+	
+				this.towerList = [];
+				console.log(_config2.default.towerList);
+				for (var i = 0; i < _config2.default.towerList.length; i++) {
+					// for (var j = 0; j < config.towerList[i].length; j++) {
+					var towerData = _config2.default.towerList[i];
+					var tower = new _Tower2.default(this, towerData.team);
+					tower.name = towerData.name;
+					this.entityContainer.addChild(tower);
+					this.addOnUpdateList(tower);
+					this.towerList.push(tower);
+	
+					var _tempPoint = this.scaleSinglePoint({ x: towerData.x, y: towerData.y });
+	
+					tower.x = _tempPoint.x;
+					tower.y = _tempPoint.y;
+	
+					this.setScales(tower);
+	
+					tower.build();
+					// }
+				}
+	
+				this.nestList = [];
+				// for (var i = 0; i < config.nestList.length; i++) {
+				// console.log(config.nestList[0]);
+				for (var j = 0; j < _config2.default.nestList.length; j++) {
+					var nestData = _config2.default.nestList[j];
+					// console.log('nestdata -- ',config.nestList[0][j]);
+					// console.log('nestdata',nestData);
+	
+					var nest = new _Nest2.default(this);
+					nest.name = nestData.name;
+	
+					this.entityContainer.addChild(nest);
+					this.addOnUpdateList(nest);
+					this.nestList.push(nest);
+	
+					var _tempPoint2 = this.scaleSinglePoint({ x: nestData.x, y: nestData.y });
+	
+					nest.x = _tempPoint2.x;
+					nest.y = _tempPoint2.y;
+					// console.log('nest',nest.x,nest.y);
+					this.setScales(nest);
+	
+					nest.build();
+				}
+				// }
+	
+	
+				// for (var i = 0; i < config.environmentList.length; i++) {
+				// 	var envData = config.environmentList[i];
+				// 	// console.log(envData);
+				// 	var environmentEntity;
+	
+				// 	if(envData[0] == 'pine'){
+				// 		environmentEntity = new Pine(this, true);
+				// 	}else if(envData[0].indexOf('rock') !== -1){
+				// 		console.log(envData[0]);
+				// 		environmentEntity = new Rock(this, true);
+				// 	}else if(envData[0].indexOf('bush') !== -1){
+				// 		environmentEntity = new Bush(this, true);
+				// 	}
+	
+				// 	this.entityContainer.addChild(environmentEntity)
+				// 	//this.addOnUpdateList(environmentEntity)
+	
+				// 	environmentEntity.x = envData[1];
+				// 	environmentEntity.y = envData[2];
+	
+				// 	environmentEntity.side = envData[3]
+				// 	environmentEntity.starterScale = envData[4] * 2
+	
+	
+				// 	// environmentEntity.y = Math.random() < 0.6? Math.random() * (config.height * 0.2) + config.height * 0.2: Math.random() * (this.worldBounds.h * 0.5) + config.height * 0.7;
+				// 	this.setScales(environmentEntity);
+	
+				// 	this.environmentList.push(environmentEntity);
+	
+				// }
+	
+	
+				this.updateable = true;
+	
+				this.camera = new _Camera2.default(this, this.gameContainer);
+				this.speedUpValue = 1;
+	
+				this.timer = 0;
+	
+				// this.build();
+	
+				this.initUI();
+	
+				this.initGame();
+			}
+		}, {
 			key: 'gameOver',
 			value: function gameOver() {
 				this.updateable = false;
@@ -28875,6 +28965,12 @@
 				for (var i = this.spawnerList.length - 1; i >= 0; i--) {
 					this.spawnerList[i].start();
 				}
+	
+				this.camera.zoom(0.05, 1, 0.2);
+				// this.camera.zoom(0.35, 1, 0.2);
+				this.camera.follow(this.cupcake);
+	
+				// this.gameOver()
 			}
 		}, {
 			key: 'addEnemy',
@@ -28909,9 +29005,6 @@
 			value: function build() {
 				this.lastAction = null;
 				_get(PrototypeScreen.prototype.__proto__ || Object.getPrototypeOf(PrototypeScreen.prototype), 'build', this).call(this);
-	
-				this.camera.zoom(0.35, 1, 0.2);
-				this.camera.follow(this.cupcake);
 			}
 		}, {
 			key: 'update',
@@ -29138,6 +29231,33 @@
 					}
 				}
 				return collideList;
+			}
+		}, {
+			key: 'getMapDistanceFactor',
+			value: function getMapDistanceFactor(y) {
+				var h = this.worldBounds.h;
+	
+				var value = 1 - _utils2.default.distance(0, y, 0, h) / h + 0.3;
+				value = value * 0.7 + 0.3;
+	
+				return value;
+			}
+		}, {
+			key: 'scaleSinglePoint',
+			value: function scaleSinglePoint(point) {
+				var rpoint = { x: point.x, y: point.y * this.getMapDistanceFactor(point.y) };
+				return rpoint;
+			}
+		}, {
+			key: 'scaleArrayPoints',
+			value: function scaleArrayPoints(arr) {
+				var rArr = [];
+				for (var i = 1; i < arr.length; i += 2) {
+					rArr.push(arr[i - 1]);
+					rArr.push(arr[i] * this.getMapDistanceFactor(arr[i]));
+				}
+	
+				return rArr;
 			}
 		}, {
 			key: 'setScales',
@@ -38158,15 +38278,15 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _EntityModel = __webpack_require__(164);
+	var _EntityModel = __webpack_require__(149);
 	
 	var _EntityModel2 = _interopRequireDefault(_EntityModel);
 	
-	var _EnemyModel = __webpack_require__(165);
+	var _EnemyModel = __webpack_require__(150);
 	
 	var _EnemyModel2 = _interopRequireDefault(_EnemyModel);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(151);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -39349,6 +39469,625 @@
 
 /***/ },
 /* 149 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var EntityModel = function () {
+	    function EntityModel(name, label, stats, modifiers, graphicsData, config) {
+	        _classCallCheck(this, EntityModel);
+	
+	        this.level = 1;
+	        this.name = name;
+	        this.label = label;
+	        this.stats = stats;
+	        this.modifiers = modifiers;
+	        this.graphicsData = graphicsData;
+	        this.config = config;
+	
+	        if (!name) {
+	            this.playerClass = 'warrior';
+	        } else {
+	            this.playerClass = name;
+	        }
+	
+	        this.vigor = this.stats.vigor;
+	        this.speed = this.stats.speed;
+	        this.stamina = this.stats.stamina;
+	        this.magicPower = this.stats.magicPower;
+	        this.battlePower = this.stats.battlePower;
+	        this.defense = this.stats.defense;
+	        this.magicDefense = this.stats.magicDefense;
+	
+	        //modifiers
+	        this.baseHPModifier = this.modifiers.baseHPModifier;
+	        this.baseMPModifier = this.modifiers.baseMPModifier;
+	        this.vigorModifier = this.modifiers.vigorModifier;
+	        this.speedModifier = this.modifiers.speedModifier;
+	        this.staminaModifier = this.modifiers.staminaModifier;
+	        this.magicPowerModifier = this.modifiers.magicPowerModifier;
+	        this.battlePowerModifier = this.modifiers.battlePowerModifier;
+	        this.defenseModifier = this.modifiers.defenseModifier;
+	        this.magicDefenseModifier = this.modifiers.magicDefenseModifier;
+	
+	        this.hpMin = this.stats.hpMin;
+	
+	        this.baseHP = this.level * (20 / this.baseHPModifier);
+	
+	        this.spellPower = 20; //speel do bolt
+	        this.weaponPower = 30; //mithirl knife
+	        this.defenseArmor = 0; //no armor
+	        this.magicDefenseArmor = 0; //no armor
+	        this.hpMax = this.hpMin + this.baseHP * (this.stamina + 32) / 32;
+	        this.hp = this.hpMax;
+	
+	        this.baseMP = this.level * (20 / this.baseMPModifier);
+	        this.mpMax = this.baseMP * (this.magicPower + 32) / 32;
+	        this.mp = this.mpMax;
+	
+	        // console.log(this.baseMP, this.mpMax);
+	        this.critialChance = 0.0;
+	        this.speedStatus = 'normal';
+	        this.vigor2 = this.vigor * 2;
+	        if (this.vigor >= 128) {
+	            this.vigor2 = 255;
+	        }
+	        this.attack = this.battlePower + this.vigor2;
+	        this.xp = 0;
+	
+	        // this.velocity = 6 - (255 - this.speed) / 25 + 5;
+	        this.updateVelocity();
+	
+	        this.fireFreq = (255 - this.speed) / (this.speed * 0.4) * 1.3;
+	
+	        this.entity = null;
+	
+	        this.csvStr = 'level,hp,mp,vigor,speed,stamina,magicPower,battlePower,defense,attack,magicDefense,velocity,fireFreq,demagePhysical,demageMagical\n';
+	        this.csvStr += this.level + ',' + Math.floor(this.hpMax) + ',' + Math.floor(this.mpMax) + ',' + Math.floor(this.vigor) + ',' + Math.floor(this.speed) + ',' + Math.floor(this.stamina) + ',' + Math.floor(this.magicPower) + ',' + Math.floor(this.battlePower) + ',' + Math.floor(this.defense) + ',' + Math.floor(this.attack) + ',' + Math.floor(this.magicDefense) + ',' + Math.floor(this.velocity) + ',' + Math.floor(this.fireFreq) + ',' + Math.floor(this.getDemage('physical')) + ',' + Math.floor(this.getDemage('magical')) + '\n';
+	
+	        // console.log('PlayerModel', this);
+	
+	        // this.levelUp(this.level);
+	
+	        var nextl = this.level;
+	        var befl = this.level - 1;
+	        this.toNextLevel = (nextl * nextl + nextl + 3) / 4 * 20 * nextl;
+	        this.toBeforeLevel = (befl * befl + befl + 3) / 4 * 20 * befl;
+	    }
+	
+	    _createClass(EntityModel, [{
+	        key: 'updateVelocity',
+	        value: function updateVelocity() {
+	            this.velocity = 8 - (255 - this.speed) / 35 + 2;
+	            this.velocity /= 2;
+	        }
+	    }, {
+	        key: 'getNormalizedAtt',
+	        value: function getNormalizedAtt() {
+	            return {
+	                speed: Math.floor(this.speed) / 255,
+	                stamina: Math.floor(this.stamina) / 255,
+	                vigor: Math.floor(this.vigor) / 255,
+	                magicPower: Math.floor(this.magicPower) / 255,
+	                battlePower: Math.floor(this.battlePower) / 255,
+	                defense: Math.floor(this.defense) / 255,
+	                attack: Math.floor(this.attack) / 255,
+	                magicDefense: Math.floor(this.magicDefense) / 255,
+	                velocity: Math.floor(this.velocity) / 255,
+	                fireFreq: Math.floor(this.fireFreq) / 255
+	            };
+	        }
+	    }, {
+	        key: 'log',
+	        value: function log() {
+	            console.log();
+	            console.log('stats');
+	            console.log('class,', this.playerClass);
+	            console.log('level,', Math.floor(this.level));
+	            console.log('hp,', Math.floor(this.hpMax));
+	            console.log('mp,', Math.floor(this.mpMax));
+	            console.log('vigor,', Math.floor(this.vigor));
+	            console.log('speed,', Math.floor(this.speed));
+	            console.log('stamina,', Math.floor(this.stamina));
+	            console.log('magicPower,', Math.floor(this.magicPower));
+	            console.log('battlePower,', Math.floor(this.battlePower));
+	            console.log('defense,', Math.floor(this.defense));
+	            console.log('attack,', Math.floor(this.attack));
+	            console.log('magicDefense,', Math.floor(this.magicDefense));
+	            console.log('velocity,', Math.floor(this.velocity));
+	            console.log('fireFreq,', Math.floor(this.fireFreq));
+	            console.log('demagePhysical,', Math.floor(this.getDemage('physical')));
+	            console.log('demageMagical,', Math.floor(this.getDemage('magical')));
+	        }
+	    }, {
+	        key: 'clone',
+	        value: function clone() {
+	            return new PlayerModel(this.name, this.label, this.stats, this.modifiers, this.graphicsData, this.config);
+	        }
+	    }, {
+	        key: 'logCSV',
+	        value: function logCSV() {
+	            console.log(this.csvStr);
+	        }
+	    }, {
+	        key: 'levelUp',
+	        value: function levelUp() {
+	            this.level++;
+	
+	            var nextl = this.level;
+	            var befl = this.level - 1;
+	            this.toNextLevel = (nextl * nextl + nextl + 3) / 4 * 20 * nextl;
+	            this.toBeforeLevel = (befl * befl + befl + 3) / 4 * 20 * befl;
+	
+	            this.vigor += (this.vigor * this.vigor + this.vigor + 3) / 4 * this.vigorModifier;
+	            this.speed += (this.speed * this.speed + this.speed + 3) / 4 * this.speedModifier;
+	            this.stamina += (this.stamina * this.stamina + this.stamina + 3) / 4 * this.staminaModifier;
+	            this.magicPower += (this.magicPower * this.magicPower + this.magicPower + 3) / 4 * this.magicPowerModifier;
+	            this.battlePower += (this.battlePower * this.battlePower + this.battlePower + 3) / 4 * this.battlePowerModifier;
+	            this.defense += (this.defense * this.defense + this.defense + 3) / 4 * this.defenseModifier;
+	            // this.attack += (this.attack*this.attack+this.attack+3)/4*this.attackModifier;
+	            this.magicDefense += (this.magicDefense * this.magicDefense + this.magicDefense + 3) / 4 * this.magicDefenseModifier;
+	
+	            this.vigorModifier -= 0.0005;
+	            this.speedModifier -= 0.0005;
+	            this.staminaModifier -= 0.0005;
+	            this.magicPowerModifier -= 0.0005;
+	            this.battlePowerModifier -= 0.0005;
+	            this.defenseModifier -= 0.0005;
+	            this.magicDefenseModifier -= 0.0005;
+	
+	            if (this.vigorModifier <= 0.001) {
+	                this.vigorModifier = 0.001;
+	            }
+	            if (this.speedModifier <= 0.001) {
+	                this.speedModifier = 0.001;
+	            }
+	            if (this.staminaModifier <= 0.001) {
+	                this.staminaModifier = 0.001;
+	            }
+	            if (this.magicPowerModifier <= 0.001) {
+	                this.magicPowerModifier = 0.001;
+	            }
+	            if (this.battlePowerModifier <= 0.001) {
+	                this.battlePowerModifier = 0.001;
+	            }
+	            if (this.defenseModifier <= 0.001) {
+	                this.defenseModifier = 0.001;
+	            }
+	            if (this.magicDefenseModifier <= 0.001) {
+	                this.magicDefenseModifier = 0.001;
+	            }
+	
+	            this.vigor2 = this.vigor * 2;
+	            if (this.vigor >= 128) {
+	                this.vigor2 = 255;
+	            }
+	            this.attack = this.battlePower + this.vigor2;
+	
+	            if (this.vigor > 255) {
+	                this.vigor = 255;
+	            }
+	            if (this.speed > 255) {
+	                this.speed = 255;
+	            }
+	            if (this.stamina > 255) {
+	                this.stamina = 255;
+	            }
+	            if (this.magicPower > 255) {
+	                this.magicPower = 255;
+	            }
+	            if (this.battlePower > 255) {
+	                this.battlePower = 255;
+	            }
+	            if (this.defense > 255) {
+	                this.defense = 255;
+	            }
+	            if (this.attack > 255) {
+	                this.attack = 255;
+	            }
+	            if (this.magicDefense > 255) {
+	                this.magicDefense = 255;
+	            }
+	
+	            // this.baseMP = this.level* (20 / this.baseMPModifier);
+	            //      this.mpMax = (this.baseMP*(this.magicPower-32))/32;
+	
+	            this.baseHPModifier -= 0.0085;
+	            this.baseMPModifier += 0.02;
+	            this.baseHP = this.level * (20 / this.baseHPModifier);
+	            this.baseMP = this.level * (20 / this.baseMPModifier);
+	
+	            this.hpMax += this.baseHP * (this.stamina + 32) / 32;
+	            this.hp = this.hpMax;
+	
+	            this.mpMax += this.baseMP * (this.magicPower + 32) / 32;
+	            this.mp = this.mpMax;
+	
+	            // this.velocity = 8 - (255 - this.speed) / 35  + 2;// + 5;
+	            // this.velocity /= 3;
+	            this.updateVelocity();
+	            this.fireFreq = (255 - this.speed) / (this.speed * 0.4) * (1.1 + this.speedModifier * 1000);
+	            if (this.fireFreq <= 4) {
+	                this.fireFreq = 4;
+	            }
+	            if (this.fireFreq >= 25) {
+	                this.fireFreq = 25;
+	            }
+	            if (this.velocity >= 9) {
+	                this.velocity = 9;
+	            }
+	            if (this.velocity <= 2) {
+	                this.velocity = 2;
+	            }
+	
+	            // console.log(this.level,'<- levelUp, xp ->',this.xp);
+	
+	
+	            this.csvStr += this.level + ',' + Math.floor(this.hpMax) + ',' + Math.floor(this.mpMax) + ',' + Math.floor(this.vigor) + ',' + Math.floor(this.speed) + ',' + Math.floor(this.stamina) + ',' + Math.floor(this.magicPower) + ',' + Math.floor(this.battlePower) + ',' + Math.floor(this.defense) + ',' + Math.floor(this.attack) + ',' + Math.floor(this.magicDefense) + ',' + Math.floor(this.velocity) + ',' + Math.floor(this.fireFreq) + ',' + Math.floor(this.getDemage('physical')) + ',' + Math.floor(this.getDemage('magical')) + '\n';
+	
+	            if (this.entity) {
+	                this.entity.levelUp();
+	            }
+	        }
+	    }, {
+	        key: 'updateLevel',
+	        value: function updateLevel() {
+	            // console.log((this.level*this.level+this.level+3)/4, 'compare');
+	            for (var i = this.level; i <= 99; i++) {
+	                var calcXP = (i * i + i + 3) / 4 * 20 * i;
+	                // console.log(this.xp, calcXP, 'level', i);
+	
+	                if (this.xp > calcXP) {
+	                    this.levelUp();
+	                } else {
+	                    break;
+	                }
+	            }
+	        }
+	    }, {
+	        key: 'resetPoints',
+	        value: function resetPoints() {
+	            this.hp = this.hpMax;
+	            this.mp = this.mpMax;
+	        }
+	    }, {
+	        key: 'updateXp',
+	        value: function updateXp(xp) {
+	            // console.log('xp', xp);
+	            this.xp += xp;
+	            this.updateLevel();
+	            if (this.entity) {
+	                this.entity.updateXP(xp);
+	            }
+	        }
+	    }, {
+	        key: 'getDemage',
+	        value: function getDemage() {
+	            var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'physical';
+	
+	            var damageMultiplierCritical = Math.random() < this.critialChance ? 0.5 : 2;
+	            var damageMultiplier = Math.random() / 2 + 1;
+	            var demage = 0;
+	            if (type === 'physical') {
+	                demage = this.battlePower * this.level + this.level * this.attack * this.weaponPower / 256 * 3 / 2;
+	                // demage = this.battlePower + ((this.level * this.level * this.attack * this.weaponPower) / 256) * 3 / 2;
+	            } else if (type === 'magical') {
+	                demage = this.spellPower * 4 + this.level * this.magicPower * this.spellPower / 32;
+	            } else if (type === 'range') {
+	                demage = this.speed * 0.25 * this.level + this.level * this.attack * this.weaponPower / 256 * 0.1;
+	            }
+	            //o demage comentado abaixo funciona muito bem em um rpg de turno
+	            //demage = damageMultiplier * demage + ((demage / 2) * damageMultiplierCritical);
+	
+	            //por enquanto está retornando 30% do dano padrão pelos algoritimos do final fantasy 6 -> http://www.rpglegion.com/ff6/ff6alg.txt
+	            demage = (damageMultiplier * demage + demage / 2 * damageMultiplierCritical) * 0.3;
+	            return demage;
+	        }
+	    }, {
+	        key: 'getHurt',
+	        value: function getHurt(demage) {
+	            var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'physical';
+	
+	            if (type === 'physical') {
+	                demage = demage * (255 - this.defense - this.defenseArmor + (3 - Math.random() * 10)) / 256 + 1;
+	            } else if (type === 'magical') {
+	                demage = demage * (255 - this.magicDefense - this.magicDefenseArmor + (3 - Math.random() * 10)) / 256 + 1;
+	            }
+	
+	            return demage;
+	        }
+	    }, {
+	        key: 'getSpeed',
+	        value: function getSpeed() {
+	            var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'normal';
+	
+	            var currentSpeed;
+	            if (type === 'normal') {
+	                currentSpeed = 96 * (this.speed + 20) / 16; //normal
+	            } else if (type === 'haste') {
+	                currentSpeed = 126 * (this.speed + 20) / 16; //haste
+	            } else if (type === 'slow') {
+	                currentSpeed = 48 * (this.speed + 20) / 16; //slow
+	            }
+	            return currentSpeed;
+	        }
+	    }]);
+	
+	    return EntityModel;
+	}();
+	
+	exports.default = EntityModel;
+
+/***/ },
+/* 150 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var EnemyModel = function () {
+	    function EnemyModel(name, stats, fire, graphicsData, config) {
+	        _classCallCheck(this, EnemyModel);
+	
+	        // console.log('name,level,hp,stamina,speed,magicPower,battlePower,defense,magicDefense, xp\n', name,stats);
+	        this.name = name;
+	        this.stats = stats;
+	        this.fire = fire;
+	        this.graphicsData = graphicsData;
+	        this.config = config;
+	        this.initiallevel = stats.level;
+	        this.initialhp = stats.hp;
+	        this.initialstamina = stats.stamina;
+	        this.initialspeed = stats.speed;
+	        this.initialmagicPower = stats.magicPower;
+	        this.initialbattlePower = stats.battlePower;
+	        this.initialdefense = stats.defense;
+	        this.initialmagicDefense = stats.magicDefense;
+	        this.initialxp = stats.xp;
+	
+	        // this.srcImg = graphicsData.srcImg;
+	        // this.srcJson = graphicsData.srcJson;
+	        // this.sourceLabel = graphicsData.sourceLabel;
+	        // this.frames = graphicsData.frames;
+	
+	
+	        this.level = stats.level;
+	        this.hpMax = stats.hp;
+	        this.speed = stats.speed;
+	        this.magicPower = stats.magicPower;
+	        this.battlePower = stats.battlePower;
+	        this.defense = stats.defense;
+	        this.magicDefense = stats.magicDefense;
+	        this.stamina = stats.stamina;
+	        this.critialChance = 0.0;
+	        this.speedStatus = 'normal';
+	
+	        if (this.fire && this.fire.type) {
+	            this.attackType = this.fire.type;
+	        } else {
+	            this.attackType = 'physical';
+	            if (stats.magicPower > stats.battlePower) {
+	                this.attackType = 'magical';
+	            }
+	        }
+	        if (stats.xp > 0) {
+	            this.xp = stats.xp;
+	        } else {
+	            this.xp = 100;
+	        }
+	
+	        this.spellPower = 9; //speel do bolt
+	
+	
+	        this.speedModifier = 0.005;
+	        this.magicPowerModifier = 0.004;
+	        this.battlePowerModifier = 0.005;
+	        this.defenseModifier = 0.004;
+	        this.magicDefenseModifier = 0.004;
+	        this.baseHPModifier = 1.62;
+	        this.staminaModifier = 0.008;
+	
+	        this.updateLevel(stats.level);
+	
+	        // this.updateLevel(level);
+	    }
+	
+	    _createClass(EnemyModel, [{
+	        key: 'log',
+	        value: function log() {
+	            console.log();
+	            console.log('stats');
+	            console.log('class,', this.name);
+	            console.log('level,', Math.floor(this.level));
+	            console.log('hp,', Math.floor(this.hpMax));
+	            // console.log('vigor,',Math.floor(this.vigor));
+	            console.log('speed,', Math.floor(this.speed));
+	            console.log('stamina,', Math.floor(this.stamina));
+	            console.log('magicPower,', Math.floor(this.magicPower));
+	            console.log('battlePower,', Math.floor(this.battlePower));
+	            console.log('defense,', Math.floor(this.defense));
+	            console.log('attack,', Math.floor(this.attack));
+	            console.log('magicDefense,', Math.floor(this.magicDefense));
+	            console.log('velocity,', Math.floor(this.velocity));
+	            console.log('fireFreq,', Math.floor(this.fireFreq));
+	            console.log('demagePhysical,', Math.floor(this.getDemage('physical')));
+	            console.log('demageMagical,', Math.floor(this.getDemage('magical')));
+	        }
+	    }, {
+	        key: 'getNormalizedAtt',
+	        value: function getNormalizedAtt() {
+	            return {
+	                speed: Math.floor(this.speed) / 255,
+	                stamina: Math.floor(this.stamina) / 255,
+	                magicPower: Math.floor(this.magicPower) / 255,
+	                battlePower: Math.floor(this.battlePower) / 255,
+	                defense: Math.floor(this.defense) / 255,
+	                attack: Math.floor(this.attack) / 255,
+	                magicDefense: Math.floor(this.magicDefense) / 255,
+	                velocity: Math.floor(this.velocity) / 255,
+	                fireFreq: Math.floor(this.fireFreq) / 255
+	            };
+	        }
+	    }, {
+	        key: 'clone',
+	        value: function clone() {
+	            return new MonsterModel(this.name, this.stats, this.fire, this.graphicsData, this.config);
+	        }
+	    }, {
+	        key: 'updateLevel',
+	        value: function updateLevel(level) {
+	            // console.log('updateLevel', level);
+	            this.level = level;
+	            this.speed += level * ((this.speed * this.speed + this.speed + 3) / 4 * this.speedModifier);
+	            this.magicPower += level * ((this.magicPower * this.magicPower + this.magicPower + 3) / 4 * this.magicPowerModifier);
+	            this.battlePower += level * ((this.battlePower * this.battlePower + this.battlePower + 3) / 4 * this.battlePowerModifier);
+	            this.defense += level * ((this.defense * this.defense + this.defense + 3) / 4 * this.defenseModifier);
+	            this.magicDefense += level * ((this.magicDefense * this.magicDefense + this.magicDefense + 3) / 4 * this.magicDefenseModifier);
+	            this.stamina += (this.stamina * this.stamina + this.stamina + 3) / 4 * this.staminaModifier;
+	
+	            this.attack = this.battlePower;
+	
+	            if (this.speed > 255) {
+	                this.speed = 255;
+	            }
+	            if (this.stamina > 255) {
+	                this.stamina = 255;
+	            }
+	            if (this.magicPower > 255) {
+	                this.magicPower = 255;
+	            }
+	            if (this.battlePower > 255) {
+	                this.battlePower = 255;
+	            }
+	            if (this.defense > 255) {
+	                this.defense = 255;
+	            }
+	            if (this.attack > 255) {
+	                this.attack = 255;
+	            }
+	            if (this.magicDefense > 255) {
+	                this.magicDefense = 255;
+	            }
+	
+	            this.baseHP = level * (20 / this.baseHPModifier);
+	
+	            this.hpMax += this.baseHP * (this.stamina + 32) / 32 * (level / 2);
+	            this.hp = this.hpMax;
+	            this.velocity = 8 - (255 - this.speed) / 25 + 5;
+	
+	            this.fireFreq = (255 - this.speed) / (this.speed * 0.4) * (1.8 + this.speedModifier * 1000);
+	
+	            if (this.fireFreq <= 4) {
+	                this.fireFreq = 4;
+	            }
+	            if (this.fireFreq >= 150) {
+	                this.fireFreq = 150;
+	            }
+	
+	            if (this.velocity >= 10) {
+	                this.velocity = 10;
+	            }
+	            if (this.velocity <= 3) {
+	                this.velocity = 3;
+	            }
+	
+	            var curveAcentValue = 0.15;
+	            this.xp += Math.floor((level * (level / 3) + level + 3) / 5 * this.xp * (level * curveAcentValue));
+	
+	            // this.fireFreq = ((255 - this.speed) / (this.speed * 0.4)) * (1.1 + (this.speedModifier*1000));
+	            // if(this.fireFreq <= 4)
+	            // {
+	            //     this.fireFreq = 4;
+	            // }
+	            // if(this.fireFreq >= 25)
+	            // {
+	            //     this.fireFreq = 25;
+	            // }
+	            // if(this.velocity >= 9)
+	            // {
+	            //     this.velocity = 9;
+	            // }
+	            // if(this.velocity <= 2)
+	            // {
+	            //     this.velocity = 2;
+	            // }
+	
+	            // console.log('enemy HP', this.hp, this.defenseModifier, level, this.xp, this.name);
+	
+	            // var calcXP = (level*level+level+3)/4* 20 * level;
+	            // console.log(calcXP, 'level', level);
+	            // console.log('xp',this.xp,  Math.floor(calcXP / this.xp));
+	            // console.log('demages',this.getDemage('magical'),this.getDemage('physical'));
+	        }
+	    }, {
+	        key: 'getDemage',
+	        value: function getDemage() {
+	            var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'physical';
+	
+	            var damageMultiplier = 0; //Math.random() < this.critialChance ? 0.5 : 2;
+	            var demage = 0;
+	            if (type === 'physical') {
+	                //mudar essa segunda divisao pra alterar significativamente o dano
+	                demage = this.battlePower * (this.level / 5) + this.level * (this.attack * (this.level / 20)) * 15 / 256 * 3 / 2;
+	            } else if (type === 'magical') {
+	                demage = this.spellPower * this.level + this.level * (this.magicPower * 3 / 2) * this.spellPower / 32;
+	            }
+	            demage = demage + demage / 2 * damageMultiplier;
+	            // console.log(type, demage);
+	            return demage;
+	        }
+	    }, {
+	        key: 'getHurt',
+	        value: function getHurt(demage) {
+	            var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'physical';
+	
+	            if (type === 'physical') {
+	                demage = demage * (255 - this.defense) / 256 + 1;
+	            } else if (type === 'magical') {
+	                demage = demage * (255 - this.magicDefense) / 256 + 1;
+	            }
+	
+	            return demage;
+	        }
+	    }, {
+	        key: 'getSpeed',
+	        value: function getSpeed() {
+	            var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'normal';
+	
+	            var currentSpeed;
+	            if (type === 'normal') {
+	                currentSpeed = 96 * (this.speed + 20) / 16; //normal
+	            } else if (type === 'haste') {
+	                currentSpeed = 126 * (this.speed + 20) / 16; //haste
+	            } else if (type === 'slow') {
+	                currentSpeed = 48 * (this.speed + 20) / 16; //slow
+	            }
+	            return currentSpeed;
+	        }
+	    }]);
+	
+	    return EnemyModel;
+	}();
+	
+	exports.default = EnemyModel;
+
+/***/ },
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39517,7 +40256,7 @@
 	exports.default = Entity;
 
 /***/ },
-/* 150 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -39540,11 +40279,11 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(151);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
-	var _EnemyModel = __webpack_require__(165);
+	var _EnemyModel = __webpack_require__(150);
 	
 	var _EnemyModel2 = _interopRequireDefault(_EnemyModel);
 	
@@ -40111,7 +40850,7 @@
 	exports.default = StandardEnemy;
 
 /***/ },
-/* 151 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40136,11 +40875,11 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _EnemyModel = __webpack_require__(165);
+	var _EnemyModel = __webpack_require__(150);
 	
 	var _EnemyModel2 = _interopRequireDefault(_EnemyModel);
 	
-	var _StandardEnemy2 = __webpack_require__(150);
+	var _StandardEnemy2 = __webpack_require__(152);
 	
 	var _StandardEnemy3 = _interopRequireDefault(_StandardEnemy2);
 	
@@ -40462,7 +41201,7 @@
 	exports.default = NestEntity;
 
 /***/ },
-/* 152 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40485,11 +41224,11 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _EnemyModel = __webpack_require__(165);
+	var _EnemyModel = __webpack_require__(150);
 	
 	var _EnemyModel2 = _interopRequireDefault(_EnemyModel);
 	
-	var _StandardEnemy2 = __webpack_require__(150);
+	var _StandardEnemy2 = __webpack_require__(152);
 	
 	var _StandardEnemy3 = _interopRequireDefault(_StandardEnemy2);
 	
@@ -40741,7 +41480,7 @@
 	exports.default = Tanker;
 
 /***/ },
-/* 153 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40764,7 +41503,7 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(151);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -40949,7 +41688,7 @@
 	exports.default = StandardBullet;
 
 /***/ },
-/* 154 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40972,11 +41711,11 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity = __webpack_require__(149);
+	var _Entity = __webpack_require__(151);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _StandardBullet2 = __webpack_require__(153);
+	var _StandardBullet2 = __webpack_require__(155);
 	
 	var _StandardBullet3 = _interopRequireDefault(_StandardBullet2);
 	
@@ -41092,7 +41831,7 @@
 	exports.default = TowerBullet;
 
 /***/ },
-/* 155 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41117,11 +41856,11 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity = __webpack_require__(149);
+	var _Entity = __webpack_require__(151);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _StandardEnvironmentEntity = __webpack_require__(156);
+	var _StandardEnvironmentEntity = __webpack_require__(158);
 	
 	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
 	
@@ -41195,7 +41934,7 @@
 	exports.default = Rock;
 
 /***/ },
-/* 156 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41218,7 +41957,7 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(151);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -41339,7 +42078,7 @@
 	exports.default = StandardEnvironmentEntity;
 
 /***/ },
-/* 157 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41364,11 +42103,11 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity = __webpack_require__(149);
+	var _Entity = __webpack_require__(151);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _StandardEnvironmentEntity = __webpack_require__(156);
+	var _StandardEnvironmentEntity = __webpack_require__(158);
 	
 	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
 	
@@ -41444,7 +42183,7 @@
 	exports.default = Pine;
 
 /***/ },
-/* 158 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41469,11 +42208,11 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity = __webpack_require__(149);
+	var _Entity = __webpack_require__(151);
 	
 	var _Entity2 = _interopRequireDefault(_Entity);
 	
-	var _StandardEnvironmentEntity = __webpack_require__(156);
+	var _StandardEnvironmentEntity = __webpack_require__(158);
 	
 	var _StandardEnvironmentEntity2 = _interopRequireDefault(_StandardEnvironmentEntity);
 	
@@ -41547,7 +42286,7 @@
 	exports.default = Bush;
 
 /***/ },
-/* 159 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41572,7 +42311,7 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(151);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -41728,7 +42467,7 @@
 	        key: 'build',
 	        value: function build() {
 	            this.finalBase = false;
-	            if (this.name.indexOf('AA') !== -1) {
+	            if (this.name.indexOf('Base') !== -1) {
 	                this.finalBase = true;
 	            }
 	            // console.log(this.name, this.finalBase);
@@ -41848,7 +42587,7 @@
 	exports.default = Tower;
 
 /***/ },
-/* 160 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41873,7 +42612,7 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(151);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -42149,7 +42888,7 @@
 	exports.default = Nest;
 
 /***/ },
-/* 161 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42174,7 +42913,7 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(151);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -42257,7 +42996,7 @@
 	                _this.currentEntities = [];
 	
 	                _this.currentEntity = 0;
-	                _this.waves = [['standard', 'standard', 'standard', 'standard', 'standard'], ['tanker', 'tanker', 'tanker']];
+	                _this.waves = [[30, 'standard', 'standard', 'standard', 'standard'], [45, 'tanker', 'tanker', 'standard']];
 	
 	                return _this;
 	        }
@@ -42277,7 +43016,7 @@
 	        }, {
 	                key: 'startSpawn',
 	                value: function startSpawn() {
-	                        this.currentWave = 0;
+	                        this.currentWave = 1;
 	                        this.currentEntity = 0;
 	                        this.totalWaves++;
 	                        this.currentWave2++;
@@ -42295,7 +43034,10 @@
 	                        }
 	
 	                        if (this.currentWave >= this.waves[this.currentWave2].length) {
-	                                this.actionTimer = this.spawnTime;
+	                                this.actionTimer = this.waves[this.currentWave2][0];
+	
+	                                console.log('next Wave in', this.actionTimer);
+	                                // this.actionTimer = this.spawnTime;
 	                                this.action = this.startSpawn;
 	                                return;
 	                        }
@@ -42308,7 +43050,8 @@
 	                        this.actionTimer = this.spawDistance;
 	                        this.action = this.addEntity;
 	
-	                        if (this.team == 1) ent.enemyModel.updateLevel(10);
+	                        //if(this.team == 1)
+	                        //ent.enemyModel.updateLevel(10);
 	
 	                        this.currentEntities.push(ent);
 	                        this.currentWave++;
@@ -42418,7 +43161,7 @@
 	exports.default = Spawner;
 
 /***/ },
-/* 162 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42441,7 +43184,7 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(151);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -42551,7 +43294,7 @@
 	exports.default = UITower;
 
 /***/ },
-/* 163 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -42574,7 +43317,7 @@
 	
 	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
 	
-	var _Entity2 = __webpack_require__(149);
+	var _Entity2 = __webpack_require__(151);
 	
 	var _Entity3 = _interopRequireDefault(_Entity2);
 	
@@ -42746,625 +43489,6 @@
 	}(_Entity3.default);
 	
 	exports.default = UISpawner;
-
-/***/ },
-/* 164 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var EntityModel = function () {
-	    function EntityModel(name, label, stats, modifiers, graphicsData, config) {
-	        _classCallCheck(this, EntityModel);
-	
-	        this.level = 1;
-	        this.name = name;
-	        this.label = label;
-	        this.stats = stats;
-	        this.modifiers = modifiers;
-	        this.graphicsData = graphicsData;
-	        this.config = config;
-	
-	        if (!name) {
-	            this.playerClass = 'warrior';
-	        } else {
-	            this.playerClass = name;
-	        }
-	
-	        this.vigor = this.stats.vigor;
-	        this.speed = this.stats.speed;
-	        this.stamina = this.stats.stamina;
-	        this.magicPower = this.stats.magicPower;
-	        this.battlePower = this.stats.battlePower;
-	        this.defense = this.stats.defense;
-	        this.magicDefense = this.stats.magicDefense;
-	
-	        //modifiers
-	        this.baseHPModifier = this.modifiers.baseHPModifier;
-	        this.baseMPModifier = this.modifiers.baseMPModifier;
-	        this.vigorModifier = this.modifiers.vigorModifier;
-	        this.speedModifier = this.modifiers.speedModifier;
-	        this.staminaModifier = this.modifiers.staminaModifier;
-	        this.magicPowerModifier = this.modifiers.magicPowerModifier;
-	        this.battlePowerModifier = this.modifiers.battlePowerModifier;
-	        this.defenseModifier = this.modifiers.defenseModifier;
-	        this.magicDefenseModifier = this.modifiers.magicDefenseModifier;
-	
-	        this.hpMin = this.stats.hpMin;
-	
-	        this.baseHP = this.level * (20 / this.baseHPModifier);
-	
-	        this.spellPower = 20; //speel do bolt
-	        this.weaponPower = 30; //mithirl knife
-	        this.defenseArmor = 0; //no armor
-	        this.magicDefenseArmor = 0; //no armor
-	        this.hpMax = this.hpMin + this.baseHP * (this.stamina + 32) / 32;
-	        this.hp = this.hpMax;
-	
-	        this.baseMP = this.level * (20 / this.baseMPModifier);
-	        this.mpMax = this.baseMP * (this.magicPower + 32) / 32;
-	        this.mp = this.mpMax;
-	
-	        // console.log(this.baseMP, this.mpMax);
-	        this.critialChance = 0.0;
-	        this.speedStatus = 'normal';
-	        this.vigor2 = this.vigor * 2;
-	        if (this.vigor >= 128) {
-	            this.vigor2 = 255;
-	        }
-	        this.attack = this.battlePower + this.vigor2;
-	        this.xp = 0;
-	
-	        // this.velocity = 6 - (255 - this.speed) / 25 + 5;
-	        this.updateVelocity();
-	
-	        this.fireFreq = (255 - this.speed) / (this.speed * 0.4) * 1.3;
-	
-	        this.entity = null;
-	
-	        this.csvStr = 'level,hp,mp,vigor,speed,stamina,magicPower,battlePower,defense,attack,magicDefense,velocity,fireFreq,demagePhysical,demageMagical\n';
-	        this.csvStr += this.level + ',' + Math.floor(this.hpMax) + ',' + Math.floor(this.mpMax) + ',' + Math.floor(this.vigor) + ',' + Math.floor(this.speed) + ',' + Math.floor(this.stamina) + ',' + Math.floor(this.magicPower) + ',' + Math.floor(this.battlePower) + ',' + Math.floor(this.defense) + ',' + Math.floor(this.attack) + ',' + Math.floor(this.magicDefense) + ',' + Math.floor(this.velocity) + ',' + Math.floor(this.fireFreq) + ',' + Math.floor(this.getDemage('physical')) + ',' + Math.floor(this.getDemage('magical')) + '\n';
-	
-	        // console.log('PlayerModel', this);
-	
-	        // this.levelUp(this.level);
-	
-	        var nextl = this.level;
-	        var befl = this.level - 1;
-	        this.toNextLevel = (nextl * nextl + nextl + 3) / 4 * 20 * nextl;
-	        this.toBeforeLevel = (befl * befl + befl + 3) / 4 * 20 * befl;
-	    }
-	
-	    _createClass(EntityModel, [{
-	        key: 'updateVelocity',
-	        value: function updateVelocity() {
-	            this.velocity = 8 - (255 - this.speed) / 35 + 2;
-	            this.velocity /= 2;
-	        }
-	    }, {
-	        key: 'getNormalizedAtt',
-	        value: function getNormalizedAtt() {
-	            return {
-	                speed: Math.floor(this.speed) / 255,
-	                stamina: Math.floor(this.stamina) / 255,
-	                vigor: Math.floor(this.vigor) / 255,
-	                magicPower: Math.floor(this.magicPower) / 255,
-	                battlePower: Math.floor(this.battlePower) / 255,
-	                defense: Math.floor(this.defense) / 255,
-	                attack: Math.floor(this.attack) / 255,
-	                magicDefense: Math.floor(this.magicDefense) / 255,
-	                velocity: Math.floor(this.velocity) / 255,
-	                fireFreq: Math.floor(this.fireFreq) / 255
-	            };
-	        }
-	    }, {
-	        key: 'log',
-	        value: function log() {
-	            console.log();
-	            console.log('stats');
-	            console.log('class,', this.playerClass);
-	            console.log('level,', Math.floor(this.level));
-	            console.log('hp,', Math.floor(this.hpMax));
-	            console.log('mp,', Math.floor(this.mpMax));
-	            console.log('vigor,', Math.floor(this.vigor));
-	            console.log('speed,', Math.floor(this.speed));
-	            console.log('stamina,', Math.floor(this.stamina));
-	            console.log('magicPower,', Math.floor(this.magicPower));
-	            console.log('battlePower,', Math.floor(this.battlePower));
-	            console.log('defense,', Math.floor(this.defense));
-	            console.log('attack,', Math.floor(this.attack));
-	            console.log('magicDefense,', Math.floor(this.magicDefense));
-	            console.log('velocity,', Math.floor(this.velocity));
-	            console.log('fireFreq,', Math.floor(this.fireFreq));
-	            console.log('demagePhysical,', Math.floor(this.getDemage('physical')));
-	            console.log('demageMagical,', Math.floor(this.getDemage('magical')));
-	        }
-	    }, {
-	        key: 'clone',
-	        value: function clone() {
-	            return new PlayerModel(this.name, this.label, this.stats, this.modifiers, this.graphicsData, this.config);
-	        }
-	    }, {
-	        key: 'logCSV',
-	        value: function logCSV() {
-	            console.log(this.csvStr);
-	        }
-	    }, {
-	        key: 'levelUp',
-	        value: function levelUp() {
-	            this.level++;
-	
-	            var nextl = this.level;
-	            var befl = this.level - 1;
-	            this.toNextLevel = (nextl * nextl + nextl + 3) / 4 * 20 * nextl;
-	            this.toBeforeLevel = (befl * befl + befl + 3) / 4 * 20 * befl;
-	
-	            this.vigor += (this.vigor * this.vigor + this.vigor + 3) / 4 * this.vigorModifier;
-	            this.speed += (this.speed * this.speed + this.speed + 3) / 4 * this.speedModifier;
-	            this.stamina += (this.stamina * this.stamina + this.stamina + 3) / 4 * this.staminaModifier;
-	            this.magicPower += (this.magicPower * this.magicPower + this.magicPower + 3) / 4 * this.magicPowerModifier;
-	            this.battlePower += (this.battlePower * this.battlePower + this.battlePower + 3) / 4 * this.battlePowerModifier;
-	            this.defense += (this.defense * this.defense + this.defense + 3) / 4 * this.defenseModifier;
-	            // this.attack += (this.attack*this.attack+this.attack+3)/4*this.attackModifier;
-	            this.magicDefense += (this.magicDefense * this.magicDefense + this.magicDefense + 3) / 4 * this.magicDefenseModifier;
-	
-	            this.vigorModifier -= 0.0005;
-	            this.speedModifier -= 0.0005;
-	            this.staminaModifier -= 0.0005;
-	            this.magicPowerModifier -= 0.0005;
-	            this.battlePowerModifier -= 0.0005;
-	            this.defenseModifier -= 0.0005;
-	            this.magicDefenseModifier -= 0.0005;
-	
-	            if (this.vigorModifier <= 0.001) {
-	                this.vigorModifier = 0.001;
-	            }
-	            if (this.speedModifier <= 0.001) {
-	                this.speedModifier = 0.001;
-	            }
-	            if (this.staminaModifier <= 0.001) {
-	                this.staminaModifier = 0.001;
-	            }
-	            if (this.magicPowerModifier <= 0.001) {
-	                this.magicPowerModifier = 0.001;
-	            }
-	            if (this.battlePowerModifier <= 0.001) {
-	                this.battlePowerModifier = 0.001;
-	            }
-	            if (this.defenseModifier <= 0.001) {
-	                this.defenseModifier = 0.001;
-	            }
-	            if (this.magicDefenseModifier <= 0.001) {
-	                this.magicDefenseModifier = 0.001;
-	            }
-	
-	            this.vigor2 = this.vigor * 2;
-	            if (this.vigor >= 128) {
-	                this.vigor2 = 255;
-	            }
-	            this.attack = this.battlePower + this.vigor2;
-	
-	            if (this.vigor > 255) {
-	                this.vigor = 255;
-	            }
-	            if (this.speed > 255) {
-	                this.speed = 255;
-	            }
-	            if (this.stamina > 255) {
-	                this.stamina = 255;
-	            }
-	            if (this.magicPower > 255) {
-	                this.magicPower = 255;
-	            }
-	            if (this.battlePower > 255) {
-	                this.battlePower = 255;
-	            }
-	            if (this.defense > 255) {
-	                this.defense = 255;
-	            }
-	            if (this.attack > 255) {
-	                this.attack = 255;
-	            }
-	            if (this.magicDefense > 255) {
-	                this.magicDefense = 255;
-	            }
-	
-	            // this.baseMP = this.level* (20 / this.baseMPModifier);
-	            //      this.mpMax = (this.baseMP*(this.magicPower-32))/32;
-	
-	            this.baseHPModifier -= 0.0085;
-	            this.baseMPModifier += 0.02;
-	            this.baseHP = this.level * (20 / this.baseHPModifier);
-	            this.baseMP = this.level * (20 / this.baseMPModifier);
-	
-	            this.hpMax += this.baseHP * (this.stamina + 32) / 32;
-	            this.hp = this.hpMax;
-	
-	            this.mpMax += this.baseMP * (this.magicPower + 32) / 32;
-	            this.mp = this.mpMax;
-	
-	            // this.velocity = 8 - (255 - this.speed) / 35  + 2;// + 5;
-	            // this.velocity /= 3;
-	            this.updateVelocity();
-	            this.fireFreq = (255 - this.speed) / (this.speed * 0.4) * (1.1 + this.speedModifier * 1000);
-	            if (this.fireFreq <= 4) {
-	                this.fireFreq = 4;
-	            }
-	            if (this.fireFreq >= 25) {
-	                this.fireFreq = 25;
-	            }
-	            if (this.velocity >= 9) {
-	                this.velocity = 9;
-	            }
-	            if (this.velocity <= 2) {
-	                this.velocity = 2;
-	            }
-	
-	            // console.log(this.level,'<- levelUp, xp ->',this.xp);
-	
-	
-	            this.csvStr += this.level + ',' + Math.floor(this.hpMax) + ',' + Math.floor(this.mpMax) + ',' + Math.floor(this.vigor) + ',' + Math.floor(this.speed) + ',' + Math.floor(this.stamina) + ',' + Math.floor(this.magicPower) + ',' + Math.floor(this.battlePower) + ',' + Math.floor(this.defense) + ',' + Math.floor(this.attack) + ',' + Math.floor(this.magicDefense) + ',' + Math.floor(this.velocity) + ',' + Math.floor(this.fireFreq) + ',' + Math.floor(this.getDemage('physical')) + ',' + Math.floor(this.getDemage('magical')) + '\n';
-	
-	            if (this.entity) {
-	                this.entity.levelUp();
-	            }
-	        }
-	    }, {
-	        key: 'updateLevel',
-	        value: function updateLevel() {
-	            // console.log((this.level*this.level+this.level+3)/4, 'compare');
-	            for (var i = this.level; i <= 99; i++) {
-	                var calcXP = (i * i + i + 3) / 4 * 20 * i;
-	                // console.log(this.xp, calcXP, 'level', i);
-	
-	                if (this.xp > calcXP) {
-	                    this.levelUp();
-	                } else {
-	                    break;
-	                }
-	            }
-	        }
-	    }, {
-	        key: 'resetPoints',
-	        value: function resetPoints() {
-	            this.hp = this.hpMax;
-	            this.mp = this.mpMax;
-	        }
-	    }, {
-	        key: 'updateXp',
-	        value: function updateXp(xp) {
-	            // console.log('xp', xp);
-	            this.xp += xp;
-	            this.updateLevel();
-	            if (this.entity) {
-	                this.entity.updateXP(xp);
-	            }
-	        }
-	    }, {
-	        key: 'getDemage',
-	        value: function getDemage() {
-	            var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'physical';
-	
-	            var damageMultiplierCritical = Math.random() < this.critialChance ? 0.5 : 2;
-	            var damageMultiplier = Math.random() / 2 + 1;
-	            var demage = 0;
-	            if (type === 'physical') {
-	                demage = this.battlePower * this.level + this.level * this.attack * this.weaponPower / 256 * 3 / 2;
-	                // demage = this.battlePower + ((this.level * this.level * this.attack * this.weaponPower) / 256) * 3 / 2;
-	            } else if (type === 'magical') {
-	                demage = this.spellPower * 4 + this.level * this.magicPower * this.spellPower / 32;
-	            } else if (type === 'range') {
-	                demage = this.speed * 0.25 * this.level + this.level * this.attack * this.weaponPower / 256 * 0.1;
-	            }
-	            //o demage comentado abaixo funciona muito bem em um rpg de turno
-	            //demage = damageMultiplier * demage + ((demage / 2) * damageMultiplierCritical);
-	
-	            //por enquanto está retornando 30% do dano padrão pelos algoritimos do final fantasy 6 -> http://www.rpglegion.com/ff6/ff6alg.txt
-	            demage = (damageMultiplier * demage + demage / 2 * damageMultiplierCritical) * 0.3;
-	            return demage;
-	        }
-	    }, {
-	        key: 'getHurt',
-	        value: function getHurt(demage) {
-	            var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'physical';
-	
-	            if (type === 'physical') {
-	                demage = demage * (255 - this.defense - this.defenseArmor + (3 - Math.random() * 10)) / 256 + 1;
-	            } else if (type === 'magical') {
-	                demage = demage * (255 - this.magicDefense - this.magicDefenseArmor + (3 - Math.random() * 10)) / 256 + 1;
-	            }
-	
-	            return demage;
-	        }
-	    }, {
-	        key: 'getSpeed',
-	        value: function getSpeed() {
-	            var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'normal';
-	
-	            var currentSpeed;
-	            if (type === 'normal') {
-	                currentSpeed = 96 * (this.speed + 20) / 16; //normal
-	            } else if (type === 'haste') {
-	                currentSpeed = 126 * (this.speed + 20) / 16; //haste
-	            } else if (type === 'slow') {
-	                currentSpeed = 48 * (this.speed + 20) / 16; //slow
-	            }
-	            return currentSpeed;
-	        }
-	    }]);
-	
-	    return EntityModel;
-	}();
-	
-	exports.default = EntityModel;
-
-/***/ },
-/* 165 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var EnemyModel = function () {
-	    function EnemyModel(name, stats, fire, graphicsData, config) {
-	        _classCallCheck(this, EnemyModel);
-	
-	        // console.log('name,level,hp,stamina,speed,magicPower,battlePower,defense,magicDefense, xp\n', name,stats);
-	        this.name = name;
-	        this.stats = stats;
-	        this.fire = fire;
-	        this.graphicsData = graphicsData;
-	        this.config = config;
-	        this.initiallevel = stats.level;
-	        this.initialhp = stats.hp;
-	        this.initialstamina = stats.stamina;
-	        this.initialspeed = stats.speed;
-	        this.initialmagicPower = stats.magicPower;
-	        this.initialbattlePower = stats.battlePower;
-	        this.initialdefense = stats.defense;
-	        this.initialmagicDefense = stats.magicDefense;
-	        this.initialxp = stats.xp;
-	
-	        // this.srcImg = graphicsData.srcImg;
-	        // this.srcJson = graphicsData.srcJson;
-	        // this.sourceLabel = graphicsData.sourceLabel;
-	        // this.frames = graphicsData.frames;
-	
-	
-	        this.level = stats.level;
-	        this.hpMax = stats.hp;
-	        this.speed = stats.speed;
-	        this.magicPower = stats.magicPower;
-	        this.battlePower = stats.battlePower;
-	        this.defense = stats.defense;
-	        this.magicDefense = stats.magicDefense;
-	        this.stamina = stats.stamina;
-	        this.critialChance = 0.0;
-	        this.speedStatus = 'normal';
-	
-	        if (this.fire && this.fire.type) {
-	            this.attackType = this.fire.type;
-	        } else {
-	            this.attackType = 'physical';
-	            if (stats.magicPower > stats.battlePower) {
-	                this.attackType = 'magical';
-	            }
-	        }
-	        if (stats.xp > 0) {
-	            this.xp = stats.xp;
-	        } else {
-	            this.xp = 100;
-	        }
-	
-	        this.spellPower = 9; //speel do bolt
-	
-	
-	        this.speedModifier = 0.005;
-	        this.magicPowerModifier = 0.004;
-	        this.battlePowerModifier = 0.005;
-	        this.defenseModifier = 0.004;
-	        this.magicDefenseModifier = 0.004;
-	        this.baseHPModifier = 1.62;
-	        this.staminaModifier = 0.008;
-	
-	        this.updateLevel(stats.level);
-	
-	        // this.updateLevel(level);
-	    }
-	
-	    _createClass(EnemyModel, [{
-	        key: 'log',
-	        value: function log() {
-	            console.log();
-	            console.log('stats');
-	            console.log('class,', this.name);
-	            console.log('level,', Math.floor(this.level));
-	            console.log('hp,', Math.floor(this.hpMax));
-	            // console.log('vigor,',Math.floor(this.vigor));
-	            console.log('speed,', Math.floor(this.speed));
-	            console.log('stamina,', Math.floor(this.stamina));
-	            console.log('magicPower,', Math.floor(this.magicPower));
-	            console.log('battlePower,', Math.floor(this.battlePower));
-	            console.log('defense,', Math.floor(this.defense));
-	            console.log('attack,', Math.floor(this.attack));
-	            console.log('magicDefense,', Math.floor(this.magicDefense));
-	            console.log('velocity,', Math.floor(this.velocity));
-	            console.log('fireFreq,', Math.floor(this.fireFreq));
-	            console.log('demagePhysical,', Math.floor(this.getDemage('physical')));
-	            console.log('demageMagical,', Math.floor(this.getDemage('magical')));
-	        }
-	    }, {
-	        key: 'getNormalizedAtt',
-	        value: function getNormalizedAtt() {
-	            return {
-	                speed: Math.floor(this.speed) / 255,
-	                stamina: Math.floor(this.stamina) / 255,
-	                magicPower: Math.floor(this.magicPower) / 255,
-	                battlePower: Math.floor(this.battlePower) / 255,
-	                defense: Math.floor(this.defense) / 255,
-	                attack: Math.floor(this.attack) / 255,
-	                magicDefense: Math.floor(this.magicDefense) / 255,
-	                velocity: Math.floor(this.velocity) / 255,
-	                fireFreq: Math.floor(this.fireFreq) / 255
-	            };
-	        }
-	    }, {
-	        key: 'clone',
-	        value: function clone() {
-	            return new MonsterModel(this.name, this.stats, this.fire, this.graphicsData, this.config);
-	        }
-	    }, {
-	        key: 'updateLevel',
-	        value: function updateLevel(level) {
-	            // console.log('updateLevel', level);
-	            this.level = level;
-	            this.speed += level * ((this.speed * this.speed + this.speed + 3) / 4 * this.speedModifier);
-	            this.magicPower += level * ((this.magicPower * this.magicPower + this.magicPower + 3) / 4 * this.magicPowerModifier);
-	            this.battlePower += level * ((this.battlePower * this.battlePower + this.battlePower + 3) / 4 * this.battlePowerModifier);
-	            this.defense += level * ((this.defense * this.defense + this.defense + 3) / 4 * this.defenseModifier);
-	            this.magicDefense += level * ((this.magicDefense * this.magicDefense + this.magicDefense + 3) / 4 * this.magicDefenseModifier);
-	            this.stamina += (this.stamina * this.stamina + this.stamina + 3) / 4 * this.staminaModifier;
-	
-	            this.attack = this.battlePower;
-	
-	            if (this.speed > 255) {
-	                this.speed = 255;
-	            }
-	            if (this.stamina > 255) {
-	                this.stamina = 255;
-	            }
-	            if (this.magicPower > 255) {
-	                this.magicPower = 255;
-	            }
-	            if (this.battlePower > 255) {
-	                this.battlePower = 255;
-	            }
-	            if (this.defense > 255) {
-	                this.defense = 255;
-	            }
-	            if (this.attack > 255) {
-	                this.attack = 255;
-	            }
-	            if (this.magicDefense > 255) {
-	                this.magicDefense = 255;
-	            }
-	
-	            this.baseHP = level * (20 / this.baseHPModifier);
-	
-	            this.hpMax += this.baseHP * (this.stamina + 32) / 32 * (level / 2);
-	            this.hp = this.hpMax;
-	            this.velocity = 8 - (255 - this.speed) / 25 + 5;
-	
-	            this.fireFreq = (255 - this.speed) / (this.speed * 0.4) * (1.8 + this.speedModifier * 1000);
-	
-	            if (this.fireFreq <= 4) {
-	                this.fireFreq = 4;
-	            }
-	            if (this.fireFreq >= 150) {
-	                this.fireFreq = 150;
-	            }
-	
-	            if (this.velocity >= 10) {
-	                this.velocity = 10;
-	            }
-	            if (this.velocity <= 3) {
-	                this.velocity = 3;
-	            }
-	
-	            var curveAcentValue = 0.15;
-	            this.xp += Math.floor((level * (level / 3) + level + 3) / 5 * this.xp * (level * curveAcentValue));
-	
-	            // this.fireFreq = ((255 - this.speed) / (this.speed * 0.4)) * (1.1 + (this.speedModifier*1000));
-	            // if(this.fireFreq <= 4)
-	            // {
-	            //     this.fireFreq = 4;
-	            // }
-	            // if(this.fireFreq >= 25)
-	            // {
-	            //     this.fireFreq = 25;
-	            // }
-	            // if(this.velocity >= 9)
-	            // {
-	            //     this.velocity = 9;
-	            // }
-	            // if(this.velocity <= 2)
-	            // {
-	            //     this.velocity = 2;
-	            // }
-	
-	            // console.log('enemy HP', this.hp, this.defenseModifier, level, this.xp, this.name);
-	
-	            // var calcXP = (level*level+level+3)/4* 20 * level;
-	            // console.log(calcXP, 'level', level);
-	            // console.log('xp',this.xp,  Math.floor(calcXP / this.xp));
-	            // console.log('demages',this.getDemage('magical'),this.getDemage('physical'));
-	        }
-	    }, {
-	        key: 'getDemage',
-	        value: function getDemage() {
-	            var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'physical';
-	
-	            var damageMultiplier = 0; //Math.random() < this.critialChance ? 0.5 : 2;
-	            var demage = 0;
-	            if (type === 'physical') {
-	                //mudar essa segunda divisao pra alterar significativamente o dano
-	                demage = this.battlePower * (this.level / 5) + this.level * (this.attack * (this.level / 20)) * 15 / 256 * 3 / 2;
-	            } else if (type === 'magical') {
-	                demage = this.spellPower * this.level + this.level * (this.magicPower * 3 / 2) * this.spellPower / 32;
-	            }
-	            demage = demage + demage / 2 * damageMultiplier;
-	            // console.log(type, demage);
-	            return demage;
-	        }
-	    }, {
-	        key: 'getHurt',
-	        value: function getHurt(demage) {
-	            var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'physical';
-	
-	            if (type === 'physical') {
-	                demage = demage * (255 - this.defense) / 256 + 1;
-	            } else if (type === 'magical') {
-	                demage = demage * (255 - this.magicDefense) / 256 + 1;
-	            }
-	
-	            return demage;
-	        }
-	    }, {
-	        key: 'getSpeed',
-	        value: function getSpeed() {
-	            var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'normal';
-	
-	            var currentSpeed;
-	            if (type === 'normal') {
-	                currentSpeed = 96 * (this.speed + 20) / 16; //normal
-	            } else if (type === 'haste') {
-	                currentSpeed = 126 * (this.speed + 20) / 16; //haste
-	            } else if (type === 'slow') {
-	                currentSpeed = 48 * (this.speed + 20) / 16; //slow
-	            }
-	            return currentSpeed;
-	        }
-	    }]);
-	
-	    return EnemyModel;
-	}();
-	
-	exports.default = EnemyModel;
 
 /***/ }
 /******/ ]);

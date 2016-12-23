@@ -24,19 +24,108 @@ export default class PrototypeScreen extends Screen{
 	constructor(label){
 		super(label);
 
+
+		let loader = new PIXI.loaders.Loader(); // you can also create your own if you want
+
+		loader.add('./assets/data/map1Data.json');
+
+		loader.once('complete',this.onAssetsLoaded.bind(this));
+
+		loader.load();
+
+		this.updateable = false;
+
+	}
+
+	onAssetsLoaded(evt){
+		// console.log(evt.resources['./assets/data/map1Data.json'].data.layers)//.data.layers);
+		let mapLayers = evt.resources['./assets/data/map1Data.json'].data.layers;
+		config.worldBounds = [];
+		config.towerList = [];
+		config.spawnerList = [];
+		config.nestList = [];
+		for (var i = 0; i < mapLayers.length; i++) {
+			if(mapLayers[i].name == 'WorldBounds'){
+				let polyline = (mapLayers[i].objects[0].polyline);
+				for (var j = 1; j < polyline.length; j++) {
+					config.worldBounds.push(polyline[j].x)
+					config.worldBounds.push(polyline[j].y)
+				}
+			}
+			// console.log(mapLayers[i].name);
+			if(mapLayers[i].name.indexOf('Towers') !== -1){
+				let towers = mapLayers[i].objects;
+				// console.log(towers);
+				for (var j = 1; j < towers.length; j++) {
+					let tower = towers[j];
+					config.towerList.push({name:tower.name, x:tower.x,y:tower.y,team:tower.properties.team});
+				}
+			}
+			if(mapLayers[i].name.indexOf('Nests') !== -1){
+				for (var j = 0; j < mapLayers[i].objects.length; j++) {
+					let nest = mapLayers[i].objects[j];
+					config.nestList.push({name:nest.name, x:nest.x, y:nest.y});
+				}
+			}
+			if(mapLayers[i].name.indexOf('Spawner') !== -1){
+				let spawers = mapLayers[i].objects;
+				let spwPosition = {x:0,y:0};
+				let spawnerObject = {pos:null, team:-1, waypoints:[]};
+				for (var j = 0; j < spawers.length; j++) {
+					let data = spawers[j];
+					if(data.name.indexOf('spawner') !== -1){
+						spawnerObject.pos = {x:data.x,y:data.y};
+						spawnerObject.team = data.properties.team;
+					}
+					else if(data.name.indexOf('waypoints') !== -1){
+						let waypoints = [];
+						// console.log(data);
+						// if(data.properties.invertList){
+						// 	for (var k = data.polyline.length - 1; k >= 1; k--) {
+						// 	 	let wayPos = {x:data.polyline[k].x,y:data.polyline[k].y}
+						// 	 	spawnerObject.waypoints.push(wayPos);
+						// 	}
+						// }else{
+							for (var k = 1; k<data.polyline.length; k++) {
+								let wayPos = {x:data.polyline[k].x,y:data.polyline[k].y}
+								spawnerObject.waypoints.push(wayPos);
+							}
+						// }
+					}
+				}
+				// spawnerObject = {pos:spwPosition, team:data.propreties.team, waypoints:waypoints};
+				config.spawnerList.push(spawnerObject);
+				console.log(spawnerObject);
+				// for (var j = 1; j < towers.length; j++) {
+				// 	let tower = towers[j];
+				// 	config.towerList.push({name:tower.name, x:tower.x,y:tower.y,team:tower.properties.team});
+				// }
+			}
+
+		}
+
+
+
+
+
+		this.configGame();
+	}
+
+	configGame(){
+		console.log('config');
+		// this.gameContainer.scale.set(0.3)
+
 		this.inputManager = new InputManager(this);
-
-
 		this.gameContainer = new PIXI.Container();
 		this.addChild(this.gameContainer);
 
-		// this.gameContainer.scale.set(0.3)
+		this.worldBounds = {x:0,y:0, w:15000, h:6000}
+		this.polyPts = this.scaleArrayPoints(config.worldBounds);
 
-
-		this.polyPts = config.worldBounds;
+		// this.scaleArrayPoints(this.polyPts)
 		var worldBoundsGraphic = new PIXI.Graphics();
-		worldBoundsGraphic.beginFill(0xffffff);
-		worldBoundsGraphic.alpha = 0.1
+		worldBoundsGraphic.beginFill(0xbbffff);
+		worldBoundsGraphic.alpha = 0.2
 		worldBoundsGraphic.drawPolygon(this.polyPts);
 		worldBoundsGraphic.endFill();
 
@@ -47,15 +136,14 @@ export default class PrototypeScreen extends Screen{
 			let wayGraphic = new PIXI.Graphics();
 			wayGraphic.beginFill(0xffffff);
 			wayGraphic.alpha = 0.1
-			wayGraphic.drawPolygon(config.wayPath[i]);
+			wayGraphic.drawPolygon(this.scaleArrayPoints(config.wayPath[i]));
 			wayGraphic.endFill();
 
-			this.gameContainer.addChild(wayGraphic)
+			//this.gameContainer.addChild(wayGraphic)
 		}
 
 
 		this.worldPolygon = new PIXI.Polygon(this.polyPts)
-		this.worldBounds = {x:0,y:0, w:6000, h:2000}
 
 
 		this.floorContainer = new PIXI.Container();
@@ -78,44 +166,47 @@ export default class PrototypeScreen extends Screen{
 
 		this.spawnerList = [];
 		for (var i = 0; i < config.spawnerList.length; i++) {
-			let spawnerDataList = config.spawnerList[i];
-			for (var k = spawnerDataList.length - 1; k >= 0; k--) {
-				var spawnerData = spawnerDataList[k];
-				let team = 0;
-				if(spawnerData[0][0].indexOf('t2') !== -1){
-					team = 1;
-				}
-				let spawner = new Spawner(this, team);
+			// let spawnerDataList = config.spawnerList[i];
+			// for (var k = spawnerDataList.length - 1; k >= 0; k--) {
+				var spawnerData = config.spawnerList[i];
+				
+				let spawner = new Spawner(this, spawnerData.team);
 				this.entityContainer.addChild(spawner)
 				this.addOnUpdateList(spawner)
 				this.spawnerList.push(spawner);
-				spawner.x = spawnerData[0][1];
-				spawner.y = spawnerData[0][2];
+				let tempPoint = this.scaleSinglePoint({x:spawnerData.pos.x,y:spawnerData.pos.y})
+				spawner.x = tempPoint.x
+				spawner.y = tempPoint.y
 				spawner.build();
 				this.setScales(spawner);
 
-				for (var j = 1; j < spawnerData.length; j++) {
-					spawner.addWaypoint(spawnerData[j][1],spawnerData[j][2]);
+				for (var j = 1; j < spawnerData.waypoints.length; j++) {
+					tempPoint = this.scaleSinglePoint({x:spawnerData.waypoints[j].x,y:spawnerData.waypoints[j].y})
+					spawner.addWaypoint(tempPoint.x,tempPoint.y);
 				}
-			}
+			// }
 		}
 
 		this.towerList = [];
+		console.log(config.towerList);
 		for (var i = 0; i < config.towerList.length; i++) {
-			for (var j = 0; j < config.towerList[i].length; j++) {
-				var towerData = config.towerList[i][j];
-				let tower = new Tower(this, towerData[3]);
-				tower.name = towerData[0];
+			// for (var j = 0; j < config.towerList[i].length; j++) {
+				var towerData = config.towerList[i];
+				let tower = new Tower(this, towerData.team);
+				tower.name = towerData.name;
 				this.entityContainer.addChild(tower)
 				this.addOnUpdateList(tower)
 				this.towerList.push(tower);
-				tower.x = towerData[1];
-				tower.y = towerData[2];
+
+				let tempPoint = this.scaleSinglePoint({x:towerData.x,y:towerData.y})
+
+				tower.x = tempPoint.x;
+				tower.y = tempPoint.y;
 
 				this.setScales(tower);
 
 				tower.build();
-			}
+			// }
 		}
 
 
@@ -128,14 +219,16 @@ export default class PrototypeScreen extends Screen{
 				// console.log('nestdata',nestData);
 
 				let nest = new Nest(this);
-				nest.name = nestData[0];
+				nest.name = nestData.name;
 
 				this.entityContainer.addChild(nest)
 				this.addOnUpdateList(nest)
 				this.nestList.push(nest);
 
-				nest.x = nestData[1];
-				nest.y = nestData[2];
+				let tempPoint = this.scaleSinglePoint({x:nestData.x,y:nestData.y})
+
+				nest.x = tempPoint.x;
+				nest.y = tempPoint.y;
 				// console.log('nest',nest.x,nest.y);
 				this.setScales(nest);
 
@@ -186,11 +279,14 @@ export default class PrototypeScreen extends Screen{
 
 		this.timer = 0;
 
+		// this.build();
+
 		this.initUI();
 
 		this.initGame();
 
 	}
+	
 	gameOver(){
 		this.updateable = false;
 	}
@@ -283,6 +379,12 @@ export default class PrototypeScreen extends Screen{
 		for (var i = this.spawnerList.length - 1; i >= 0; i--) {
 			this.spawnerList[i].start();
 		}
+
+		this.camera.zoom(0.05, 1, 0.2);
+		// this.camera.zoom(0.35, 1, 0.2);
+		this.camera.follow(this.cupcake);
+
+		// this.gameOver()
 	}
 	addEnemy(type, position, waypoints, team){
 
@@ -320,9 +422,6 @@ export default class PrototypeScreen extends Screen{
 	build(){
 		this.lastAction = null;
 		super.build();
-
-		this.camera.zoom(0.35, 1, 0.2);
-		this.camera.follow(this.cupcake);
 
 	}
 	update ( delta ) {
@@ -547,7 +646,29 @@ export default class PrototypeScreen extends Screen{
 		}
 	 	return collideList
 	 }
-	 
+
+	 getMapDistanceFactor(y){
+	 	let h = this.worldBounds.h;
+
+	 	let value = 1-utils.distance(0,y,0,h) / h +  0.3
+	 	value = value * 0.7 + 0.3
+
+	 	return value
+	 }
+	 scaleSinglePoint(point){
+	 	let rpoint = {x:point.x,y:point.y * this.getMapDistanceFactor(point.y)};
+	 	return rpoint
+	 }
+
+	 scaleArrayPoints(arr){
+	 	let rArr = [];
+	 	for (var i = 1; i < arr.length; i+=2) {	
+		 	rArr.push(arr[i-1])
+		 	rArr.push(arr[i] * this.getMapDistanceFactor(arr[i]))
+	 	}
+
+	 	return rArr
+	 }
 
 	setScales(entity){
 

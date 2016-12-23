@@ -18,6 +18,7 @@ PIXI.loader
 	.add('./assets/Towers/towers0.json')
 	.add('./assets/Spawners/spawners0.json')
 	.add('./assets/UI/ui0.json')
+	.add('./assets/data/map1Data.json')
 	.load(configGame);
 
 function configGame(){

@@ -141,7 +141,7 @@ export default class Tower extends Entity {
 
     build ( ) {
         this.finalBase = false;
-        if(this.name.indexOf('AA') !== -1){
+        if(this.name.indexOf('Base') !== -1){
             this.finalBase = true;
         }
         // console.log(this.name, this.finalBase);

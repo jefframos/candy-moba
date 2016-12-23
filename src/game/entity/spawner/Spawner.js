@@ -74,8 +74,8 @@ export default class Spawner extends Entity {
 
         this.currentEntity = 0;
         this.waves = [
-            ['standard', 'standard', 'standard','standard', 'standard'],
-            ['tanker', 'tanker', 'tanker'],
+            [30,'standard', 'standard', 'standard','standard'],
+            [45,'tanker', 'tanker', 'standard'],
         ];
 
     }
@@ -89,7 +89,7 @@ export default class Spawner extends Entity {
         this.waypointList.push({x:x, y:y});
     }
     startSpawn () {
-        this.currentWave = 0;
+        this.currentWave = 1;
         this.currentEntity = 0;
         this.totalWaves ++;
         this.currentWave2 ++;
@@ -106,7 +106,10 @@ export default class Spawner extends Entity {
         }
 
         if(this.currentWave >= this.waves[this.currentWave2].length){
-            this.actionTimer = this.spawnTime;
+            this.actionTimer = this.waves[this.currentWave2][0];
+
+            console.log('next Wave in', this.actionTimer);
+            // this.actionTimer = this.spawnTime;
             this.action = this.startSpawn;
             return
         }
@@ -120,8 +123,8 @@ export default class Spawner extends Entity {
         this.actionTimer = this.spawDistance;
         this.action = this.addEntity;
 
-        if(this.team == 1)
-        ent.enemyModel.updateLevel(10);
+        //if(this.team == 1)
+        //ent.enemyModel.updateLevel(10);
 
         this.currentEntities.push(ent);
         this.currentWave ++;
