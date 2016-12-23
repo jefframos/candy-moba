@@ -210,21 +210,23 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">ingame/deadTomatto.png</key>
-            <key type="filename">ingame/smallTomatto.png</key>
+            <key type="filename">ingame/candy1.png</key>
+            <key type="filename">ingame/candy1dead.png</key>
+            <key type="filename">ingame/candy2.png</key>
+            <key type="filename">ingame/candy2dead.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>6,7,13,15</rect>
+                <rect>8,7,15,14</rect>
                 <key>scale9Paddings</key>
-                <rect>6,7,13,15</rect>
+                <rect>8,7,15,14</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">ingame/tower.png</key>
+            <key type="filename">ingame/tower1.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -234,6 +236,47 @@
                 <rect>23,22,46,44</rect>
                 <key>scale9Paddings</key>
                 <rect>23,22,46,44</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">ingame/tower2.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>25,28,50,55</rect>
+                <key>scale9Paddings</key>
+                <rect>25,28,50,55</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">ingame/veg1.png</key>
+            <key type="filename">ingame/veg1dead.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>8,7,15,15</rect>
+                <key>scale9Paddings</key>
+                <rect>8,7,15,15</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">ingame/veg2.png</key>
+            <key type="filename">ingame/veg2dead.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>7,8,14,17</rect>
+                <key>scale9Paddings</key>
+                <rect>7,8,14,17</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

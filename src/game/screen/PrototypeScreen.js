@@ -121,11 +121,11 @@ export default class PrototypeScreen extends Screen{
 
 		this.nestList = [];
 		// for (var i = 0; i < config.nestList.length; i++) {
-			console.log(config.nestList[0]);
+			// console.log(config.nestList[0]);
 			for (var j = 0; j < config.nestList.length; j++) {
 				var nestData = config.nestList[j];
 				// console.log('nestdata -- ',config.nestList[0][j]);
-				console.log('nestdata',nestData);
+				// console.log('nestdata',nestData);
 
 				let nest = new Nest(this);
 				nest.name = nestData[0];
@@ -136,7 +136,7 @@ export default class PrototypeScreen extends Screen{
 
 				nest.x = nestData[1];
 				nest.y = nestData[2];
-				console.log('nest',nest.x,nest.y);
+				// console.log('nest',nest.x,nest.y);
 				this.setScales(nest);
 
 				nest.build();
@@ -569,8 +569,8 @@ export default class PrototypeScreen extends Screen{
 			this.cupcake.speedNormal();
 		}
 	}
-	addBullet(pos, vel, life){
-		let bullet = new StandardBullet(this, vel, life);
+	addBullet(pos, vel, life, power){
+		let bullet = new StandardBullet(this, vel, life, power);
 		this.entityContainer.addChild(bullet)
 		this.addOnUpdateList(bullet)
 		bullet.position.x = pos.x
@@ -636,7 +636,7 @@ export default class PrototypeScreen extends Screen{
 			if(this.inputManager.keys[i] == 'action7'){
 				//console.log('space');
 				this.lastAction = this.inputManager.keys[i];
-				window.game.frameskip = 8;
+				window.game.frameskip = 12;
 				//this.speedUpValue = 10;
 				// this.cupcake.die();
 			}
@@ -661,7 +661,7 @@ export default class PrototypeScreen extends Screen{
 
 		if(this.inputManager.rightAxes && this.inputManager.rightAxes[1]){
 			let zoomValue = this.inputManager.rightAxes[1] + 0;
-			if(zoomValue != 0){
+			if(Math.abs(zoomValue) > 0.1){
 				this.camera.zoom2(zoomValue * -0.001);
 			}
 		}

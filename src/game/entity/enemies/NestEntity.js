@@ -1,6 +1,7 @@
 import PIXI from 'pixi.js';
 import utils  from '../../../utils';
 import AnimationManager  from './../utils/AnimationManager';
+import EnemyModel  from './../model/EnemyModel';
 import StandardEnemy  from './StandardEnemy';
 export default class NestEntity extends StandardEnemy {
 
@@ -32,13 +33,30 @@ export default class NestEntity extends StandardEnemy {
         this.actionTimer = -1;
         this.action = null;
         
-        this.entityModel = {
-            maxLife:10,
-            power:2,
-            attackSpeed: 4.5,
-            speedUp: 1.5
-            // sp
+            let enemyStats = {
+            level:1,
+            hp:300,
+            stamina:40,
+            speed:60,
+            magicPower:13,
+            battlePower:250,
+            defense:20,
+            magicDefense:120,
+            xp:20
         }
+        
+        this.enemyModel = new EnemyModel('tomato', enemyStats )
+
+
+        this.actionTimer = -1;
+        this.action = null;
+        
+        this.dynamicModel = {
+            attackSpeed: 1,
+            invencibleTimer:0.1,
+            speedUp:1.5,
+        }
+
 
         // this.build();
 
@@ -50,6 +68,10 @@ export default class NestEntity extends StandardEnemy {
     setNestCenter (pos, radius) {
         this.nestCenter = pos;
         this.nestRadius = radius *0.9 + (Math.random() *radius*0.1);
+    }
+    attack () {
+        super.attack();
+        this.wait();
     }
     build () {
         let enemieType = 'Rock';
@@ -171,32 +193,41 @@ export default class NestEntity extends StandardEnemy {
         this.reset();
 
         this.testCollisions = false;
+
+        this.skipCollision = 3;
         // this.start();
     }
 
     setTarget (position, isEnemy) {
+        if(this.attacking || this.preparingAttack){
+            return
+        }
         this.isEnemy = isEnemy;
         var angle = Math.random() * 360 / 180 * 3.14
-        this.targetPosition.x = position.x + Math.sin(angle)*20;
-        this.targetPosition.y = position.y + Math.cos(angle)*20;
+        this.targetPosition.x = position.x + Math.sin(angle)*40;
+        this.targetPosition.y = position.y + Math.cos(angle)*40;
         this.followTarget = true;
         // this.move();
     }
     update(delta){
         super.update(delta);
 
-        if(this.testCollisions && !this.attacking){
-            let entityCollisions = this.game.getExternalColisionList(this,['player'], true);
-            // console.log(entityCollisions);
-            if(entityCollisions && entityCollisions.length){                    
-                this.followHero(entityCollisions[0].entity);
+        this.skipCollision --;
+        if(this.skipCollision <= 0){
+            this.skipCollision = Math.random() * 3 + 2;
+            if(this.testCollisions && !this.attacking){
+                let entityCollisions = this.game.getExternalColisionList(this,['player'], true);
+                // console.log(entityCollisions);
+                if(entityCollisions && entityCollisions.length){                    
+                    this.followHero(entityCollisions[0].entity);
+                }
             }
-        }
-        if(this.following){
-            if(utils.distance(this.x,this.y,this.nestCenter.x,this.nestCenter.y) > this.nestRadius * 1.5){
-                this.following = null;
-            }else{
-                this.setTarget({x:this.following.x, y:this.following.y});
+            if(this.following){
+                if(utils.distance(this.x,this.y,this.nestCenter.x,this.nestCenter.y) > this.nestRadius * 1.5){
+                    this.following = null;
+                }else{
+                    this.setTarget({x:this.following.x, y:this.following.y});
+                }
             }
         }
         // console.log(this.actionTimer);
@@ -238,8 +269,8 @@ export default class NestEntity extends StandardEnemy {
             let angle = Math.atan2(this.targetPosition.y - this.y, this.targetPosition.x - this.x);
 
             //console.log('follow',angle * 180 / 3.14);
-            this.velocity.x = Math.cos(angle) * this.speed.x * this.entityModel.speedUp;
-            this.velocity.y = Math.sin(angle) * this.speed.x * this.entityModel.speedUp;
+            this.velocity.x = Math.cos(angle) * this.speed.x * this.dynamicModel.speedUp;
+            this.velocity.y = Math.sin(angle) * this.speed.x * this.dynamicModel.speedUp;
 
             if(this.velocity.x < 0){
                 this.side = -1;

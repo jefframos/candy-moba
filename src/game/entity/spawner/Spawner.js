@@ -60,6 +60,7 @@ export default class Spawner extends Entity {
         this.spawDistance = 1;
 
         this.currentWave = 0;
+        this.currentWave2 = 0;
 
 
         this.actionTimer = -1;
@@ -70,6 +71,12 @@ export default class Spawner extends Entity {
         this.totalKilled = 0;
        
         this.currentEntities = [];
+
+        this.currentEntity = 0;
+        this.waves = [
+            ['standard', 'standard', 'standard','standard', 'standard'],
+            ['tanker', 'tanker', 'tanker'],
+        ];
 
     }
 
@@ -83,28 +90,41 @@ export default class Spawner extends Entity {
     }
     startSpawn () {
         this.currentWave = 0;
+        this.currentEntity = 0;
         this.totalWaves ++;
+        this.currentWave2 ++;
+       
         this.addEntity();
     }
     addEntity () {
 
-        this.currentWave ++;
 
+        // console.log(this.currentWave2);
 
-        if(this.currentWave > this.spawnQuant){
+         if(this.currentWave2 >= this.waves.length){
+            this.currentWave2 = 0;
+        }
+
+        if(this.currentWave >= this.waves[this.currentWave2].length){
             this.actionTimer = this.spawnTime;
             this.action = this.startSpawn;
             return
         }
+
+
         this.totalEntities ++;
         // TweenLite.from(this.animationContainer.scale, 0.8, {x:0.9, y:0.9, ease:'easeOutElastic'})
-        let type = this.currentWave > this.spawnQuant -2?'tanker':'standard';
+        let type = this.waves[this.currentWave2][this.currentWave]
         let ent = this.game.addEnemy(type, {x:this.x, y:this.y}, this.waypointList, this.team);
         //this.game.addEnemy('tomato', {x:this.x, y:this.y + Math.random() * this.getRadius() - this.getRadius()/2}, this.waypointList, this.team);
         this.actionTimer = this.spawDistance;
         this.action = this.addEntity;
 
+        if(this.team == 1)
+        ent.enemyModel.updateLevel(10);
+
         this.currentEntities.push(ent);
+        this.currentWave ++;
     }
 
 

@@ -4,13 +4,14 @@ import AnimationManager  from './../utils/AnimationManager';
 import Entity  from './../Entity';
 export default class StandardBullet extends Entity {
 
-    constructor(game, velocity, lifeTime) {
+    constructor(game, velocity, lifeTime, power) {
 
         super();
 
         this.game = game;
         this.lifeTime = lifeTime;
         this.velocity = velocity;
+        this.power = power;
 
         this.build();
         
@@ -70,7 +71,7 @@ export default class StandardBullet extends Entity {
         this.standardScale = 1;
         this.speedScale = 1;
         this.starterScale = 0.5;
-        this.gravity = 15;
+        this.gravity = 3800;
         // this.scale.set(0);
         this.killed = false
 
@@ -93,7 +94,7 @@ export default class StandardBullet extends Entity {
                 if((collisionList[i].trueLeft && this.velocity.x > 0)||
                     (collisionList[i].trueRight && this.velocity.x < 0)){
                     if(collisionList[i].ableToHit){
-                        if(collisionList[i].entity.hit(1, collisionList[i].trueLeft ? -1 : 1)){
+                        if(collisionList[i].entity.hit(this.power, collisionList[i].trueLeft ? -1 : 1)){
                             return true
                         }
                     }
@@ -139,7 +140,7 @@ export default class StandardBullet extends Entity {
         }
 
         if(this.lifeTime <= 0){
-            this.spriteVelocity.y += this.gravity;
+            this.spriteVelocity.y += this.gravity * delta;
             this.animationContainer.y += this.spriteVelocity.y * delta;
             
             if(this.animationContainer.y >= 0){

@@ -154,7 +154,7 @@
             </struct>
         </map>
         <key>multiPack</key>
-        <false/>
+        <true/>
         <key>forceIdenticalLayout</key>
         <false/>
         <key>outputFormat</key>
@@ -408,6 +408,268 @@
                 <rect>51,34,102,68</rect>
                 <key>scale9Paddings</key>
                 <rect>51,34,102,68</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Potato/attack/attack0001.png</key>
+            <key type="filename">Potato/attack/attack0002.png</key>
+            <key type="filename">Potato/attack/attack0003.png</key>
+            <key type="filename">Potato/attack/attack0004.png</key>
+            <key type="filename">Potato/attack/attack0005.png</key>
+            <key type="filename">Potato/attack/attack0006.png</key>
+            <key type="filename">Potato/attack/attack0007.png</key>
+            <key type="filename">Potato/attack/attack0008.png</key>
+            <key type="filename">Potato/attack/attack0009.png</key>
+            <key type="filename">Potato/attack/attack0010.png</key>
+            <key type="filename">Potato/attack/attack0011.png</key>
+            <key type="filename">Potato/attack/attack0012.png</key>
+            <key type="filename">Potato/attack/attack0013.png</key>
+            <key type="filename">Potato/attack/attack0014.png</key>
+            <key type="filename">Potato/attack/attack0015.png</key>
+            <key type="filename">Potato/attack/attack0016.png</key>
+            <key type="filename">Potato/attack/attack0017.png</key>
+            <key type="filename">Potato/attack/attack0018.png</key>
+            <key type="filename">Potato/attack/attack0019.png</key>
+            <key type="filename">Potato/attack/attack0020.png</key>
+            <key type="filename">Potato/attack/attack0021.png</key>
+            <key type="filename">Potato/attack/attack0022.png</key>
+            <key type="filename">Potato/attack/attack0023.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>51,35,102,70</rect>
+                <key>scale9Paddings</key>
+                <rect>51,35,102,70</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Potato/dead1/dead0001.png</key>
+            <key type="filename">Potato/dead1/dead0002.png</key>
+            <key type="filename">Potato/dead1/dead0003.png</key>
+            <key type="filename">Potato/dead1/dead0004.png</key>
+            <key type="filename">Potato/dead1/dead0005.png</key>
+            <key type="filename">Potato/dead1/dead0006.png</key>
+            <key type="filename">Potato/dead1/dead0007.png</key>
+            <key type="filename">Potato/dead1/dead0008.png</key>
+            <key type="filename">Potato/dead1/dead0009.png</key>
+            <key type="filename">Potato/dead1/dead0010.png</key>
+            <key type="filename">Potato/dead1/dead0011.png</key>
+            <key type="filename">Potato/dead1/dead0012.png</key>
+            <key type="filename">Rock/dead1/dead0001.png</key>
+            <key type="filename">Rock/dead1/dead0002.png</key>
+            <key type="filename">Rock/dead1/dead0003.png</key>
+            <key type="filename">Rock/dead1/dead0004.png</key>
+            <key type="filename">Rock/dead1/dead0005.png</key>
+            <key type="filename">Rock/dead1/dead0006.png</key>
+            <key type="filename">Rock/dead1/dead0007.png</key>
+            <key type="filename">Rock/dead1/dead0008.png</key>
+            <key type="filename">Rock/dead1/dead0009.png</key>
+            <key type="filename">Rock/dead1/dead0010.png</key>
+            <key type="filename">Rock/dead1/dead0011.png</key>
+            <key type="filename">Rock/dead1/dead0012.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>46,34,92,68</rect>
+                <key>scale9Paddings</key>
+                <rect>46,34,92,68</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Potato/hurt/hurt0001.png</key>
+            <key type="filename">Potato/hurt/hurt0002.png</key>
+            <key type="filename">Potato/hurt/hurt0003.png</key>
+            <key type="filename">Potato/hurt/hurt0004.png</key>
+            <key type="filename">Potato/hurt/hurt0005.png</key>
+            <key type="filename">Potato/hurt/hurt0006.png</key>
+            <key type="filename">Potato/hurt/hurt0007.png</key>
+            <key type="filename">Potato/hurt/hurt0008.png</key>
+            <key type="filename">Potato/hurt/hurt0009.png</key>
+            <key type="filename">Potato/hurt/hurt0010.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>31,30,62,60</rect>
+                <key>scale9Paddings</key>
+                <rect>31,30,62,60</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Potato/idle/idle0001.png</key>
+            <key type="filename">Potato/idle/idle0002.png</key>
+            <key type="filename">Potato/idle/idle0003.png</key>
+            <key type="filename">Potato/idle/idle0004.png</key>
+            <key type="filename">Potato/idle/idle0005.png</key>
+            <key type="filename">Potato/idle/idle0006.png</key>
+            <key type="filename">Potato/idle/idle0007.png</key>
+            <key type="filename">Potato/idle/idle0008.png</key>
+            <key type="filename">Potato/idle/idle0009.png</key>
+            <key type="filename">Potato/idle/idle0010.png</key>
+            <key type="filename">Potato/idle/idle0011.png</key>
+            <key type="filename">Potato/idle/idle0012.png</key>
+            <key type="filename">Potato/idle/idle0013.png</key>
+            <key type="filename">Potato/idle/idle0014.png</key>
+            <key type="filename">Potato/idle/idle0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>25,33,49,66</rect>
+                <key>scale9Paddings</key>
+                <rect>25,33,49,66</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Potato/walk/walk0001.png</key>
+            <key type="filename">Potato/walk/walk0002.png</key>
+            <key type="filename">Potato/walk/walk0003.png</key>
+            <key type="filename">Potato/walk/walk0004.png</key>
+            <key type="filename">Potato/walk/walk0005.png</key>
+            <key type="filename">Potato/walk/walk0006.png</key>
+            <key type="filename">Potato/walk/walk0007.png</key>
+            <key type="filename">Potato/walk/walk0008.png</key>
+            <key type="filename">Potato/walk/walk0009.png</key>
+            <key type="filename">Potato/walk/walk0010.png</key>
+            <key type="filename">Potato/walk/walk0011.png</key>
+            <key type="filename">Potato/walk/walk0012.png</key>
+            <key type="filename">Potato/walk/walk0013.png</key>
+            <key type="filename">Potato/walk/walk0014.png</key>
+            <key type="filename">Potato/walk/walk0015.png</key>
+            <key type="filename">Potato/walk/walk0016.png</key>
+            <key type="filename">Potato/walk/walk0017.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>27,31,55,63</rect>
+                <key>scale9Paddings</key>
+                <rect>27,31,55,63</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Rock/attack/attack0001.png</key>
+            <key type="filename">Rock/attack/attack0002.png</key>
+            <key type="filename">Rock/attack/attack0003.png</key>
+            <key type="filename">Rock/attack/attack0004.png</key>
+            <key type="filename">Rock/attack/attack0005.png</key>
+            <key type="filename">Rock/attack/attack0006.png</key>
+            <key type="filename">Rock/attack/attack0007.png</key>
+            <key type="filename">Rock/attack/attack0008.png</key>
+            <key type="filename">Rock/attack/attack0009.png</key>
+            <key type="filename">Rock/attack/attack0010.png</key>
+            <key type="filename">Rock/attack/attack0011.png</key>
+            <key type="filename">Rock/attack/attack0012.png</key>
+            <key type="filename">Rock/attack/attack0013.png</key>
+            <key type="filename">Rock/attack/attack0014.png</key>
+            <key type="filename">Rock/attack/attack0015.png</key>
+            <key type="filename">Rock/attack/attack0016.png</key>
+            <key type="filename">Rock/attack/attack0017.png</key>
+            <key type="filename">Rock/attack/attack0018.png</key>
+            <key type="filename">Rock/attack/attack0019.png</key>
+            <key type="filename">Rock/attack/attack0020.png</key>
+            <key type="filename">Rock/attack/attack0021.png</key>
+            <key type="filename">Rock/attack/attack0022.png</key>
+            <key type="filename">Rock/attack/attack0023.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>51,35,101,69</rect>
+                <key>scale9Paddings</key>
+                <rect>51,35,101,69</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Rock/hurt/hurt0001.png</key>
+            <key type="filename">Rock/hurt/hurt0002.png</key>
+            <key type="filename">Rock/hurt/hurt0003.png</key>
+            <key type="filename">Rock/hurt/hurt0004.png</key>
+            <key type="filename">Rock/hurt/hurt0005.png</key>
+            <key type="filename">Rock/hurt/hurt0006.png</key>
+            <key type="filename">Rock/hurt/hurt0007.png</key>
+            <key type="filename">Rock/hurt/hurt0008.png</key>
+            <key type="filename">Rock/hurt/hurt0009.png</key>
+            <key type="filename">Rock/hurt/hurt0010.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>31,30,63,60</rect>
+                <key>scale9Paddings</key>
+                <rect>31,30,63,60</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Rock/idle/idle0001.png</key>
+            <key type="filename">Rock/idle/idle0002.png</key>
+            <key type="filename">Rock/idle/idle0003.png</key>
+            <key type="filename">Rock/idle/idle0004.png</key>
+            <key type="filename">Rock/idle/idle0005.png</key>
+            <key type="filename">Rock/idle/idle0006.png</key>
+            <key type="filename">Rock/idle/idle0007.png</key>
+            <key type="filename">Rock/idle/idle0008.png</key>
+            <key type="filename">Rock/idle/idle0009.png</key>
+            <key type="filename">Rock/idle/idle0010.png</key>
+            <key type="filename">Rock/idle/idle0011.png</key>
+            <key type="filename">Rock/idle/idle0012.png</key>
+            <key type="filename">Rock/idle/idle0013.png</key>
+            <key type="filename">Rock/idle/idle0014.png</key>
+            <key type="filename">Rock/idle/idle0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>25,33,50,66</rect>
+                <key>scale9Paddings</key>
+                <rect>25,33,50,66</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Rock/walk/walk0001.png</key>
+            <key type="filename">Rock/walk/walk0002.png</key>
+            <key type="filename">Rock/walk/walk0003.png</key>
+            <key type="filename">Rock/walk/walk0004.png</key>
+            <key type="filename">Rock/walk/walk0005.png</key>
+            <key type="filename">Rock/walk/walk0006.png</key>
+            <key type="filename">Rock/walk/walk0007.png</key>
+            <key type="filename">Rock/walk/walk0008.png</key>
+            <key type="filename">Rock/walk/walk0009.png</key>
+            <key type="filename">Rock/walk/walk0010.png</key>
+            <key type="filename">Rock/walk/walk0011.png</key>
+            <key type="filename">Rock/walk/walk0012.png</key>
+            <key type="filename">Rock/walk/walk0013.png</key>
+            <key type="filename">Rock/walk/walk0014.png</key>
+            <key type="filename">Rock/walk/walk0015.png</key>
+            <key type="filename">Rock/walk/walk0016.png</key>
+            <key type="filename">Rock/walk/walk0017.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>28,31,56,63</rect>
+                <key>scale9Paddings</key>
+                <rect>28,31,56,63</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

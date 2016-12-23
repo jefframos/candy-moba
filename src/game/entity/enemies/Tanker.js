@@ -1,12 +1,13 @@
 import PIXI from 'pixi.js';
 import utils  from '../../../utils';
 import AnimationManager  from './../utils/AnimationManager';
+import EnemyModel  from './../model/EnemyModel';
 import StandardEnemy  from './StandardEnemy';
 export default class Tanker extends StandardEnemy {
 
     constructor(game, team) {
-
-        console.log('tanker');
+// 
+        // console.log('tanker');
     	super();
 
         this.type = 'enemy';
@@ -33,11 +34,27 @@ export default class Tanker extends StandardEnemy {
         this.actionTimer = -1;
         this.action = null;
         
-        this.entityModel = {
-            maxLife:10,
-            power:2,
-            attackSpeed: 4.5
-            // sp
+        let enemyStats = {
+            level:1,
+            hp:300,
+            stamina:40,
+            speed:60,
+            magicPower:13,
+            battlePower:250,
+            defense:20,
+            magicDefense:120,
+            xp:20
+        }
+        
+        this.enemyModel = new EnemyModel('tomato', enemyStats )
+
+
+        this.actionTimer = -1;
+        this.action = null;
+        
+        this.dynamicModel = {
+            attackSpeed: 3,
+            invencibleTimer:0.1
         }
 
         // this.build();
@@ -168,6 +185,8 @@ export default class Tanker extends StandardEnemy {
         // this.debugCollision();
         this.reset();
         this.start();
+
+        //console.log(this.attackSpeed);
     }
 
 

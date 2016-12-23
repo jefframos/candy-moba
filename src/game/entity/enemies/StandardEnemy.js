@@ -2,6 +2,7 @@ import PIXI from 'pixi.js';
 import utils  from '../../../utils';
 import AnimationManager  from './../utils/AnimationManager';
 import Entity  from './../Entity';
+import EnemyModel  from './../model/EnemyModel';
 export default class StandardEnemy extends Entity {
 
     constructor(game, team) {
@@ -29,14 +30,27 @@ export default class StandardEnemy extends Entity {
         this.addChild(this.animationContainer);
 
 
+        let enemyStats = {
+            level:1,
+            hp:200,
+            stamina:40,
+            speed:60,
+            magicPower:13,
+            battlePower:150,
+            defense:5,
+            magicDefense:120,
+            xp:20
+        }
+        
+        this.enemyModel = new EnemyModel('tomato', enemyStats )
+
+
         this.actionTimer = -1;
         this.action = null;
         
-        this.entityModel = {
-            maxLife:5,
-            power:1,
-            attackSpeed: 3
-            // sp
+        this.dynamicModel = {
+            attackSpeed: 2,
+            invencibleTimer:0.1
         }
         // this.build();
 
@@ -50,98 +64,99 @@ export default class StandardEnemy extends Entity {
         }else{
             enemieType = Math.random() <0.5?'Tomato':'Potato';
         }
-        this.animationModel = [];
-        this.animationModel.push({
-            label:'idle',
-            src:enemieType+'/idle/idle00',
-            totalFrames:15,
-            startFrame:0,
-            animationSpeed:0.4,
-            movieClip:null,
-            position:{x:0,y:0},
-            anchor:{x:0.5,y:1}
-        });
+        {
+            this.animationModel = [];
+            this.animationModel.push({
+                label:'idle',
+                src:enemieType+'/idle/idle00',
+                totalFrames:15,
+                startFrame:0,
+                animationSpeed:0.4,
+                movieClip:null,
+                position:{x:0,y:0},
+                anchor:{x:0.5,y:1}
+            });
 
-        this.animationModel.push({
-            label:'killBack',
-            src:enemieType+'/dead1/dead00',
-            totalFrames:12,
-            startFrame:0,
-            animationSpeed:0.65,
-            movieClip:null,
-            position:{x:0,y:0},
-            anchor:{x:0.5,y:1},
-            loop:false,
-            haveCallback:true,
-        });
+            this.animationModel.push({
+                label:'killBack',
+                src:enemieType+'/dead1/dead00',
+                totalFrames:12,
+                startFrame:0,
+                animationSpeed:0.65,
+                movieClip:null,
+                position:{x:0,y:0},
+                anchor:{x:0.5,y:1},
+                loop:false,
+                haveCallback:true,
+            });
 
-        this.animationModel.push({
-            label:'killFront',
-            src:enemieType+'/dead1/dead00',
-            totalFrames:12,
-            startFrame:0,
-            animationSpeed:0.65,
-            movieClip:null,
-            position:{x:0,y:0},
-            anchor:{x:0.5,y:1},
-            loop:false,
-            haveCallback:true,
-        });
+            this.animationModel.push({
+                label:'killFront',
+                src:enemieType+'/dead1/dead00',
+                totalFrames:12,
+                startFrame:0,
+                animationSpeed:0.65,
+                movieClip:null,
+                position:{x:0,y:0},
+                anchor:{x:0.5,y:1},
+                loop:false,
+                haveCallback:true,
+            });
 
-        this.animationModel.push({
-            label:'hurt',
-            src:enemieType+'/hurt/hurt00',
-            totalFrames:10,
-            startFrame:0,
-            animationSpeed:0.6,
-            movieClip:null,
-            position:{x:-15,y:0},
-            anchor:{x:0.5,y:1},
-            loop:false,
-            haveCallback:true,
-        });
+            this.animationModel.push({
+                label:'hurt',
+                src:enemieType+'/hurt/hurt00',
+                totalFrames:10,
+                startFrame:0,
+                animationSpeed:0.6,
+                movieClip:null,
+                position:{x:-15,y:0},
+                anchor:{x:0.5,y:1},
+                loop:false,
+                haveCallback:true,
+            });
 
-        this.animationModel.push({
-            label:'attackIn',
-            src:enemieType+'/attack/attack00',
-            totalFrames:10,
-            startFrame:0,
-            animationSpeed:0.6,
-            movieClip:null,
-            position:{x:45,y:2},
-            anchor:{x:0.5,y:1},
-            loop:false,
-            haveCallback:true,
-        });
+            this.animationModel.push({
+                label:'attackIn',
+                src:enemieType+'/attack/attack00',
+                totalFrames:10,
+                startFrame:0,
+                animationSpeed:0.6,
+                movieClip:null,
+                position:{x:45,y:2},
+                anchor:{x:0.5,y:1},
+                loop:false,
+                haveCallback:true,
+            });
 
-        this.animationModel.push({
-            label:'attackOut',
-            src:enemieType+'/attack/attack00',
-            totalFrames:23,
-            startFrame:11,
-            animationSpeed:0.6,
-            movieClip:null,
-            position:{x:45,y:2},
-            anchor:{x:0.5,y:1},
-            loop:false,
-            haveCallback:true,
-        });
+            this.animationModel.push({
+                label:'attackOut',
+                src:enemieType+'/attack/attack00',
+                totalFrames:23,
+                startFrame:11,
+                animationSpeed:0.6,
+                movieClip:null,
+                position:{x:45,y:2},
+                anchor:{x:0.5,y:1},
+                loop:false,
+                haveCallback:true,
+            });
 
-          this.animationModel.push({
-            label:'walk',
-            src:enemieType+'/walk/walk00',
-            totalFrames:17,
-            startFrame:0,
-            animationSpeed:0.6,
-            movieClip:null,
-            position:{x:2,y:0},
-            anchor:{x:0.5,y:1},
-            loop:true
-        });
+              this.animationModel.push({
+                label:'walk',
+                src:enemieType+'/walk/walk00',
+                totalFrames:17,
+                startFrame:0,
+                animationSpeed:0.6,
+                movieClip:null,
+                position:{x:2,y:0},
+                anchor:{x:0.5,y:1},
+                loop:true
+            });
 
-        this.animationManager = new AnimationManager(this.animationModel, this.animationContainer);
-        this.animationManager.finishCallback = this.finishAnimation.bind(this);
-
+            this.animationManager = new AnimationManager(this.animationModel, this.animationContainer);
+            this.animationManager.finishCallback = this.finishAnimation.bind(this);
+        }
         // this.animationContainer.addChild(this.sprite);
        
         this.speed = {x:100,y:100};
@@ -158,7 +173,7 @@ export default class StandardEnemy extends Entity {
         this.animationManager.hideAll();
         this.animationManager.stopAll();
         this.animationManager.changeState('idle');
-        this.radius = 120 + Math.random() * 10;
+        this.radius = 80 + Math.random() * 40;
         this.externalRadius = 160;
         // this.debugCollision();
 
@@ -172,6 +187,8 @@ export default class StandardEnemy extends Entity {
     reset ( ) {
         this.killed = false;
 
+
+        this.skipCollision = 5;
         // this.animationManager.showJust(['idle','attack'])
 
         this.flipKill = false;
@@ -179,8 +196,9 @@ export default class StandardEnemy extends Entity {
         this.side = -1;//Math.random() < 0.5?1:-1;
 
         this.attackTimer = -1;
-        this.attackSpeed = this.entityModel.attackSpeed;
+        this.attackSpeed = this.dynamicModel.attackSpeed;
         this.attacking = false;
+        this.preparingAttack = false;
 
         this.ableToMove = true;
 
@@ -193,8 +211,8 @@ export default class StandardEnemy extends Entity {
         this.waypointID = 0;
         this.updateable = false;
 
-        this.maxLife = 5;
-        this.life = 5;
+        this.maxLife = this.enemyModel.hpMax;
+        this.life = this.maxLife;
 
         this.disapearTimerMax = 20;
         this.disapearTimer = this.disapearTimerMax;
@@ -209,8 +227,9 @@ export default class StandardEnemy extends Entity {
         this.setTarget(this.waypoints[this.waypointID]);
     }
     wait ( ) {
-        return
+        // return
         this.attacking = false;
+        this.preparingAttack = false;
         this.velocity.x = 0;
         this.velocity.y = 0;
         this.animationManager.changeState('idle');
@@ -244,14 +263,14 @@ export default class StandardEnemy extends Entity {
     setTarget (position, isEnemy) {
         this.isEnemy = isEnemy;
         var angle = Math.random() * 360 / 180 * 3.14
-        this.targetPosition.x = position.x + Math.sin(angle)*20;
-        this.targetPosition.y = position.y + Math.cos(angle)*20;
+        this.targetPosition.x = position.x + Math.sin(angle)*50;
+        this.targetPosition.y = position.y + Math.cos(angle)*50;
         this.followTarget = true;
         this.move();
     }
     move () {
         // console.log(this.attacking);
-        if(this.attacking && !this.ableToMove){
+        if((this.preparingAttack || this.attacking) && !this.ableToMove){
             return
         }
         if(this.followTarget){
@@ -292,20 +311,27 @@ export default class StandardEnemy extends Entity {
         //this.actionTimer = this.attackTimer + 0.1//Math.random() * 2 + 1.5;
         //this.action = this.move;
         this.attackTimer = this.attackSpeed;
-        // console.log(this.entityToAttack);
-        let newList = this.game.getSimpleEntityCollision(this, this.entityToAttack.entity);
+
+        if(this.entityToAttack.entity.type == 'hero'){
+            let newList = this.game.getSimpleEntityCollision(this, this.entityToAttack.entity);
 
 
+            this.attacking = true;
+            // console.log('ATTACK', newList);
+            if(newList.length){
+                // console.log( this.entityToAttack.entity.team, this.team, newList);
 
-        // console.log('ATTACK', newList);
-        if(newList.length){
-            // console.log( this.entityToAttack.entity.team, this.team, newList);
-            this.entityToAttack.entity.hit(this.entityModel.power);
+                this.entityToAttack.entity.hit(this.enemyModel.getDemage());
+            }
+        }else{
+            // console.log(this.entityToAttack);
+            this.attacking = true;
+            this.entityToAttack.entity.hit(this.enemyModel.getDemage());
+            // this.attacking = false;
         }
-        // this.attacking = false;
     }
     prepareAttack (target) {
-        if(!target || this.attacking){
+        if(!target || this.attacking || this.preparingAttack){
             return
         }
 
@@ -315,7 +341,7 @@ export default class StandardEnemy extends Entity {
         this.velocity.x = 0;
         this.velocity.y = 0;
         this.animationManager.changeState('attackIn', true);
-        this.attacking = true;
+        this.preparingAttack = true;
 
         
         if(this.entityToAttack.entity.type == 'tower'){
@@ -340,19 +366,27 @@ export default class StandardEnemy extends Entity {
 
         // this.updateWaypointsSame();
         this.animationManager.changeState('idle', true);
-        this.attacking = false;
+        // this.attacking = false;
+        this.preparingAttack = false;
     }
     hit(power, forceSide) {
-        if(this.life < 0){
+        // console.log(this.attacking);
+        if(this.life < 0 || this.invencible > 0){// || this.attacking){
             return false;
         }
 
+        let calcPower = this.enemyModel.getHurt(power);
+
         // this.wait();
+
+        this.invencible = this.dynamicModel.invencibleTimer;
 
         this.hitting = true;
         this.hitTime = 0.3;
 
-        this.life -= power;
+        this.life -= calcPower;
+
+        // console.log(this.life);
 
         if(this.animationManager.state != 'attack'){
             this.animationManager.changeState('hurt', true);
@@ -418,18 +452,25 @@ export default class StandardEnemy extends Entity {
         }
         // console.log(this.followTarget);
         
+        if(this.invencible >= 0){
+            this.invencible -= delta;
+        }
 
-        if(!this.attacking){
-            let entityCollisions = this.game.getCollisionList(this,['tower','player','enemy'], true);
-            // console.log(entityCollisions);
-            if(entityCollisions && entityCollisions.length){
-                if(entityCollisions[0].ableToHit || entityCollisions[0].entity.type == 'tower'){
-                    if(entityCollisions[0].trueLeft){
-                        this.side = 1;
-                    }else{
-                        this.side = -1;
+        this.skipCollision --;
+        if(this.skipCollision <= 0){
+            this.skipCollision = Math.random() * 3 + 2;
+            if(!this.attacking){
+                let entityCollisions = this.game.getCollisionList(this,['tower','player','enemy'], true);
+                // console.log(entityCollisions);
+                if(entityCollisions && entityCollisions.length){
+                    if(entityCollisions[0].ableToHit || entityCollisions[0].entity.type == 'tower'){
+                        if(entityCollisions[0].trueLeft){
+                            this.side = 1;
+                        }else{
+                            this.side = -1;
+                        }
+                        this.prepareAttack(entityCollisions[0]);
                     }
-                    this.prepareAttack(entityCollisions[0]);
                 }
             }
         }

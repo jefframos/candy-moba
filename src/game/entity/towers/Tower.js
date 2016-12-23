@@ -35,7 +35,7 @@ export default class Tower extends Entity {
         this.addChild(this.animationContainer);
 
         this.radius = 100;
-        this.externalRadius = 300;
+        this.externalRadius = 320;
         // this.debugCollision();
 
         this.static = true;
@@ -52,8 +52,8 @@ export default class Tower extends Entity {
 
         this.waitingNext = 5 * Math.random() + 1;
         this.sinScale = Math.random();
-        this.maxLife = 80;
-        this.life = 80;
+        this.maxLife = 5000;
+        this.life = 5000;
 
         this.enemiesList = [];
         // this.build();
@@ -66,7 +66,7 @@ export default class Tower extends Entity {
 
         this.attacking = false;
         this.attackTimer = -1;
-        this.attackSpeed = 0.75;
+        this.attackSpeed = 1.5;
 
         
 
@@ -144,9 +144,9 @@ export default class Tower extends Entity {
         if(this.name.indexOf('AA') !== -1){
             this.finalBase = true;
         }
-        console.log(this.name, this.finalBase);
+        // console.log(this.name, this.finalBase);
         let team = this.team+1// Math.floor(Math.random()*2) + 1;
-        console.log(team);
+        // console.log(team);
         this.animationModel = [];
          this.animationModel.push({
             label:'static',
@@ -211,11 +211,11 @@ export default class Tower extends Entity {
 
         let angle = Math.atan2(entity.y - bulletPosition.y, entity.x - bulletPosition.x);
 
-        let bulletSpeed = {x:Math.cos(angle) * 600, y:Math.sin(angle) * 600}
+        let bulletSpeed = {x:Math.cos(angle) * 900, y:Math.sin(angle) * 900}
 
-        let power = 2;
+        let power = 60;
 
-        this.game.addTowerBullet(bulletPosition, bulletSpeed, 1, power, this.team);
+        this.game.addTowerBullet(bulletPosition, bulletSpeed, 0.5, power, this.team);
     }
 
     update ( delta ) {

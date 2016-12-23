@@ -71,7 +71,7 @@ export default class TowerBullet extends StandardBullet {
         this.standardScale = 1;
         this.speedScale = 1;
         this.starterScale = 0.5;
-        this.gravity = 15;
+        this.gravity = 3800;
         // this.scale.set(0);
         this.kill2 = false
 
