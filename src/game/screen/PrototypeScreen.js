@@ -9,6 +9,7 @@ import Cupcake from '../entity/Cupcake';
 import StandardEnemy from '../entity/enemies/StandardEnemy';
 import NestEntity from '../entity/enemies/NestEntity';
 import Tanker from '../entity/enemies/Tanker';
+import Bomber from '../entity/enemies/Bomber';
 import StandardBullet from '../entity/bullets/StandardBullet';
 import TowerBullet from '../entity/bullets/TowerBullet';
 import Rock from '../entity/environment/Rock';
@@ -24,27 +25,76 @@ export default class PrototypeScreen extends Screen{
 	constructor(label){
 		super(label);
 
+		this.mapSrc = './assets/data/map_data_2.json';
 
+		this.updateable = false;
+
+		this.startLoad();
+
+		this.oldStats = '';
+	}
+
+	startLoad(){
 		let loader = new PIXI.loaders.Loader(); // you can also create your own if you want
 
-		loader.add('./assets/data/map1Data.json');
+		loader.add(this.mapSrc);
 
 		loader.once('complete',this.onAssetsLoaded.bind(this));
 
 		loader.load();
-
-		this.updateable = false;
-
 	}
-
 	onAssetsLoaded(evt){
+
+		if(this.buildedOnce){
+			this.destroyGame();
+		}
+
+		this.buildedOnce = true;
+
+		this.enemyList = [];
+		this.environmentList = [];
+		this.bulletList = [];
+		this.uiList = [];
+		this.spawnerList = [];
+
 		// console.log(evt.resources['./assets/data/map1Data.json'].data.layers)//.data.layers);
-		let mapLayers = evt.resources['./assets/data/map1Data.json'].data.layers;
+		let map = evt.resources[this.mapSrc].data;
+		let mapLayers = map.layers;
 		config.worldBounds = [];
 		config.towerList = [];
 		config.spawnerList = [];
 		config.nestList = [];
+		config.players = [];
+		config.wayPath = [];
+		// console.log(map);
+		this.worldBounds = {x:0,y:0, w:map.width * map.tilewidth, h:map.height * map.tileheight}
+		// console.log(this.worldBounds);
 		for (var i = 0; i < mapLayers.length; i++) {
+			if(mapLayers[i].name == 'Ways'){
+				for (var k = 0; k < mapLayers[i].objects.length; k++) {
+					let path = []
+					if(mapLayers[i].objects[k].visible){
+						let polyline = (mapLayers[i].objects[k].polyline);
+						for (var j = 0; j < polyline.length; j++) {
+							path.push(polyline[j].x);
+							path.push(polyline[j].y);
+						}
+						// console.log(mapLayers[i].objects[k]);
+
+						if(mapLayers[i].objects[k].name == 'pathDown1'){
+							console.log(path);
+							// let cut = 44;
+							// path.splice(cut, path.length -cut)
+							// this.scaleArrayPoints(path)
+							console.log(this.scaleArrayPoints(path, true));
+						}
+							// path.push(polyline[0].x);
+							// path.push(polyline[0].y);
+						config.wayPath.push(path)
+					}
+				}
+				// console.log(polyline);
+			}
 			if(mapLayers[i].name == 'WorldBounds'){
 				let polyline = (mapLayers[i].objects[0].polyline);
 				for (var j = 1; j < polyline.length; j++) {
@@ -52,14 +102,18 @@ export default class PrototypeScreen extends Screen{
 					config.worldBounds.push(polyline[j].y)
 				}
 			}
-			// console.log(mapLayers[i].name);
 			if(mapLayers[i].name.indexOf('Towers') !== -1){
 				let towers = mapLayers[i].objects;
-				// console.log(towers);
-				for (var j = 1; j < towers.length; j++) {
+				for (var j = 0; j < towers.length; j++) 
+				{
 					let tower = towers[j];
+					// console.log(tower.name);
 					config.towerList.push({name:tower.name, x:tower.x,y:tower.y,team:tower.properties.team});
 				}
+			}
+			if(mapLayers[i].name.indexOf('Hero') !== -1){
+				let hero = mapLayers[i].objects[0];
+				config.players.push({team:hero.properties.team, x:hero.x,y:hero.y, name:hero.name, type:hero.type});
 			}
 			if(mapLayers[i].name.indexOf('Nests') !== -1){
 				for (var j = 0; j < mapLayers[i].objects.length; j++) {
@@ -67,7 +121,8 @@ export default class PrototypeScreen extends Screen{
 					config.nestList.push({name:nest.name, x:nest.x, y:nest.y});
 				}
 			}
-			if(mapLayers[i].name.indexOf('Spawner') !== -1){
+			if(mapLayers[i].name.indexOf('Spawner') !== -1 && mapLayers[i].visible){
+				console.log(mapLayers[i]);
 				let spawers = mapLayers[i].objects;
 				let spwPosition = {x:0,y:0};
 				let spawnerObject = {pos:null, team:-1, waypoints:[]};
@@ -93,33 +148,72 @@ export default class PrototypeScreen extends Screen{
 						// }
 					}
 				}
-				// spawnerObject = {pos:spwPosition, team:data.propreties.team, waypoints:waypoints};
 				config.spawnerList.push(spawnerObject);
-				console.log(spawnerObject);
-				// for (var j = 1; j < towers.length; j++) {
-				// 	let tower = towers[j];
-				// 	config.towerList.push({name:tower.name, x:tower.x,y:tower.y,team:tower.properties.team});
-				// }
 			}
 
 		}
 
-
-
-
-
 		this.configGame();
 	}
 
+	destroyGame(){
+		for (var i = 0; i < this.spawnerList.length; i++) {
+			this.spawnerList[i].kill = true;
+		}
+		for (var i = 0; i < this.towerList.length; i++) {
+			this.towerList[i].kill = true;
+		}
+		for (var i = 0; i < this.nestList.length; i++) {
+			this.nestList[i].kill = true;
+		}
+		for (var i = 0; i < this.bulletList.length; i++) {
+			this.bulletList[i].kill = true;
+		}
+		for (var i = 0; i < this.enemyList.length; i++) {
+			this.enemyList[i].kill = true;
+		}
+
+		for (var i = 0; i < this.uiList.length; i++) {
+			this.uiList[i].kill = true;
+		}
+
+		this.cupcake.kill = true;
+
+		this.cleanContainer(this.gameContainer)
+		this.cleanContainer(this.entityContainer)
+		this.cleanContainer(this.floorContainer)
+		this.cleanContainer(this.UIContainer)
+
+		// while(this.gameContainer.children){
+		// 	this.gameContainer.removeChild(this.gameContainer.children[0]);
+		// }
+
+		// while(this.entityContainer.children){
+		// 	this.entityContainer.removeChild(this.entityContainer.children[0]);
+		// }
+
+		// while(this.floorContainer.children){
+		// 	this.floorContainer.removeChild(this.floorContainer.children[0]);
+		// }
+		// entityContainer
+		// for (var i = 0; i < this.entitiesList.length; i++) {
+		// 	this.entitiesList[i].kill = true;
+		// }
+	}
+	cleanContainer(container){
+		for (var i = container.children.length - 1; i >= 0; i--) {
+			container.removeChild(container.children[i]);
+		}
+	}
 	configGame(){
-		console.log('config');
+		// console.log('config');
 		// this.gameContainer.scale.set(0.3)
 
 		this.inputManager = new InputManager(this);
 		this.gameContainer = new PIXI.Container();
 		this.addChild(this.gameContainer);
 
-		this.worldBounds = {x:0,y:0, w:15000, h:6000}
+		
 		this.polyPts = this.scaleArrayPoints(config.worldBounds);
 
 		// this.scaleArrayPoints(this.polyPts)
@@ -131,6 +225,8 @@ export default class PrototypeScreen extends Screen{
 
 		this.gameContainer.addChild(worldBoundsGraphic)
 
+
+// console.log('way path', config.wayPath);
 		for (var i = config.wayPath.length - 1; i >= 0; i--) {
 			
 			let wayGraphic = new PIXI.Graphics();
@@ -138,8 +234,9 @@ export default class PrototypeScreen extends Screen{
 			wayGraphic.alpha = 0.1
 			wayGraphic.drawPolygon(this.scaleArrayPoints(config.wayPath[i]));
 			wayGraphic.endFill();
+			wayGraphic.cacheAsBitmap = true;
 
-			//this.gameContainer.addChild(wayGraphic)
+			this.gameContainer.addChild(wayGraphic)
 		}
 
 
@@ -152,89 +249,81 @@ export default class PrototypeScreen extends Screen{
 		this.entityContainer = new PIXI.Container();
 		this.gameContainer.addChild(this.entityContainer);
 
-		this.cupcake = new Cupcake(this, {x:config.playerPositions[0][1],y:config.playerPositions[0][2]}, 0);
+		let cupPos = this.scaleSinglePoint({x:config.players[0].x,y:config.players[0].y})
+
+		this.cupcake = new Cupcake(this, cupPos, config.players[0].team);
 		this.entityContainer.addChild(this.cupcake)
 		this.addOnUpdateList(this.cupcake)
 
 
-		this.enemyList = [];
-		this.environmentList = [];
-		this.bulletList = [];
-		this.uiList = [];
+		this.bomber = new Bomber(this, -1);
+		this.bomber.x = cupPos.x + 150
+		this.bomber.y = cupPos.y + 150
+		this.bomber.build()
+		this.bomber.setWaypoints([{x:cupPos.x + 150, y:cupPos.y + 150}])
+		this.entityContainer.addChild(this.bomber)
+		this.addOnUpdateList(this.bomber)
+		this.enemyList.push(this.bomber);
 
 
-
-		this.spawnerList = [];
 		for (var i = 0; i < config.spawnerList.length; i++) {
-			// let spawnerDataList = config.spawnerList[i];
-			// for (var k = spawnerDataList.length - 1; k >= 0; k--) {
-				var spawnerData = config.spawnerList[i];
-				
-				let spawner = new Spawner(this, spawnerData.team);
-				this.entityContainer.addChild(spawner)
-				this.addOnUpdateList(spawner)
-				this.spawnerList.push(spawner);
-				let tempPoint = this.scaleSinglePoint({x:spawnerData.pos.x,y:spawnerData.pos.y})
-				spawner.x = tempPoint.x
-				spawner.y = tempPoint.y
-				spawner.build();
-				this.setScales(spawner);
+			var spawnerData = config.spawnerList[i];
+			
+			let spawner = new Spawner(this, spawnerData.team);
+			this.entityContainer.addChild(spawner)
+			this.addOnUpdateList(spawner)
+			this.spawnerList.push(spawner);
+			let tempPoint = this.scaleSinglePoint({x:spawnerData.pos.x,y:spawnerData.pos.y})
+			spawner.x = tempPoint.x
+			spawner.y = tempPoint.y
+			spawner.build();
+			this.setScales(spawner);
 
-				for (var j = 1; j < spawnerData.waypoints.length; j++) {
-					tempPoint = this.scaleSinglePoint({x:spawnerData.waypoints[j].x,y:spawnerData.waypoints[j].y})
-					spawner.addWaypoint(tempPoint.x,tempPoint.y);
-				}
-			// }
+			for (var j = 1; j < spawnerData.waypoints.length; j++) {
+				tempPoint = this.scaleSinglePoint({x:spawnerData.waypoints[j].x,y:spawnerData.waypoints[j].y})
+				spawner.addWaypoint(tempPoint.x,tempPoint.y);
+			}
 		}
 
 		this.towerList = [];
-		console.log(config.towerList);
 		for (var i = 0; i < config.towerList.length; i++) {
-			// for (var j = 0; j < config.towerList[i].length; j++) {
-				var towerData = config.towerList[i];
-				let tower = new Tower(this, towerData.team);
-				tower.name = towerData.name;
-				this.entityContainer.addChild(tower)
-				this.addOnUpdateList(tower)
-				this.towerList.push(tower);
+			var towerData = config.towerList[i];
+			let tower = new Tower(this, towerData.team);
+			tower.name = towerData.name;
+			this.entityContainer.addChild(tower)
+			this.addOnUpdateList(tower)
+			this.towerList.push(tower);
 
-				let tempPoint = this.scaleSinglePoint({x:towerData.x,y:towerData.y})
+			let tempPoint = this.scaleSinglePoint({x:towerData.x,y:towerData.y})
 
-				tower.x = tempPoint.x;
-				tower.y = tempPoint.y;
+			tower.x = tempPoint.x;
+			tower.y = tempPoint.y;
 
-				this.setScales(tower);
+			this.setScales(tower);
 
-				tower.build();
-			// }
+			tower.build();
 		}
 
 
 		this.nestList = [];
-		// for (var i = 0; i < config.nestList.length; i++) {
-			// console.log(config.nestList[0]);
-			for (var j = 0; j < config.nestList.length; j++) {
-				var nestData = config.nestList[j];
-				// console.log('nestdata -- ',config.nestList[0][j]);
-				// console.log('nestdata',nestData);
+		for (var j = 0; j < config.nestList.length; j++) {
+			var nestData = config.nestList[j];
 
-				let nest = new Nest(this);
-				nest.name = nestData.name;
+			let nest = new Nest(this);
+			nest.name = nestData.name;
 
-				this.entityContainer.addChild(nest)
-				this.addOnUpdateList(nest)
-				this.nestList.push(nest);
+			this.entityContainer.addChild(nest)
+			this.addOnUpdateList(nest)
+			this.nestList.push(nest);
 
-				let tempPoint = this.scaleSinglePoint({x:nestData.x,y:nestData.y})
+			let tempPoint = this.scaleSinglePoint({x:nestData.x,y:nestData.y})
 
-				nest.x = tempPoint.x;
-				nest.y = tempPoint.y;
-				// console.log('nest',nest.x,nest.y);
-				this.setScales(nest);
+			nest.x = tempPoint.x;
+			nest.y = tempPoint.y;
+			this.setScales(nest);
 
-				nest.build();
-			}
-		// }
+			nest.build();
+		}
 
 		
 		// for (var i = 0; i < config.environmentList.length; i++) {
@@ -287,8 +376,10 @@ export default class PrototypeScreen extends Screen{
 
 	}
 	
-	gameOver(){
+	gameOver(winner){
+		this.oldStats += 'time: '+this.formatDate(this.timer)+ ' - team:'+ winner +'\n';
 		this.updateable = false;
+		this.startLoad();
 	}
 	updateUI(delta){
 		for (var i = 0; i < this.uiList.length; i++) {
@@ -319,7 +410,12 @@ export default class PrototypeScreen extends Screen{
 		this.addChild(this.UIContainer);
 
 		this.timerLabel = new PIXI.Text('0');
-		this.addChild(this.timerLabel);
+		this.UIContainer.addChild(this.timerLabel);
+
+		this.statsLabel = new PIXI.Text(this.oldStats);
+		this.UIContainer.addChild(this.statsLabel);
+		this.statsLabel.scale.set(0.4);
+		this.statsLabel.x = config.width / 2;
 
 		let t1acc = 0;
 		let t2acc = 0;
@@ -328,7 +424,7 @@ export default class PrototypeScreen extends Screen{
 			let tower = this.towerList[i]
 			let uiTower = new UITower(this, tower);
 			this.UIContainer.addChild(uiTower);
-			uiTower.scale.set(0.6)
+			uiTower.scale.set(0.4)
 			if(tower.team == 0){
 				t1acc ++
 				acc = t1acc;
@@ -339,7 +435,7 @@ export default class PrototypeScreen extends Screen{
 				uiTower.scale.x *= -1
 			}
 
-			uiTower.y = acc * 75;
+			uiTower.y = acc * 55;
 
 			this.uiList.push(uiTower);
 		}
@@ -380,7 +476,9 @@ export default class PrototypeScreen extends Screen{
 			this.spawnerList[i].start();
 		}
 
-		this.camera.zoom(0.05, 1, 0.2);
+		// console.log();
+		let wholeScale = (config.width / 2) / this.worldBounds.w
+		this.camera.zoom(wholeScale, 1, 0.5);
 		// this.camera.zoom(0.35, 1, 0.2);
 		this.camera.follow(this.cupcake);
 
@@ -647,7 +745,34 @@ export default class PrototypeScreen extends Screen{
 	 	return collideList
 	 }
 
-	 getMapDistanceFactor(y){
+	 getMapWidthDistanceFactor(x, y, debug){
+
+	 	//////////////////////////////////////////////TA ROLANDO com alguns resultados estranhos ainda
+	 	// normalmente no calculo de alguns paths
+	 	let w = this.worldBounds.w / 2;
+
+	 	let value = 0;
+
+	 	let hFactor = this.getMapHeightDistanceFactor(y)
+	 	value = Math.abs(utils.distance(x,0,w,0) / w) * -1
+
+	 	if(x >= w){
+	 		value *= -1
+	 		//hFactor = 1-hFactor
+	 	}
+	 	let inc = 0.7
+	 	// value =  value * 0.5 + (0.5 * (hFactor * value))
+	 	value =  value * inc 
+	 	value *= hFactor
+	 	// value =  value * inc + ((hFactor * (value)))
+
+	 	if(debug){
+	 		console.log('------',x, y, value, hFactor);
+	 	}
+	 	return value
+	 }
+
+	 getMapHeightDistanceFactor(y){
 	 	let h = this.worldBounds.h;
 
 	 	let value = 1-utils.distance(0,y,0,h) / h +  0.3
@@ -656,15 +781,29 @@ export default class PrototypeScreen extends Screen{
 	 	return value
 	 }
 	 scaleSinglePoint(point){
-	 	let rpoint = {x:point.x,y:point.y * this.getMapDistanceFactor(point.y)};
+	 	let rpoint = {x:point.x+ (this.worldBounds.w*0.6* this.getMapWidthDistanceFactor(point.x, point.y)),y:point.y * this.getMapHeightDistanceFactor(point.y)};
+	 	
 	 	return rpoint
 	 }
 
-	 scaleArrayPoints(arr){
+	 scaleArrayPoints(arr, debug){
 	 	let rArr = [];
 	 	for (var i = 1; i < arr.length; i+=2) {	
-		 	rArr.push(arr[i-1])
-		 	rArr.push(arr[i] * this.getMapDistanceFactor(arr[i]))
+		 	if(debug){
+		 		console.log(arr[i-1], this.worldBounds.w*0.6, this.getMapWidthDistanceFactor(arr[i-1], arr[i], debug));
+		 	}
+		 	rArr.push(
+		 		Math.floor(
+		 			arr[i-1] + 
+		 			(
+		 				this.worldBounds.w*0.6* this.getMapWidthDistanceFactor(arr[i-1], arr[i]))
+		 			)
+		 		)
+		 	rArr.push(
+		 		Math.floor(
+		 			arr[i] * this.getMapHeightDistanceFactor(arr[i])
+		 			)
+		 		)
 	 	}
 
 	 	return rArr
@@ -692,6 +831,7 @@ export default class PrototypeScreen extends Screen{
 	}
 	addBullet(pos, vel, life, power){
 		let bullet = new StandardBullet(this, vel, life, power);
+		bullet.build();
 		this.entityContainer.addChild(bullet)
 		this.addOnUpdateList(bullet)
 		bullet.position.x = pos.x
@@ -702,8 +842,10 @@ export default class PrototypeScreen extends Screen{
 		this.setScales(bullet);
 
 	}
-	addTowerBullet(pos, vel, life, power, team){
-		let bullet = new TowerBullet(this, vel, life, power, team);
+	addTowerBullet(pos, vel, life, power, team, src){
+		console.log(src);
+		let bullet = new TowerBullet(this, vel, life, power, team, src);
+		bullet.build();
 		this.entityContainer.addChild(bullet)
 		this.addOnUpdateList(bullet)
 		bullet.position.x = pos.x
@@ -716,13 +858,13 @@ export default class PrototypeScreen extends Screen{
 	}
 	updateKeyDown(){
 		this.speedUpValue = 1;
-		window.game.frameskip = 1;
+		// window.game.frameskip = 1;
 		for (var i = 0; i < this.inputManager.keys.length; i++) {
 			if(this.inputManager.keys[i] == 'action1'){
 				//console.log('space');
 
 				
-				
+				//this.gameOver()
 				this.lastAction = this.inputManager.keys[i];
 				this.cupcake.attack();
 			}
@@ -757,7 +899,17 @@ export default class PrototypeScreen extends Screen{
 			if(this.inputManager.keys[i] == 'action7'){
 				//console.log('space');
 				this.lastAction = this.inputManager.keys[i];
-				window.game.frameskip = 12;
+				if(window.game.frameskip == 1){
+					window.game.frameskip = 15;
+				}else{
+					window.game.frameskip = 1
+				}
+				//this.speedUpValue = 10;
+				// this.cupcake.die();
+			}
+			if(this.inputManager.keys[i] == 'action8'){
+				//console.log('space');
+				this.gameOver();
 				//this.speedUpValue = 10;
 				// this.cupcake.die();
 			}

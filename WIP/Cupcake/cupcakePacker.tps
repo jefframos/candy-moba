@@ -150,7 +150,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../assets/Cupcake/cupcake{n}.json</filename>
+                <filename>../../assets/Cupcake/cupcakeMini{n}.json</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -175,7 +175,7 @@
         <key>globalSpriteSettings</key>
         <struct type="SpriteSettings">
             <key>scale</key>
-            <double>1</double>
+            <double>0.5</double>
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>

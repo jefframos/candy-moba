@@ -108,7 +108,7 @@ export default class Spawner extends Entity {
         if(this.currentWave >= this.waves[this.currentWave2].length){
             this.actionTimer = this.waves[this.currentWave2][0];
 
-            console.log('next Wave in', this.actionTimer);
+            // console.log('next Wave in', this.actionTimer);
             // this.actionTimer = this.spawnTime;
             this.action = this.startSpawn;
             return

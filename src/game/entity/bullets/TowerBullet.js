@@ -5,18 +5,24 @@ import Entity  from './../Entity';
 import StandardBullet  from './StandardBullet';
 export default class TowerBullet extends StandardBullet {
 
-    constructor(game, velocity, lifeTime, power, team) {
+    constructor(game, velocity, lifeTime, power, team, src) {
 
-        super(game,velocity,lifeTime);
+        super(game,velocity,lifeTime, src);
 
         
+        this.game = game;
+        this.lifeTime = lifeTime;
+        this.velocity = velocity;
         this.power = power;
+        this.src = src;
+
+        
         this.team = team;
 
-        // this.build();
     }
 
-    buid(){
+    build(){
+
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
         this.roundBase.beginFill(0);
@@ -29,18 +35,17 @@ export default class TowerBullet extends StandardBullet {
         this.addChild(this.base);
         this.animationContainer = new PIXI.Container();
         this.animationContainer.x = 0
-        this.animationContainer.y = -135
+        this.animationContainer.y = -75
         this.addChild(this.animationContainer);
 
         // this.sprite = new PIXI.Sprite(PIXI.Texture.fromFrame('cherry.png'))    
         // this.sprite.anchor.set(0.6);
 
-        let idCherry = Math.floor(Math.random()*2) + 1;
 
         this.animationModel = [];
         this.animationModel.push({
             label:'idle',
-            src:'cherryBullet'+idCherry+'00',
+            src:this.src+'00',
             totalFrames:1,
             startFrame:0,
             animationSpeed:0.4,
@@ -52,7 +57,7 @@ export default class TowerBullet extends StandardBullet {
 
         this.animationModel.push({
             label:'explode',
-            src:'cherryBullet'+idCherry+'00',
+            src:this.src+'00',
             totalFrames:6,
             startFrame:0,
             animationSpeed:0.4,
@@ -70,7 +75,7 @@ export default class TowerBullet extends StandardBullet {
 
         this.standardScale = 1;
         this.speedScale = 1;
-        this.starterScale = 0.5;
+        this.starterScale = 2;
         this.gravity = 3800;
         // this.scale.set(0);
         this.kill2 = false
@@ -93,6 +98,13 @@ export default class TowerBullet extends StandardBullet {
             }
         }
         return false
+    }
+    update ( delta ) {
+        super.update(delta);
+
+        if(this.animationContainer.y < 0){
+            this.animationContainer.y += 100 * delta;
+        }
     }
 
 }

@@ -15,6 +15,7 @@ export default {
 ["player0",6825.1,952.5],
 
 ] ,
+players:[],
 nestList:[
 ["nestDown_100_1",2014.45,2930],
 ["nestDown_200_2",3721.3,2656.25],

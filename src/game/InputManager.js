@@ -23,15 +23,33 @@ export default class InputManager{
 	 	this.currentGamepad = -1;
 	 	this.gamePadType = -1;
 		
+
+		// 'a',
+  //           'b',
+  //           'x',
+  //           'y',
+  //           'leftTop',
+  //           'rightTop',
+  //           'leftTrigger',
+  //           'rightTrigger',
+  //           'select',
+  //           'start',
+  //           'leftStick',
+  //           'rightStick',
+  //           'dpadUp',
+  //           'dpadDown',
+  //           'dpadLeft',
+  //           'dpadRight'
+
 	 	//8bitdo, snes, xbox
 	 	this.gamepadsMaxButtons = [16,10,12];
 		this.gamepadMap = [];
 		this.gamepadMap.push({label:'start', id:[11,9,9]});
 		this.gamepadMap.push({label:'select', id:[10,8,8]});
-		this.gamepadMap.push({label:'y', id:[4,3,2]});
-		this.gamepadMap.push({label:'b', id:[1,2,0]});
-		this.gamepadMap.push({label:'a', id:[0,1,1]});
-		this.gamepadMap.push({label:'x', id:[3,0,3]});
+		this.gamepadMap.push({label:'y', id:[4,3,3]});
+		this.gamepadMap.push({label:'b', id:[1,2,1]});
+		this.gamepadMap.push({label:'a', id:[0,1,0]});
+		this.gamepadMap.push({label:'x', id:[3,0,2]});
 		this.gamepadMap.push({label:'r', id:[7,6,5]});
 		this.gamepadMap.push({label:'l', id:[6,4,4]});
 		this.gamepadMap.push({label:'l2', id:[8,7,7]});
@@ -156,7 +174,7 @@ export default class InputManager{
 		// }
 
 
-		 // this.debugButtons();
+		//this.debugButtons();
 
 		if(navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('y', this.gamePadType)].value){
 			this.act('action1');
@@ -292,8 +310,11 @@ export default class InputManager{
 		}else if(e.keyCode === 16 || e.keyCode === 16){
 			this.addKey('action7')
 			// this.usingGamepad = false;
+		}else if(e.keyCode === 27){
+			this.addKey('action8')
+			// this.usingGamepad = false;
 		}
-		// console.log(e.keyCode);
+		 console.log(e.keyCode);
 		// if(!this.keys){
 		// 	this.usingGamepad = true;
 		// }107 187+ 189 109 -
@@ -405,6 +426,10 @@ export default class InputManager{
 		}else if(e.keyCode === 16 || e.keyCode === 16){
 			this.removeKey('action7')
 			key = 'action7';
+			// this.usingGamepad = false;
+		}else if(e.keyCode === 27){
+			this.removeKey('action8')
+			key = 'action8';
 			// this.usingGamepad = false;
 		}
 

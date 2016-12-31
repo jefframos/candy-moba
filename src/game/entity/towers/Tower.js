@@ -48,12 +48,12 @@ export default class Tower extends Entity {
     }
 
      reset() {
-        this.addLifeBar({x:20, y:-180}, {w:200, h:15}, this.team == 0?0x0000FF:0x00FF00);
+        this.addLifeBar({x:20, y:-280}, {w:200, h:10}, this.team == 0?0x0000FF:0x00FF00);
 
         this.waitingNext = 5 * Math.random() + 1;
         this.sinScale = Math.random();
-        this.maxLife = 5000;
-        this.life = 5000;
+        this.maxLife = 3000;
+        this.life = this.maxLife;
 
         this.enemiesList = [];
         // this.build();
@@ -66,7 +66,7 @@ export default class Tower extends Entity {
 
         this.attacking = false;
         this.attackTimer = -1;
-        this.attackSpeed = 1.5;
+        this.attackSpeed = 2.5;
 
         
 
@@ -76,7 +76,7 @@ export default class Tower extends Entity {
         this.removeLifeBar();
 
         if(this.finalBase){
-            this.game.gameOver();
+            this.game.gameOver(this.team==0?1:0);
         }
         this.killed = true;
         this.updateable = false;
@@ -140,27 +140,97 @@ export default class Tower extends Entity {
     }
 
     build ( ) {
+
+        // console.log(this.name);
         this.finalBase = false;
         if(this.name.indexOf('Base') !== -1){
             this.finalBase = true;
+
+            // console.log('FINAL BASE');
         }
         // console.log(this.name, this.finalBase);
         let team = this.team+1// Math.floor(Math.random()*2) + 1;
         // console.log(team);
+        if(team == 1){
         this.animationModel = [];
-         this.animationModel.push({
-            label:'static',
-            src:'tower'+team+'/idle/tower',
-            totalFrames:1,
-            startFrame:0,
-            animationSpeed:0.4,
-            movieClip:null,
-            position:{x:10,y:0},
-            anchor:{x:0.5,y:1},
-            loop:false,
-            haveCallback:false,
-            singleFrame:true,
-        });
+            this.animationModel.push({
+                label:'idle',
+                src:'tower'+team+'/idle/tower',
+                totalFrames:1,
+                startFrame:0,
+                animationSpeed:0.4,
+                movieClip:null,
+                position:{x:10,y:0},
+                anchor:{x:0.5,y:1},
+                loop:false,
+                haveCallback:false,
+                singleFrame:true
+            });
+            this.animationModel.push({
+                label:'attack',
+                src:'tower'+team+'/idle/tower',
+                totalFrames:1,
+                startFrame:0,
+                animationSpeed:0.4,
+                movieClip:null,
+                position:{x:10,y:0},
+                anchor:{x:0.5,y:1},
+                loop:false,
+                haveCallback:true,
+                singleFrame:true
+            });
+            this.animationModel.push({
+                label:'attackOut',
+                src:'tower'+team+'/idle/tower',
+                totalFrames:1,
+                startFrame:0,
+                animationSpeed:0.4,
+                movieClip:null,
+                position:{x:10,y:0},
+                anchor:{x:0.5,y:1},
+                loop:false,
+                haveCallback:true,
+                singleFrame:true
+            });
+        }else{
+            this.animationModel = [];
+            this.animationModel.push({
+                label:'idle',
+                src:'vegetables/tower1/idle/idle00',
+                totalFrames:16,
+                startFrame:0,
+                animationSpeed:0.4,
+                movieClip:null,
+                position:{x:10,y:0},
+                anchor:{x:0.5,y:1},
+                loop:true,
+                // haveCallback:false
+            });
+            this.animationModel.push({
+                label:'attack',
+                src:'vegetables/tower1/attack/attack00',
+                totalFrames:8,
+                startFrame:0,
+                animationSpeed:0.4,
+                movieClip:null,
+                position:{x:10,y:0},
+                anchor:{x:0.5,y:1},
+                loop:false,
+                haveCallback:true
+            });
+            this.animationModel.push({
+                label:'attackOut',
+                src:'vegetables/tower1/attack/attack00',
+                totalFrames:15,
+                startFrame:8,
+                animationSpeed:0.3,
+                movieClip:null,
+                position:{x:10,y:0},
+                anchor:{x:0.5,y:1},
+                loop:false,
+                haveCallback:true
+            });
+        }
         // this.animationModel.push({
         //     label:'idle',
         //     src:'pine'+idRock+'00',
@@ -175,11 +245,11 @@ export default class Tower extends Entity {
         // });
 
         this.animationManager = new AnimationManager(this.animationModel, this.animationContainer);       
-
+        this.animationManager.finishCallback = this.finishAnimation.bind(this);
 
         this.animationManager.hideAll();
         this.animationManager.stopAll();
-        this.animationManager.changeState('static');
+        this.animationManager.changeState('idle');
 
         this.collidable = true;
 
@@ -201,21 +271,47 @@ export default class Tower extends Entity {
     }
     
 
-    attack (entity) {
-        if(this.team == entity.team){
+    prepareAttack (entity) {
+        if(this.animationManager.state == 'attack'){
+            return
+        }
+        // console.log('PREPAREINGGANGNA AGTTACK');
+        this.currentTarget = entity
+
+        // console.log(this.animationManager.state);
+
+        this.animationManager.changeState('attack', true);
+    }
+    attack () {
+        if(!this.currentTarget || this.team == this.currentTarget.team){
             return
         }
         this.attackTimer = this.attackSpeed;
 
-        let bulletPosition = {x:this.x, y: this.y - this.getRadius()};
+        let bulletPosition = {x:this.x, y: this.y };
 
-        let angle = Math.atan2(entity.y - bulletPosition.y, entity.x - bulletPosition.x);
+        let angle = Math.atan2(this.currentTarget.y - bulletPosition.y, this.currentTarget.x - bulletPosition.x);
 
-        let bulletSpeed = {x:Math.cos(angle) * 900, y:Math.sin(angle) * 900}
+        let bulletSpeed = {x:Math.cos(angle) * 1200, y:Math.sin(angle) * 1200}
 
         let power = 60;
 
-        this.game.addTowerBullet(bulletPosition, bulletSpeed, 0.5, power, this.team);
+        let id = Math.floor(Math.random()*2)+1;
+        this.game.addTowerBullet(bulletPosition, bulletSpeed, 0.5, power, this.team, 'vegetables/tower1/bullet'+id+'/bullet'+id);
+
+        this.currentTarget = null
+    }
+
+    finishAnimation ( ) {
+        if(this.animationManager.state == 'attack'){
+            this.attack();
+            this.animationManager.changeState('attackOut', true);
+            return
+        }
+        if(this.animationManager.state == 'attackOut'){
+            this.animationManager.ableToChangeAnimation = true;
+            this.animationManager.changeState('idle');
+        }
     }
 
     update ( delta ) {
@@ -223,6 +319,8 @@ export default class Tower extends Entity {
             return
         }
         super.update(delta);
+
+        this.animationManager.updateAnimations();
 
         if(this.attackTimer > 0){
             this.attackTimer -= delta;
@@ -238,9 +336,9 @@ export default class Tower extends Entity {
                 //console.log(this.name, entityCollisions);
                 // console.log(entityCollisions.length);
                 if(entityCollisions.length > 1 && entityCollisions[0].entity.type == 'hero'){
-                    this.attack(entityCollisions[1].entity);
+                    this.prepareAttack(entityCollisions[1].entity);
                 }else{
-                    this.attack(entityCollisions[0].entity);
+                    this.prepareAttack(entityCollisions[0].entity);
                 }
             }
         }

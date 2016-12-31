@@ -46,8 +46,8 @@ export default class Cupcake extends Entity {
         }
 
         this.heroModel = new EntityModel('jose',  'thief', stats, modifiers, null, null)
-
-        this.heroModel.log()
+        this.heroModel.entity = this;
+        // this.heroModel.log()
 
 
         
@@ -100,7 +100,258 @@ export default class Cupcake extends Entity {
         this.animationContainer = new PIXI.Container();
         this.animationContainer.x = 25
         this.addChild(this.animationContainer);
-        {
+        // {
+        //     let type = 'cupcake';
+        //     this.animationModel = [];
+        //     this.animationModel.push({
+        //         label:'idle',
+        //         src:type+'/idle/idle00',
+        //         totalFrames:14,
+        //         startFrame:0,
+        //         animationSpeed:0.4,
+        //         movieClip:null,
+        //         position:{x:0,y:0},
+        //         anchor:{x:0.5,y:1}
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'run',
+        //         src:type+'/run/run00',
+        //         totalFrames:24,
+        //         startFrame:8,
+        //         animationSpeed:0.4,
+        //         movieClip:null,
+        //         position:{x:-15,y:4},
+        //         anchor:{x:0.5,y:1}
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'runFast',
+        //         src:type+'/speedUp/speedUp00',
+        //         totalFrames:24,
+        //         startFrame:8,
+        //         animationSpeed:0.4,
+        //         movieClip:null,
+        //         position:{x:-15,y:4},
+        //         anchor:{x:0.5,y:1}
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'meleeAttack1',
+        //         src:type+'/meleeAttack1/meleeAttack100',
+        //         totalFrames:16,
+        //         startFrame:7,
+        //         animationSpeed:0.65,
+        //         movieClip:null,
+        //         position:{x:43,y:0},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'meleeAttack2',
+        //         src:type+'/meleeAttack2/meleeAttack200',
+        //         totalFrames:16,
+        //         startFrame:7,
+        //         animationSpeed:0.65,
+        //         movieClip:null,
+        //         position:{x:43,y:0},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'meleeAttack3',
+        //         src:type+'/meleeAttack3/meleeAttack300',
+        //         totalFrames:28,
+        //         startFrame:12,
+        //         animationSpeed:0.65,
+        //         movieClip:null,
+        //         position:{x:83,y:0},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'meleeAttack4',
+        //         src:type+'/meleeAttack4/meleeAttack400',
+        //         totalFrames:38,
+        //         startFrame:16,
+        //         animationSpeed:0.7,
+        //         movieClip:null,
+        //         position:{x:50,y:5},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'jumpIn',
+        //         src:type+'/jump/jump00',
+        //         totalFrames:7,
+        //         startFrame:0,
+        //         animationSpeed:0.6,
+        //         movieClip:null,
+        //         position:{x:-10,y:0},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         // haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'jumpFalling',
+        //         src:type+'/jump/jump00',
+        //         totalFrames:13,
+        //         startFrame:7,
+        //         animationSpeed:0.3,
+        //         movieClip:null,
+        //         position:{x:-10,y:0},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         // haveCallback:true,
+        //     });
+
+
+        //     this.animationModel.push({
+        //         label:'jumpOut',
+        //         src:type+'/jump/jump00',
+        //         totalFrames:20,
+        //         startFrame:13,
+        //         animationSpeed:0.3,
+        //         movieClip:null,
+        //         position:{x:-10,y:0},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'rangeAttack',
+        //         src:type+'/rangeAttack1/rangeAttack100',
+        //         totalFrames:15,
+        //         startFrame:0,
+        //         animationSpeed:0.65,
+        //         movieClip:null,
+        //         position:{x:4,y:2},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'rangeAttackEnd',
+        //         src:type+'/rangeAttack1/rangeAttack100',
+        //         totalFrames:33,
+        //         startFrame:15,
+        //         animationSpeed:0.65,
+        //         movieClip:null,
+        //         position:{x:4,y:2},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'areaAttack',
+        //         src:type+'/areaAttack1/areaAttack100',
+        //         totalFrames:30,
+        //         startFrame:0,
+        //         animationSpeed:0.65,
+        //         movieClip:null,
+        //         position:{x:-15,y:36},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'killBack',
+        //         src:type+'/kill1/kill100',
+        //         totalFrames:22,
+        //         startFrame:0,
+        //         animationSpeed:0.65,
+        //         movieClip:null,
+        //         position:{x:-190,y:15},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'revive',
+        //         src:type+'/areaAttack1/areaAttack100',
+        //         totalFrames:30,
+        //         startFrame:23,
+        //         animationSpeed:0.65,
+        //         movieClip:null,
+        //         position:{x:-15,y:36},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'speedAttack',
+        //         src:type+'/speedAttack/speedAttack00',
+        //         totalFrames:8,
+        //         startFrame:0,
+        //         animationSpeed:0.65,
+        //         movieClip:null,
+        //         position:{x:-40,y:6},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'speedAttackLoop',
+        //         src:type+'/speedAttack/speedAttack00',
+        //         totalFrames:8,
+        //         startFrame:7,
+        //         animationSpeed:0.5,
+        //         movieClip:null,
+        //         position:{x:-40,y:6},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'speedAttackEnd',
+        //         src:type+'/speedAttack/speedAttack00',
+        //         totalFrames:14,
+        //         startFrame:8,
+        //         animationSpeed:0.65,
+        //         movieClip:null,
+        //         position:{x:-40,y:6},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+        //     this.animationModel.push({
+        //         label:'hit1',
+        //         src:type+'/hurt1/hurt100',
+        //         totalFrames:18,
+        //         startFrame:0,
+        //         animationSpeed:0.65,
+        //         movieClip:null,
+        //         position:{x:-35,y:4},
+        //         anchor:{x:0.5,y:1},
+        //         loop:false,
+        //         haveCallback:true,
+        //     });
+
+
+        //     this.animationManager = new AnimationManager(this.animationModel, this.animationContainer)
+        //     this.animationManager.finishCallback = this.finishAnimation.bind(this);
+        //     this.animationManager.startCallback = this.startAnimation.bind(this);
+        // }
+
+
+                {
             let type = 'cupcake';
             this.animationModel = [];
             this.animationModel.push({
@@ -345,10 +596,16 @@ export default class Cupcake extends Entity {
             });
 
 
+            for (var i = 0; i < this.animationModel.length; i++) {
+                this.animationModel[i].position.x *= 0.5
+                this.animationModel[i].position.y *= 0.5
+            }
+
             this.animationManager = new AnimationManager(this.animationModel, this.animationContainer)
             this.animationManager.finishCallback = this.finishAnimation.bind(this);
             this.animationManager.startCallback = this.startAnimation.bind(this);
         }
+
 
         let limits={
             speed:{
@@ -373,6 +630,7 @@ export default class Cupcake extends Entity {
             hitFeedback:0.2,
             comboStandardTimer:0.8,
             invencibleTimer:0.1,
+            regen:20,
         }
         this.side = 1; 
         this.meleeComboList = ['meleeAttack1','meleeAttack2','meleeAttack3','meleeAttack4']
@@ -433,7 +691,7 @@ export default class Cupcake extends Entity {
 
 
         this.comboTimer = 0;
-        this.starterScale = 0.5;// 0.5;
+        this.starterScale = 1;// 0.5;
         this.standardScale = this.starterScale;
         this.speedFactor = 1;
 
@@ -500,6 +758,14 @@ export default class Cupcake extends Entity {
         let animModel = this.animationManager.getAnimation('runFast');
         animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
     }
+    hitEnemy(entity, demage) {
+        let collisionResult = entity.hit(this.heroModel.getDemage())
+        console.log(collisionResult);
+        if(collisionResult == 'DEAD'){
+            this.heroModel.updateXp(entity.enemyModel.xp)
+        }
+        return collisionResult
+    }
     areaAttackCollision() {
         this.areaAttackTimer = -1;
         let collisionList = this.game.getExternalColisionList(this,'enemy', true);
@@ -507,7 +773,8 @@ export default class Cupcake extends Entity {
             for (var i = 0; i < collisionList.length; i++) {
                 // if(collisionList[i].front || collisionList[i].back){
                 collisionList[i].entity.side = this.side * -1;
-                collisionList[i].entity.hit(2)
+                this.hitEnemy(collisionList[i].entity, this.heroModel.getDemage())
+                
                 // }
             }
         }
@@ -518,9 +785,10 @@ export default class Cupcake extends Entity {
             for (var i = 0; i < collisionList.length; i++) {
                 //if(collisionList[i].right || collisionList[i].left){
                     collisionList[i].entity.side = this.side * -1;
-                    if(collisionList[i].entity.hit(0.5)){
-                        return true
-                    }
+                    this.hitEnemy(collisionList[i].entity, this.heroModel.getDemage())
+                    // if(collisionList[i].entity.hit(this.heroModel.getDemage())){
+                    //     return true
+                    // }
                 //}
             }
         }
@@ -533,7 +801,7 @@ export default class Cupcake extends Entity {
                 if(collisionList[i].right || collisionList[i].left){
                     collisionList[i].entity.side = this.side * -1;
                     console.log(this.heroModel.getDemage());
-                    if(collisionList[i].entity.hit(this.heroModel.getDemage())){
+                    if(this.hitEnemy(collisionList[i].entity, this.heroModel.getDemage())){
                         return true
                     }
                 }
@@ -841,6 +1109,12 @@ export default class Cupcake extends Entity {
         }
     }
 
+    regen (delta) {
+        this.life += this.dynamicModel.regen * delta;
+        if(this.life > this.maxLife){
+            this.life = this.maxLife
+        }
+    }
     updateBaseColor ( ) {
         if(this.hitting){
             this.roundBase.tint = 0xFF0000;
@@ -848,7 +1122,12 @@ export default class Cupcake extends Entity {
             this.roundBase.tint = 0;
         }
     }
-  
+    levelUp ( ) {
+        console.log('LEVEL UP', this.heroModel.level);
+    }
+    updateXP ( xp ) {
+        console.log('updateXP', xp);
+    }
     update ( delta ) {
 
         this.animationManager.updateAnimations();
@@ -858,6 +1137,8 @@ export default class Cupcake extends Entity {
         if(this.dying){
             return;
         }
+
+        this.regen(delta)
         // console.log(this.invencible);
         if(this.invencible >= 0){
             this.invencible -= delta;

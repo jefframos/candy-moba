@@ -223,6 +223,109 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">vegetables/tower1/attack/attack0001.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0002.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0003.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0004.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0005.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0006.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>134,137,267,274</rect>
+                <key>scale9Paddings</key>
+                <rect>134,137,267,274</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">vegetables/tower1/attack/attack0007.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0008.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0009.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0010.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0011.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0012.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0013.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0014.png</key>
+            <key type="filename">vegetables/tower1/attack/attack0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>60,61,119,122</rect>
+                <key>scale9Paddings</key>
+                <rect>60,61,119,122</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">vegetables/tower1/bullet1/bullet10001.png</key>
+            <key type="filename">vegetables/tower1/bullet1/bullet10002.png</key>
+            <key type="filename">vegetables/tower1/bullet1/bullet10003.png</key>
+            <key type="filename">vegetables/tower1/bullet1/bullet10004.png</key>
+            <key type="filename">vegetables/tower1/bullet1/bullet10005.png</key>
+            <key type="filename">vegetables/tower1/bullet1/bullet10006.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>17,9,35,19</rect>
+                <key>scale9Paddings</key>
+                <rect>17,9,35,19</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">vegetables/tower1/bullet2/bullet20001.png</key>
+            <key type="filename">vegetables/tower1/bullet2/bullet20002.png</key>
+            <key type="filename">vegetables/tower1/bullet2/bullet20003.png</key>
+            <key type="filename">vegetables/tower1/bullet2/bullet20004.png</key>
+            <key type="filename">vegetables/tower1/bullet2/bullet20005.png</key>
+            <key type="filename">vegetables/tower1/bullet2/bullet20006.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>15,9,30,17</rect>
+                <key>scale9Paddings</key>
+                <rect>15,9,30,17</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">vegetables/tower1/idle/idle0001.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0002.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0003.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0004.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0005.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0006.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0007.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0008.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0009.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0010.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0011.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0012.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0013.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0014.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0015.png</key>
+            <key type="filename">vegetables/tower1/idle/idle0016.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>133,137,267,274</rect>
+                <key>scale9Paddings</key>
+                <rect>133,137,267,274</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
         </map>
         <key>fileList</key>
         <array>

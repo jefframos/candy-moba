@@ -4,7 +4,7 @@ import AnimationManager  from './../utils/AnimationManager';
 import Entity  from './../Entity';
 export default class StandardBullet extends Entity {
 
-    constructor(game, velocity, lifeTime, power) {
+    constructor(game, velocity, lifeTime, power, src) {
 
         super();
 
@@ -12,8 +12,13 @@ export default class StandardBullet extends Entity {
         this.lifeTime = lifeTime;
         this.velocity = velocity;
         this.power = power;
+        this.src = src;
 
-        this.build();
+        
+        this.disapearTimerMax = 20;
+        this.disapearTimer = this.disapearTimerMax;
+        this.disapearing = false;
+        // this.build();
         
     }
     build(){
@@ -82,9 +87,6 @@ export default class StandardBullet extends Entity {
         this.radius = 10;
         this.externalRadius = 0;
 
-        this.disapearTimerMax = 20;
-        this.disapearTimer = this.disapearTimerMax;
-        this.disapearing = false;
     }
 
     bulletAttackCollision() {

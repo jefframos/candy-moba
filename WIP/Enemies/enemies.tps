@@ -411,6 +411,141 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">Chilli/attack/attack0001.png</key>
+            <key type="filename">Chilli/attack/attack0002.png</key>
+            <key type="filename">Chilli/attack/attack0003.png</key>
+            <key type="filename">Chilli/attack/attack0004.png</key>
+            <key type="filename">Chilli/attack/attack0005.png</key>
+            <key type="filename">Chilli/attack/attack0006.png</key>
+            <key type="filename">Chilli/attack/attack0007.png</key>
+            <key type="filename">Chilli/attack/attack0008.png</key>
+            <key type="filename">Chilli/attack/attack0009.png</key>
+            <key type="filename">Chilli/attack/attack0010.png</key>
+            <key type="filename">Chilli/attack/attack0011.png</key>
+            <key type="filename">Chilli/attack/attack0012.png</key>
+            <key type="filename">Chilli/attack/attack0013.png</key>
+            <key type="filename">Chilli/attack/attack0014.png</key>
+            <key type="filename">Chilli/attack/attack0015.png</key>
+            <key type="filename">Chilli/attack/attack0016.png</key>
+            <key type="filename">Chilli/attack/attack0017.png</key>
+            <key type="filename">Chilli/attack/attack0018.png</key>
+            <key type="filename">Chilli/attack/attack0019.png</key>
+            <key type="filename">Chilli/attack/attack0020.png</key>
+            <key type="filename">Chilli/attack/attack0021.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>81,70,162,140</rect>
+                <key>scale9Paddings</key>
+                <rect>81,70,162,140</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Chilli/dead1/dead0001.png</key>
+            <key type="filename">Chilli/dead1/dead0002.png</key>
+            <key type="filename">Chilli/dead1/dead0003.png</key>
+            <key type="filename">Chilli/dead1/dead0004.png</key>
+            <key type="filename">Chilli/dead1/dead0005.png</key>
+            <key type="filename">Chilli/dead1/dead0006.png</key>
+            <key type="filename">Chilli/dead1/dead0007.png</key>
+            <key type="filename">Chilli/dead1/dead0008.png</key>
+            <key type="filename">Chilli/dead1/dead0009.png</key>
+            <key type="filename">Chilli/dead1/dead0010.png</key>
+            <key type="filename">Chilli/dead1/dead0011.png</key>
+            <key type="filename">Chilli/dead1/dead0012.png</key>
+            <key type="filename">Chilli/dead1/dead0013.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>69,54,137,107</rect>
+                <key>scale9Paddings</key>
+                <rect>69,54,137,107</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Chilli/hurt/hurt0001.png</key>
+            <key type="filename">Chilli/hurt/hurt0002.png</key>
+            <key type="filename">Chilli/hurt/hurt0003.png</key>
+            <key type="filename">Chilli/hurt/hurt0004.png</key>
+            <key type="filename">Chilli/hurt/hurt0005.png</key>
+            <key type="filename">Chilli/hurt/hurt0006.png</key>
+            <key type="filename">Chilli/hurt/hurt0007.png</key>
+            <key type="filename">Chilli/hurt/hurt0008.png</key>
+            <key type="filename">Chilli/hurt/hurt0009.png</key>
+            <key type="filename">Chilli/hurt/hurt0010.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>32,51,64,103</rect>
+                <key>scale9Paddings</key>
+                <rect>32,51,64,103</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Chilli/idle/idle0001.png</key>
+            <key type="filename">Chilli/idle/idle0002.png</key>
+            <key type="filename">Chilli/idle/idle0003.png</key>
+            <key type="filename">Chilli/idle/idle0004.png</key>
+            <key type="filename">Chilli/idle/idle0005.png</key>
+            <key type="filename">Chilli/idle/idle0006.png</key>
+            <key type="filename">Chilli/idle/idle0007.png</key>
+            <key type="filename">Chilli/idle/idle0008.png</key>
+            <key type="filename">Chilli/idle/idle0009.png</key>
+            <key type="filename">Chilli/idle/idle0010.png</key>
+            <key type="filename">Chilli/idle/idle0011.png</key>
+            <key type="filename">Chilli/idle/idle0012.png</key>
+            <key type="filename">Chilli/idle/idle0013.png</key>
+            <key type="filename">Chilli/idle/idle0014.png</key>
+            <key type="filename">Chilli/idle/idle0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>20,53,40,105</rect>
+                <key>scale9Paddings</key>
+                <rect>20,53,40,105</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Chilli/walk/walk0001.png</key>
+            <key type="filename">Chilli/walk/walk0002.png</key>
+            <key type="filename">Chilli/walk/walk0003.png</key>
+            <key type="filename">Chilli/walk/walk0004.png</key>
+            <key type="filename">Chilli/walk/walk0005.png</key>
+            <key type="filename">Chilli/walk/walk0006.png</key>
+            <key type="filename">Chilli/walk/walk0007.png</key>
+            <key type="filename">Chilli/walk/walk0008.png</key>
+            <key type="filename">Chilli/walk/walk0009.png</key>
+            <key type="filename">Chilli/walk/walk0010.png</key>
+            <key type="filename">Chilli/walk/walk0011.png</key>
+            <key type="filename">Chilli/walk/walk0012.png</key>
+            <key type="filename">Chilli/walk/walk0013.png</key>
+            <key type="filename">Chilli/walk/walk0014.png</key>
+            <key type="filename">Chilli/walk/walk0015.png</key>
+            <key type="filename">Chilli/walk/walk0016.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>28,53,56,107</rect>
+                <key>scale9Paddings</key>
+                <rect>28,53,56,107</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">Potato/attack/attack0001.png</key>
             <key type="filename">Potato/attack/attack0002.png</key>
             <key type="filename">Potato/attack/attack0003.png</key>

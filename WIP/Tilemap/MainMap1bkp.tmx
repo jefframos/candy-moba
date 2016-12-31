@@ -8,7 +8,7 @@
    <image width="75" height="124" source="../Tower/tower1/idle/tower.png"/>
   </tile>
  </tileset>
- <tileset firstgid="5" name="towers" tilewidth="122" tileheight="162" tilecount="5" columns="0">
+ <tileset firstgid="5" name="towers" tilewidth="185" tileheight="238" tilecount="6" columns="0">
   <tileoffset x="-36" y="9"/>
   <tile id="0">
    <image width="75" height="124" source="../Tower/tower1/idle/tower.png"/>
@@ -24,6 +24,9 @@
   </tile>
   <tile id="4">
    <image width="99" height="131" source="../Enemies/Rock/idle/idle0001.png"/>
+  </tile>
+  <tile id="5">
+   <image width="185" height="238" source="../Cupcake/cupcake/idle/idle0001.png"/>
   </tile>
  </tileset>
  <layer name="Tile Layer 1" width="150" height="60" visible="0">
@@ -252,4 +255,5 @@
   <object id="70" name="nest" type="Nest" gid="9" x="9014.27" y="2739.5" width="163" height="211"/>
   <object id="71" name="nest" type="Nest" gid="9" x="7606.27" y="907.504" width="163" height="211"/>
  </objectgroup>
+ <objectgroup name="Hero"/>
 </map>

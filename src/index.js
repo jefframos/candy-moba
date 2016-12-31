@@ -9,16 +9,18 @@ import PrototypeScreen from './game/screen/PrototypeScreen';
 PIXI.loader
 	.add('./assets/Enemies/enemies0.json')
 	.add('./assets/Enemies/enemies1.json')
-	.add('./assets/Cupcake/cupcake0.json')
-	.add('./assets/Cupcake/cupcake1.json')
-	.add('./assets/Cupcake/cupcake2.json')
-	.add('./assets/Cupcake/cupcake3.json')
+	// .add('./assets/Cupcake/cupcake0.json')
+	// .add('./assets/Cupcake/cupcake1.json')
+	// .add('./assets/Cupcake/cupcake2.json')
+	// .add('./assets/Cupcake/cupcake3.json')
+	.add('./assets/Cupcake/cupcakeMini0.json')
+	.add('./assets/Cupcake/cupcakeMini1.json')
 	.add('./assets/Environment/environment0.json')
 	.add('./assets/Effects/effects0.json')
 	.add('./assets/Towers/towers0.json')
 	.add('./assets/Spawners/spawners0.json')
 	.add('./assets/UI/ui0.json')
-	.add('./assets/data/map1Data.json')
+	.add('./assets/data/map_data_1.json')
 	.load(configGame);
 
 function configGame(){

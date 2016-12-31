@@ -1548,7 +1548,7 @@
         }, 
         {
          "draworder":"topdown",
-         "height":60,
+         "height":0,
          "name":"Nests",
          "objects":[
                 {
@@ -1560,8 +1560,8 @@
                  "type":"Nest",
                  "visible":true,
                  "width":163,
-                 "x":7486.27272727273,
-                 "y":5107.50381679389
+                 "x":7486.27,
+                 "y":5107.5
                 }, 
                 {
                  "gid":9,
@@ -1572,8 +1572,8 @@
                  "type":"Nest",
                  "visible":true,
                  "width":163,
-                 "x":9678.27272727273,
-                 "y":4787.50381679389
+                 "x":9678.27,
+                 "y":4787.5
                 }, 
                 {
                  "gid":9,
@@ -1584,8 +1584,8 @@
                  "type":"Nest",
                  "visible":true,
                  "width":163,
-                 "x":5318.27272727273,
-                 "y":4859.50381679389
+                 "x":5318.27,
+                 "y":4859.5
                 }, 
                 {
                  "gid":9,
@@ -1596,8 +1596,8 @@
                  "type":"Nest",
                  "visible":true,
                  "width":163,
-                 "x":5838.27272727273,
-                 "y":2779.50381679389
+                 "x":5838.27,
+                 "y":2779.5
                 }, 
                 {
                  "gid":9,
@@ -1608,8 +1608,8 @@
                  "type":"Nest",
                  "visible":true,
                  "width":163,
-                 "x":9014.27272727273,
-                 "y":2739.50381679389
+                 "x":9014.27,
+                 "y":2739.5
                 }, 
                 {
                  "gid":9,
@@ -1620,8 +1620,40 @@
                  "type":"Nest",
                  "visible":true,
                  "width":163,
-                 "x":7606.27272727273,
-                 "y":907.503816793893
+                 "x":7606.27,
+                 "y":907.504
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":60,
+         "name":"Hero",
+         "objects":[
+                {
+                 "gid":11,
+                 "height":232,
+                 "id":73,
+                 "name":"Gary",
+                 "properties":
+                    {
+                     "team":0
+                    },
+                 "propertytypes":
+                    {
+                     "team":"int"
+                    },
+                 "rotation":0,
+                 "type":"Hero",
+                 "visible":true,
+                 "width":263,
+                 "x":7500,
+                 "y":3000
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1630,7 +1662,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":72,
+ "nextobjectid":76,
  "orientation":"orthogonal",
  "renderorder":"left-up",
  "tileheight":100,
@@ -1693,6 +1725,28 @@
                 }
             },
          "tilewidth":122
+        }, 
+        {
+         "columns":0,
+         "firstgid":11,
+         "margin":0,
+         "name":"Hero",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":232,
+         "tileoffset":
+            {
+             "x":-150,
+             "y":-206
+            },
+         "tiles":
+            {
+             "0":
+                {
+                 "image":"..\/..\/WIP\/Cupcake\/cupcake\/hurt1\/hurt10001.png"
+                }
+            },
+         "tilewidth":263
         }],
  "tilewidth":100,
  "version":1,

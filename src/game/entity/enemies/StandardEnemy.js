@@ -59,7 +59,9 @@ export default class StandardEnemy extends Entity {
 
     build () {
         let enemieType = '';
+            this.enemyModel.updateLevel(2)
         if(this.team == 0){
+            // this.enemyModel.updateLevel(10)
             enemieType = Math.random() <0.5?'Candy1':'Candy2';
         }else{
             enemieType = Math.random() <0.5?'Tomato':'Potato';
@@ -227,7 +229,7 @@ export default class StandardEnemy extends Entity {
         this.setTarget(this.waypoints[this.waypointID]);
     }
     wait ( ) {
-        // return
+        return
         this.attacking = false;
         this.preparingAttack = false;
         this.velocity.x = 0;
@@ -260,7 +262,7 @@ export default class StandardEnemy extends Entity {
         this.waypointID = 0;
         
     }
-    setTarget (position, isEnemy) {
+    setTarget (position, isEnemy = false) {
         this.isEnemy = isEnemy;
         var angle = Math.random() * 360 / 180 * 3.14
         this.targetPosition.x = position.x + Math.sin(angle)*50;
@@ -398,7 +400,7 @@ export default class StandardEnemy extends Entity {
 
         if(this.life <= 0){
             this.dead();
-            //return false;
+            return 'DEAD';
         }
 
         this.updateLifeBar();

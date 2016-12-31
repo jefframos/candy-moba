@@ -28229,7 +28229,12 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	PIXI.loader.add('./assets/Enemies/enemies0.json').add('./assets/Enemies/enemies1.json').add('./assets/Cupcake/cupcake0.json').add('./assets/Cupcake/cupcake1.json').add('./assets/Cupcake/cupcake2.json').add('./assets/Cupcake/cupcake3.json').add('./assets/Environment/environment0.json').add('./assets/Effects/effects0.json').add('./assets/Towers/towers0.json').add('./assets/Spawners/spawners0.json').add('./assets/UI/ui0.json').add('./assets/data/map1Data.json').load(configGame);
+	PIXI.loader.add('./assets/Enemies/enemies0.json').add('./assets/Enemies/enemies1.json')
+	// .add('./assets/Cupcake/cupcake0.json')
+	// .add('./assets/Cupcake/cupcake1.json')
+	// .add('./assets/Cupcake/cupcake2.json')
+	// .add('./assets/Cupcake/cupcake3.json')
+	.add('./assets/Cupcake/cupcakeMini0.json').add('./assets/Cupcake/cupcakeMini1.json').add('./assets/Environment/environment0.json').add('./assets/Effects/effects0.json').add('./assets/Towers/towers0.json').add('./assets/Spawners/spawners0.json').add('./assets/UI/ui0.json').add('./assets/data/map_data_1.json').load(configGame);
 	
 	function configGame() {
 	
@@ -28306,6 +28311,7 @@
 		// ['player0',1402.1,963.3]
 	
 		["player0", 6825.1, 952.5]],
+		players: [],
 		nestList: [["nestDown_100_1", 2014.45, 2930], ["nestDown_200_2", 3721.3, 2656.25], ["nestDown_300_3", 5516.7, 2946.1], ["nestDown_400_3", 7923.95, 2954.2], ["nestDown_500_2", 9928.7, 2680.45], ["nestDown_600_1", 11563.05, 2962.25], ["nestUp_100_1", 3479.8, -193.9], ["nestUp_200_10", 6820.9, -48.85], ["nestUp_300_1", 10339.35, -226]],
 		towerList: [[["towerA1", 2387.3, 1481.55, 0], ["towerA0", 2413.15, 243, 0], ["towerAA", 829.15, 1145.4, 0], ["towerB1", 5133.15, 1398.75, 0], ["towerB0", 5978.5, 617.75, 0]], [["tower2A1", 11286.9, 1473.5, 1], ["tower2A0", 11261.05, 243, 1], ["tower2AA", 12792.75, 1127.3, 1], ["tower2B1", 8549.2, 1398.75, 1], ["tower2B0", 7703.8, 617.75, 1]]],
 		worldBounds: [691.2, 418.4, 1440.15, 47, 2200.65, 31, 2577.95, -368, 3012.15, -691.05, 4303.3, -680.4, 3854.15, -330.25, 4844.55, 275.5, 4837.65, 458.25, 5911.75, 467.15, 6601.1, 27.1, 5771, -518.7, 6804.65, -1146.65, 7753.85, -657.2, 7171.1, 40.5, 7891.05, 434.05, 8987.1, 436.55, 9945.2, -370.5, 10421.95, -1066.85, 11423.25, -803.8, 11261.7, -376.05, 11606.85, 6.9, 12375.4, 14.75, 13124.35, 402.25, 13428, 1206.65, 13171.5, 1876.25, 11930.25, 1921.15, 11922, 2295.5, 12592.1, 2754.95, 11971.9, 3472.35, 9850.25, 3312.2, 7927.3, 3569.85, 7506.9, 2972.7, 7459.15, 2222.05, 8285.5, 2158.1, 8481.2, 1862.7, 5286, 1870.75, 5530.05, 2166.15, 6541.55, 2061.05, 6799.8, 2924.35, 5872.15, 3602.05, 2781.75, 3529.55, 941.9, 3045.65, 981.95, 2577.8, 1885.5, 2231.05, 1869.2, 1945.3, 660.1, 1940.7, 339.25, 1279.1],
@@ -28555,6 +28561,10 @@
 	
 	var _Tanker2 = _interopRequireDefault(_Tanker);
 	
+	var _Bomber = __webpack_require__(166);
+	
+	var _Bomber2 = _interopRequireDefault(_Bomber);
+	
 	var _StandardBullet = __webpack_require__(155);
 	
 	var _StandardBullet2 = _interopRequireDefault(_StandardBullet);
@@ -28611,44 +28621,99 @@
 	
 			var _this = _possibleConstructorReturn(this, (PrototypeScreen.__proto__ || Object.getPrototypeOf(PrototypeScreen)).call(this, label));
 	
-			var loader = new _pixi2.default.loaders.Loader(); // you can also create your own if you want
-	
-			loader.add('./assets/data/map1Data.json');
-	
-			loader.once('complete', _this.onAssetsLoaded.bind(_this));
-	
-			loader.load();
+			_this.mapSrc = './assets/data/map_data_2.json';
 	
 			_this.updateable = false;
 	
+			_this.startLoad();
+	
+			_this.oldStats = '';
 			return _this;
 		}
 	
 		_createClass(PrototypeScreen, [{
+			key: 'startLoad',
+			value: function startLoad() {
+				var loader = new _pixi2.default.loaders.Loader(); // you can also create your own if you want
+	
+				loader.add(this.mapSrc);
+	
+				loader.once('complete', this.onAssetsLoaded.bind(this));
+	
+				loader.load();
+			}
+		}, {
 			key: 'onAssetsLoaded',
 			value: function onAssetsLoaded(evt) {
+	
+				if (this.buildedOnce) {
+					this.destroyGame();
+				}
+	
+				this.buildedOnce = true;
+	
+				this.enemyList = [];
+				this.environmentList = [];
+				this.bulletList = [];
+				this.uiList = [];
+				this.spawnerList = [];
+	
 				// console.log(evt.resources['./assets/data/map1Data.json'].data.layers)//.data.layers);
-				var mapLayers = evt.resources['./assets/data/map1Data.json'].data.layers;
+				var map = evt.resources[this.mapSrc].data;
+				var mapLayers = map.layers;
 				_config2.default.worldBounds = [];
 				_config2.default.towerList = [];
 				_config2.default.spawnerList = [];
 				_config2.default.nestList = [];
+				_config2.default.players = [];
+				_config2.default.wayPath = [];
+				// console.log(map);
+				this.worldBounds = { x: 0, y: 0, w: map.width * map.tilewidth, h: map.height * map.tileheight };
+				// console.log(this.worldBounds);
 				for (var i = 0; i < mapLayers.length; i++) {
+					if (mapLayers[i].name == 'Ways') {
+						for (var k = 0; k < mapLayers[i].objects.length; k++) {
+							var path = [];
+							if (mapLayers[i].objects[k].visible) {
+								var polyline = mapLayers[i].objects[k].polyline;
+								for (var j = 0; j < polyline.length; j++) {
+									path.push(polyline[j].x);
+									path.push(polyline[j].y);
+								}
+								// console.log(mapLayers[i].objects[k]);
+	
+								if (mapLayers[i].objects[k].name == 'pathDown1') {
+									console.log(path);
+									// let cut = 44;
+									// path.splice(cut, path.length -cut)
+									// this.scaleArrayPoints(path)
+									console.log(this.scaleArrayPoints(path, true));
+								}
+								// path.push(polyline[0].x);
+								// path.push(polyline[0].y);
+								_config2.default.wayPath.push(path);
+							}
+						}
+						// console.log(polyline);
+					}
 					if (mapLayers[i].name == 'WorldBounds') {
-						var polyline = mapLayers[i].objects[0].polyline;
-						for (var j = 1; j < polyline.length; j++) {
-							_config2.default.worldBounds.push(polyline[j].x);
-							_config2.default.worldBounds.push(polyline[j].y);
+						var _polyline = mapLayers[i].objects[0].polyline;
+						for (var j = 1; j < _polyline.length; j++) {
+							_config2.default.worldBounds.push(_polyline[j].x);
+							_config2.default.worldBounds.push(_polyline[j].y);
 						}
 					}
-					// console.log(mapLayers[i].name);
 					if (mapLayers[i].name.indexOf('Towers') !== -1) {
 						var towers = mapLayers[i].objects;
-						// console.log(towers);
-						for (var j = 1; j < towers.length; j++) {
+						for (var j = 0; j < towers.length; j++) {
 							var tower = towers[j];
+							// console.log(tower.name);
 							_config2.default.towerList.push({ name: tower.name, x: tower.x, y: tower.y, team: tower.properties.team });
 						}
+					}
+					if (mapLayers[i].name.indexOf('Hero') !== -1) {
+						var hero = mapLayers[i].objects[0];
+						_config2.default.players.push({ team: hero.properties.team, x: hero.x, y: hero.y, name: hero.name, type: hero.type });
 					}
 					if (mapLayers[i].name.indexOf('Nests') !== -1) {
 						for (var j = 0; j < mapLayers[i].objects.length; j++) {
@@ -28656,7 +28721,8 @@
 							_config2.default.nestList.push({ name: nest.name, x: nest.x, y: nest.y });
 						}
 					}
-					if (mapLayers[i].name.indexOf('Spawner') !== -1) {
+					if (mapLayers[i].name.indexOf('Spawner') !== -1 && mapLayers[i].visible) {
+						console.log(mapLayers[i]);
 						var spawers = mapLayers[i].objects;
 						var spwPosition = { x: 0, y: 0 };
 						var spawnerObject = { pos: null, team: -1, waypoints: [] };
@@ -28681,29 +28747,75 @@
 								// }
 							}
 						}
-						// spawnerObject = {pos:spwPosition, team:data.propreties.team, waypoints:waypoints};
 						_config2.default.spawnerList.push(spawnerObject);
-						console.log(spawnerObject);
-						// for (var j = 1; j < towers.length; j++) {
-						// 	let tower = towers[j];
-						// 	config.towerList.push({name:tower.name, x:tower.x,y:tower.y,team:tower.properties.team});
-						// }
 					}
 				}
 	
 				this.configGame();
 			}
 		}, {
+			key: 'destroyGame',
+			value: function destroyGame() {
+				for (var i = 0; i < this.spawnerList.length; i++) {
+					this.spawnerList[i].kill = true;
+				}
+				for (var i = 0; i < this.towerList.length; i++) {
+					this.towerList[i].kill = true;
+				}
+				for (var i = 0; i < this.nestList.length; i++) {
+					this.nestList[i].kill = true;
+				}
+				for (var i = 0; i < this.bulletList.length; i++) {
+					this.bulletList[i].kill = true;
+				}
+				for (var i = 0; i < this.enemyList.length; i++) {
+					this.enemyList[i].kill = true;
+				}
+	
+				for (var i = 0; i < this.uiList.length; i++) {
+					this.uiList[i].kill = true;
+				}
+	
+				this.cupcake.kill = true;
+	
+				this.cleanContainer(this.gameContainer);
+				this.cleanContainer(this.entityContainer);
+				this.cleanContainer(this.floorContainer);
+				this.cleanContainer(this.UIContainer);
+	
+				// while(this.gameContainer.children){
+				// 	this.gameContainer.removeChild(this.gameContainer.children[0]);
+				// }
+	
+				// while(this.entityContainer.children){
+				// 	this.entityContainer.removeChild(this.entityContainer.children[0]);
+				// }
+	
+				// while(this.floorContainer.children){
+				// 	this.floorContainer.removeChild(this.floorContainer.children[0]);
+				// }
+				// entityContainer
+				// for (var i = 0; i < this.entitiesList.length; i++) {
+				// 	this.entitiesList[i].kill = true;
+				// }
+			}
+		}, {
+			key: 'cleanContainer',
+			value: function cleanContainer(container) {
+				for (var i = container.children.length - 1; i >= 0; i--) {
+					container.removeChild(container.children[i]);
+				}
+			}
+		}, {
 			key: 'configGame',
 			value: function configGame() {
-				console.log('config');
+				// console.log('config');
 				// this.gameContainer.scale.set(0.3)
 	
 				this.inputManager = new _InputManager2.default(this);
 				this.gameContainer = new _pixi2.default.Container();
 				this.addChild(this.gameContainer);
 	
-				this.worldBounds = { x: 0, y: 0, w: 15000, h: 6000 };
 				this.polyPts = this.scaleArrayPoints(_config2.default.worldBounds);
 	
 				// this.scaleArrayPoints(this.polyPts)
@@ -28715,6 +28827,7 @@
 	
 				this.gameContainer.addChild(worldBoundsGraphic);
 	
+				// console.log('way path', config.wayPath);
 				for (var i = _config2.default.wayPath.length - 1; i >= 0; i--) {
 	
 					var wayGraphic = new _pixi2.default.Graphics();
@@ -28722,8 +28835,9 @@
 					wayGraphic.alpha = 0.1;
 					wayGraphic.drawPolygon(this.scaleArrayPoints(_config2.default.wayPath[i]));
 					wayGraphic.endFill();
+					wayGraphic.cacheAsBitmap = true;
 	
-					//this.gameContainer.addChild(wayGraphic)
+					this.gameContainer.addChild(wayGraphic);
 				}
 	
 				this.worldPolygon = new _pixi2.default.Polygon(this.polyPts);
@@ -28734,19 +28848,22 @@
 				this.entityContainer = new _pixi2.default.Container();
 				this.gameContainer.addChild(this.entityContainer);
 	
-				this.cupcake = new _Cupcake2.default(this, { x: _config2.default.playerPositions[0][1], y: _config2.default.playerPositions[0][2] }, 0);
+				var cupPos = this.scaleSinglePoint({ x: _config2.default.players[0].x, y: _config2.default.players[0].y });
+	
+				this.cupcake = new _Cupcake2.default(this, cupPos, _config2.default.players[0].team);
 				this.entityContainer.addChild(this.cupcake);
 				this.addOnUpdateList(this.cupcake);
 	
-				this.enemyList = [];
-				this.environmentList = [];
-				this.bulletList = [];
-				this.uiList = [];
+				this.bomber = new _Bomber2.default(this, -1);
+				this.bomber.x = cupPos.x + 150;
+				this.bomber.y = cupPos.y + 150;
+				this.bomber.build();
+				this.bomber.setWaypoints([{ x: cupPos.x + 150, y: cupPos.y + 150 }]);
+				this.entityContainer.addChild(this.bomber);
+				this.addOnUpdateList(this.bomber);
+				this.enemyList.push(this.bomber);
 	
-				this.spawnerList = [];
 				for (var i = 0; i < _config2.default.spawnerList.length; i++) {
-					// let spawnerDataList = config.spawnerList[i];
-					// for (var k = spawnerDataList.length - 1; k >= 0; k--) {
 					var spawnerData = _config2.default.spawnerList[i];
 	
 					var spawner = new _Spawner2.default(this, spawnerData.team);
@@ -28763,13 +28880,10 @@
 						tempPoint = this.scaleSinglePoint({ x: spawnerData.waypoints[j].x, y: spawnerData.waypoints[j].y });
 						spawner.addWaypoint(tempPoint.x, tempPoint.y);
 					}
-					// }
 				}
 	
 				this.towerList = [];
-				console.log(_config2.default.towerList);
 				for (var i = 0; i < _config2.default.towerList.length; i++) {
-					// for (var j = 0; j < config.towerList[i].length; j++) {
 					var towerData = _config2.default.towerList[i];
 					var tower = new _Tower2.default(this, towerData.team);
 					tower.name = towerData.name;
@@ -28785,16 +28899,11 @@
 					this.setScales(tower);
 	
 					tower.build();
-					// }
 				}
 	
 				this.nestList = [];
-				// for (var i = 0; i < config.nestList.length; i++) {
-				// console.log(config.nestList[0]);
 				for (var j = 0; j < _config2.default.nestList.length; j++) {
 					var nestData = _config2.default.nestList[j];
-					// console.log('nestdata -- ',config.nestList[0][j]);
-					// console.log('nestdata',nestData);
 	
 					var nest = new _Nest2.default(this);
 					nest.name = nestData.name;
@@ -28807,13 +28916,10 @@
 	
 					nest.x = _tempPoint2.x;
 					nest.y = _tempPoint2.y;
-					// console.log('nest',nest.x,nest.y);
 					this.setScales(nest);
 	
 					nest.build();
 				}
-				// }
-	
 	
 				// for (var i = 0; i < config.environmentList.length; i++) {
 				// 	var envData = config.environmentList[i];
@@ -28862,8 +28968,10 @@
 			}
 		}, {
 			key: 'gameOver',
-			value: function gameOver() {
+			value: function gameOver(winner) {
+				this.oldStats += 'time: ' + this.formatDate(this.timer) + ' - team:' + winner + '\n';
 				this.updateable = false;
+				this.startLoad();
 			}
 		}, {
 			key: 'updateUI',
@@ -28906,7 +29014,12 @@
 				this.addChild(this.UIContainer);
 	
 				this.timerLabel = new _pixi2.default.Text('0');
-				this.addChild(this.timerLabel);
+				this.UIContainer.addChild(this.timerLabel);
+	
+				this.statsLabel = new _pixi2.default.Text(this.oldStats);
+				this.UIContainer.addChild(this.statsLabel);
+				this.statsLabel.scale.set(0.4);
+				this.statsLabel.x = _config2.default.width / 2;
 	
 				var t1acc = 0;
 				var t2acc = 0;
@@ -28915,7 +29028,7 @@
 					var tower = this.towerList[i];
 					var uiTower = new _UITower2.default(this, tower);
 					this.UIContainer.addChild(uiTower);
-					uiTower.scale.set(0.6);
+					uiTower.scale.set(0.4);
 					if (tower.team == 0) {
 						t1acc++;
 						acc = t1acc;
@@ -28926,7 +29039,7 @@
 						uiTower.scale.x *= -1;
 					}
 	
-					uiTower.y = acc * 75;
+					uiTower.y = acc * 55;
 	
 					this.uiList.push(uiTower);
 				}
@@ -28966,7 +29079,9 @@
 					this.spawnerList[i].start();
 				}
 	
-				this.camera.zoom(0.05, 1, 0.2);
+				// console.log();
+				var wholeScale = _config2.default.width / 2 / this.worldBounds.w;
+				this.camera.zoom(wholeScale, 1, 0.5);
 				// this.camera.zoom(0.35, 1, 0.2);
 				this.camera.follow(this.cupcake);
 	
@@ -29233,8 +29348,36 @@
 				return collideList;
 			}
 		}, {
-			key: 'getMapDistanceFactor',
-			value: function getMapDistanceFactor(y) {
+			key: 'getMapWidthDistanceFactor',
+			value: function getMapWidthDistanceFactor(x, y, debug) {
+	
+				//////////////////////////////////////////////TA ROLANDO com alguns resultados estranhos ainda
+				// normalmente no calculo de alguns paths
+				var w = this.worldBounds.w / 2;
+	
+				var value = 0;
+	
+				var hFactor = this.getMapHeightDistanceFactor(y);
+				value = Math.abs(_utils2.default.distance(x, 0, w, 0) / w) * -1;
+	
+				if (x >= w) {
+					value *= -1;
+					//hFactor = 1-hFactor
+				}
+				var inc = 0.7;
+				// value =  value * 0.5 + (0.5 * (hFactor * value))
+				value = value * inc;
+				value *= hFactor;
+				// value =  value * inc + ((hFactor * (value)))
+	
+				if (debug) {
+					console.log('------', x, y, value, hFactor);
+				}
+				return value;
+			}
+		}, {
+			key: 'getMapHeightDistanceFactor',
+			value: function getMapHeightDistanceFactor(y) {
 				var h = this.worldBounds.h;
 	
 				var value = 1 - _utils2.default.distance(0, y, 0, h) / h + 0.3;
@@ -29245,16 +29388,20 @@
 		}, {
 			key: 'scaleSinglePoint',
 			value: function scaleSinglePoint(point) {
-				var rpoint = { x: point.x, y: point.y * this.getMapDistanceFactor(point.y) };
+				var rpoint = { x: point.x + this.worldBounds.w * 0.6 * this.getMapWidthDistanceFactor(point.x, point.y), y: point.y * this.getMapHeightDistanceFactor(point.y) };
+	
 				return rpoint;
 			}
 		}, {
 			key: 'scaleArrayPoints',
-			value: function scaleArrayPoints(arr) {
+			value: function scaleArrayPoints(arr, debug) {
 				var rArr = [];
 				for (var i = 1; i < arr.length; i += 2) {
-					rArr.push(arr[i - 1]);
-					rArr.push(arr[i] * this.getMapDistanceFactor(arr[i]));
+					if (debug) {
+						console.log(arr[i - 1], this.worldBounds.w * 0.6, this.getMapWidthDistanceFactor(arr[i - 1], arr[i], debug));
+					}
+					rArr.push(Math.floor(arr[i - 1] + this.worldBounds.w * 0.6 * this.getMapWidthDistanceFactor(arr[i - 1], arr[i])));
+					rArr.push(Math.floor(arr[i] * this.getMapHeightDistanceFactor(arr[i])));
 				}
 	
 				return rArr;
@@ -29286,6 +29433,7 @@
 			key: 'addBullet',
 			value: function addBullet(pos, vel, life, power) {
 				var bullet = new _StandardBullet2.default(this, vel, life, power);
+				bullet.build();
 				this.entityContainer.addChild(bullet);
 				this.addOnUpdateList(bullet);
 				bullet.position.x = pos.x;
@@ -29297,8 +29445,10 @@
 			}
 		}, {
 			key: 'addTowerBullet',
-			value: function addTowerBullet(pos, vel, life, power, team) {
-				var bullet = new _TowerBullet2.default(this, vel, life, power, team);
+			value: function addTowerBullet(pos, vel, life, power, team, src) {
+				console.log(src);
+				var bullet = new _TowerBullet2.default(this, vel, life, power, team, src);
+				bullet.build();
 				this.entityContainer.addChild(bullet);
 				this.addOnUpdateList(bullet);
 				bullet.position.x = pos.x;
@@ -29312,12 +29462,13 @@
 			key: 'updateKeyDown',
 			value: function updateKeyDown() {
 				this.speedUpValue = 1;
-				window.game.frameskip = 1;
+				// window.game.frameskip = 1;
 				for (var i = 0; i < this.inputManager.keys.length; i++) {
 					if (this.inputManager.keys[i] == 'action1') {
 						//console.log('space');
 	
 	
+						//this.gameOver()
 						this.lastAction = this.inputManager.keys[i];
 						this.cupcake.attack();
 					}
@@ -29352,7 +29503,17 @@
 					if (this.inputManager.keys[i] == 'action7') {
 						//console.log('space');
 						this.lastAction = this.inputManager.keys[i];
-						window.game.frameskip = 12;
+						if (window.game.frameskip == 1) {
+							window.game.frameskip = 15;
+						} else {
+							window.game.frameskip = 1;
+						}
+						//this.speedUpValue = 10;
+						// this.cupcake.die();
+					}
+					if (this.inputManager.keys[i] == 'action8') {
+						//console.log('space');
+						this.gameOver();
 						//this.speedUpValue = 10;
 						// this.cupcake.die();
 					}
@@ -37645,15 +37806,32 @@
 			this.currentGamepad = -1;
 			this.gamePadType = -1;
 	
+			// 'a',
+			//           'b',
+			//           'x',
+			//           'y',
+			//           'leftTop',
+			//           'rightTop',
+			//           'leftTrigger',
+			//           'rightTrigger',
+			//           'select',
+			//           'start',
+			//           'leftStick',
+			//           'rightStick',
+			//           'dpadUp',
+			//           'dpadDown',
+			//           'dpadLeft',
+			//           'dpadRight'
+	
 			//8bitdo, snes, xbox
 			this.gamepadsMaxButtons = [16, 10, 12];
 			this.gamepadMap = [];
 			this.gamepadMap.push({ label: 'start', id: [11, 9, 9] });
 			this.gamepadMap.push({ label: 'select', id: [10, 8, 8] });
-			this.gamepadMap.push({ label: 'y', id: [4, 3, 2] });
-			this.gamepadMap.push({ label: 'b', id: [1, 2, 0] });
-			this.gamepadMap.push({ label: 'a', id: [0, 1, 1] });
-			this.gamepadMap.push({ label: 'x', id: [3, 0, 3] });
+			this.gamepadMap.push({ label: 'y', id: [4, 3, 3] });
+			this.gamepadMap.push({ label: 'b', id: [1, 2, 1] });
+			this.gamepadMap.push({ label: 'a', id: [0, 1, 0] });
+			this.gamepadMap.push({ label: 'x', id: [3, 0, 2] });
 			this.gamepadMap.push({ label: 'r', id: [7, 6, 5] });
 			this.gamepadMap.push({ label: 'l', id: [6, 4, 4] });
 			this.gamepadMap.push({ label: 'l2', id: [8, 7, 7] });
@@ -37782,7 +37960,7 @@
 				// }
 	
 	
-				// this.debugButtons();
+				//this.debugButtons();
 	
 				if (navigator.getGamepads()[this.currentGamepad].buttons[this.getButton('y', this.gamePadType)].value) {
 					this.act('action1');
@@ -37917,8 +38095,11 @@
 				} else if (e.keyCode === 16 || e.keyCode === 16) {
 					this.addKey('action7');
 					// this.usingGamepad = false;
+				} else if (e.keyCode === 27) {
+					this.addKey('action8');
+					// this.usingGamepad = false;
 				}
-				// console.log(e.keyCode);
+				console.log(e.keyCode);
 				// if(!this.keys){
 				// 	this.usingGamepad = true;
 				// }107 187+ 189 109 -
@@ -38029,6 +38210,10 @@
 				} else if (e.keyCode === 16 || e.keyCode === 16) {
 					this.removeKey('action7');
 					key = 'action7';
+					// this.usingGamepad = false;
+				} else if (e.keyCode === 27) {
+					this.removeKey('action8');
+					key = 'action8';
 					// this.usingGamepad = false;
 				}
 	
@@ -38341,8 +38526,9 @@
 	        };
 	
 	        _this.heroModel = new _EntityModel2.default('jose', 'thief', stats, modifiers, null, null);
+	        _this.heroModel.entity = _this;
+	        // this.heroModel.log()
 	
-	        _this.heroModel.log();
 	
 	        // this.enemyModel.log()
 	
@@ -38393,6 +38579,257 @@
 	        _this.animationContainer = new _pixi2.default.Container();
 	        _this.animationContainer.x = 25;
 	        _this.addChild(_this.animationContainer);
+	        // {
+	        //     let type = 'cupcake';
+	        //     this.animationModel = [];
+	        //     this.animationModel.push({
+	        //         label:'idle',
+	        //         src:type+'/idle/idle00',
+	        //         totalFrames:14,
+	        //         startFrame:0,
+	        //         animationSpeed:0.4,
+	        //         movieClip:null,
+	        //         position:{x:0,y:0},
+	        //         anchor:{x:0.5,y:1}
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'run',
+	        //         src:type+'/run/run00',
+	        //         totalFrames:24,
+	        //         startFrame:8,
+	        //         animationSpeed:0.4,
+	        //         movieClip:null,
+	        //         position:{x:-15,y:4},
+	        //         anchor:{x:0.5,y:1}
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'runFast',
+	        //         src:type+'/speedUp/speedUp00',
+	        //         totalFrames:24,
+	        //         startFrame:8,
+	        //         animationSpeed:0.4,
+	        //         movieClip:null,
+	        //         position:{x:-15,y:4},
+	        //         anchor:{x:0.5,y:1}
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'meleeAttack1',
+	        //         src:type+'/meleeAttack1/meleeAttack100',
+	        //         totalFrames:16,
+	        //         startFrame:7,
+	        //         animationSpeed:0.65,
+	        //         movieClip:null,
+	        //         position:{x:43,y:0},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'meleeAttack2',
+	        //         src:type+'/meleeAttack2/meleeAttack200',
+	        //         totalFrames:16,
+	        //         startFrame:7,
+	        //         animationSpeed:0.65,
+	        //         movieClip:null,
+	        //         position:{x:43,y:0},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'meleeAttack3',
+	        //         src:type+'/meleeAttack3/meleeAttack300',
+	        //         totalFrames:28,
+	        //         startFrame:12,
+	        //         animationSpeed:0.65,
+	        //         movieClip:null,
+	        //         position:{x:83,y:0},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'meleeAttack4',
+	        //         src:type+'/meleeAttack4/meleeAttack400',
+	        //         totalFrames:38,
+	        //         startFrame:16,
+	        //         animationSpeed:0.7,
+	        //         movieClip:null,
+	        //         position:{x:50,y:5},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'jumpIn',
+	        //         src:type+'/jump/jump00',
+	        //         totalFrames:7,
+	        //         startFrame:0,
+	        //         animationSpeed:0.6,
+	        //         movieClip:null,
+	        //         position:{x:-10,y:0},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         // haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'jumpFalling',
+	        //         src:type+'/jump/jump00',
+	        //         totalFrames:13,
+	        //         startFrame:7,
+	        //         animationSpeed:0.3,
+	        //         movieClip:null,
+	        //         position:{x:-10,y:0},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         // haveCallback:true,
+	        //     });
+	
+	
+	        //     this.animationModel.push({
+	        //         label:'jumpOut',
+	        //         src:type+'/jump/jump00',
+	        //         totalFrames:20,
+	        //         startFrame:13,
+	        //         animationSpeed:0.3,
+	        //         movieClip:null,
+	        //         position:{x:-10,y:0},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'rangeAttack',
+	        //         src:type+'/rangeAttack1/rangeAttack100',
+	        //         totalFrames:15,
+	        //         startFrame:0,
+	        //         animationSpeed:0.65,
+	        //         movieClip:null,
+	        //         position:{x:4,y:2},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'rangeAttackEnd',
+	        //         src:type+'/rangeAttack1/rangeAttack100',
+	        //         totalFrames:33,
+	        //         startFrame:15,
+	        //         animationSpeed:0.65,
+	        //         movieClip:null,
+	        //         position:{x:4,y:2},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'areaAttack',
+	        //         src:type+'/areaAttack1/areaAttack100',
+	        //         totalFrames:30,
+	        //         startFrame:0,
+	        //         animationSpeed:0.65,
+	        //         movieClip:null,
+	        //         position:{x:-15,y:36},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'killBack',
+	        //         src:type+'/kill1/kill100',
+	        //         totalFrames:22,
+	        //         startFrame:0,
+	        //         animationSpeed:0.65,
+	        //         movieClip:null,
+	        //         position:{x:-190,y:15},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'revive',
+	        //         src:type+'/areaAttack1/areaAttack100',
+	        //         totalFrames:30,
+	        //         startFrame:23,
+	        //         animationSpeed:0.65,
+	        //         movieClip:null,
+	        //         position:{x:-15,y:36},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'speedAttack',
+	        //         src:type+'/speedAttack/speedAttack00',
+	        //         totalFrames:8,
+	        //         startFrame:0,
+	        //         animationSpeed:0.65,
+	        //         movieClip:null,
+	        //         position:{x:-40,y:6},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'speedAttackLoop',
+	        //         src:type+'/speedAttack/speedAttack00',
+	        //         totalFrames:8,
+	        //         startFrame:7,
+	        //         animationSpeed:0.5,
+	        //         movieClip:null,
+	        //         position:{x:-40,y:6},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'speedAttackEnd',
+	        //         src:type+'/speedAttack/speedAttack00',
+	        //         totalFrames:14,
+	        //         startFrame:8,
+	        //         animationSpeed:0.65,
+	        //         movieClip:null,
+	        //         position:{x:-40,y:6},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	        //     this.animationModel.push({
+	        //         label:'hit1',
+	        //         src:type+'/hurt1/hurt100',
+	        //         totalFrames:18,
+	        //         startFrame:0,
+	        //         animationSpeed:0.65,
+	        //         movieClip:null,
+	        //         position:{x:-35,y:4},
+	        //         anchor:{x:0.5,y:1},
+	        //         loop:false,
+	        //         haveCallback:true,
+	        //     });
+	
+	
+	        //     this.animationManager = new AnimationManager(this.animationModel, this.animationContainer)
+	        //     this.animationManager.finishCallback = this.finishAnimation.bind(this);
+	        //     this.animationManager.startCallback = this.startAnimation.bind(this);
+	        // }
+	
+	
 	        {
 	            var type = 'cupcake';
 	            _this.animationModel = [];
@@ -38634,6 +39071,11 @@
 	                haveCallback: true
 	            });
 	
+	            for (var i = 0; i < _this.animationModel.length; i++) {
+	                _this.animationModel[i].position.x *= 0.5;
+	                _this.animationModel[i].position.y *= 0.5;
+	            }
+	
 	            _this.animationManager = new _AnimationManager2.default(_this.animationModel, _this.animationContainer);
 	            _this.animationManager.finishCallback = _this.finishAnimation.bind(_this);
 	            _this.animationManager.startCallback = _this.startAnimation.bind(_this);
@@ -38661,7 +39103,8 @@
 	            dashSpeed: 5,
 	            hitFeedback: 0.2,
 	            comboStandardTimer: 0.8,
-	            invencibleTimer: 0.1
+	            invencibleTimer: 0.1,
+	            regen: 20
 	        };
 	        _this.side = 1;
 	        _this.meleeComboList = ['meleeAttack1', 'meleeAttack2', 'meleeAttack3', 'meleeAttack4'];
@@ -38720,7 +39163,7 @@
 	            this.animationManager.ableToChangeAnimation = true;
 	
 	            this.comboTimer = 0;
-	            this.starterScale = 0.5; // 0.5;
+	            this.starterScale = 1; // 0.5;
 	            this.standardScale = this.starterScale;
 	            this.speedFactor = 1;
 	
@@ -38790,6 +39233,16 @@
 	            animModel.movieClip.animationSpeed = animModel.animationSpeed * this.speedFactor;
 	        }
 	    }, {
+	        key: 'hitEnemy',
+	        value: function hitEnemy(entity, demage) {
+	            var collisionResult = entity.hit(this.heroModel.getDemage());
+	            console.log(collisionResult);
+	            if (collisionResult == 'DEAD') {
+	                this.heroModel.updateXp(entity.enemyModel.xp);
+	            }
+	            return collisionResult;
+	        }
+	    }, {
 	        key: 'areaAttackCollision',
 	        value: function areaAttackCollision() {
 	            this.areaAttackTimer = -1;
@@ -38798,7 +39251,8 @@
 	                for (var i = 0; i < collisionList.length; i++) {
 	                    // if(collisionList[i].front || collisionList[i].back){
 	                    collisionList[i].entity.side = this.side * -1;
-	                    collisionList[i].entity.hit(2);
+	                    this.hitEnemy(collisionList[i].entity, this.heroModel.getDemage());
+	
 	                    // }
 	                }
 	            }
@@ -38811,9 +39265,10 @@
 	                for (var i = 0; i < collisionList.length; i++) {
 	                    //if(collisionList[i].right || collisionList[i].left){
 	                    collisionList[i].entity.side = this.side * -1;
-	                    if (collisionList[i].entity.hit(0.5)) {
-	                        return true;
-	                    }
+	                    this.hitEnemy(collisionList[i].entity, this.heroModel.getDemage());
+	                    // if(collisionList[i].entity.hit(this.heroModel.getDemage())){
+	                    //     return true
+	                    // }
 	                    //}
 	                }
 	            }
@@ -38828,7 +39283,7 @@
 	                    if (collisionList[i].right || collisionList[i].left) {
 	                        collisionList[i].entity.side = this.side * -1;
 	                        console.log(this.heroModel.getDemage());
-	                        if (collisionList[i].entity.hit(this.heroModel.getDemage())) {
+	                        if (this.hitEnemy(collisionList[i].entity, this.heroModel.getDemage())) {
 	                            return true;
 	                        }
 	                    }
@@ -39153,6 +39608,14 @@
 	            }
 	        }
 	    }, {
+	        key: 'regen',
+	        value: function regen(delta) {
+	            this.life += this.dynamicModel.regen * delta;
+	            if (this.life > this.maxLife) {
+	                this.life = this.maxLife;
+	            }
+	        }
+	    }, {
 	        key: 'updateBaseColor',
 	        value: function updateBaseColor() {
 	            if (this.hitting) {
@@ -39160,6 +39623,16 @@
 	            } else {
 	                this.roundBase.tint = 0;
 	            }
+	        }
+	    }, {
+	        key: 'levelUp',
+	        value: function levelUp() {
+	            console.log('LEVEL UP', this.heroModel.level);
+	        }
+	    }, {
+	        key: 'updateXP',
+	        value: function updateXP(xp) {
+	            console.log('updateXP', xp);
 	        }
 	    }, {
 	        key: 'update',
@@ -39172,6 +39645,8 @@
 	            if (this.dying) {
 	                return;
 	            }
+	
+	            this.regen(delta);
 	            // console.log(this.invencible);
 	            if (this.invencible >= 0) {
 	                this.invencible -= delta;
@@ -40354,7 +40829,9 @@
 	        key: 'build',
 	        value: function build() {
 	            var enemieType = '';
+	            this.enemyModel.updateLevel(2);
 	            if (this.team == 0) {
+	                // this.enemyModel.updateLevel(10)
 	                enemieType = Math.random() < 0.5 ? 'Candy1' : 'Candy2';
 	            } else {
 	                enemieType = Math.random() < 0.5 ? 'Tomato' : 'Potato';
@@ -40524,7 +41001,7 @@
 	    }, {
 	        key: 'wait',
 	        value: function wait() {
-	            // return
+	            return;
 	            this.attacking = false;
 	            this.preparingAttack = false;
 	            this.velocity.x = 0;
@@ -40564,7 +41041,9 @@
 	        }
 	    }, {
 	        key: 'setTarget',
-	        value: function setTarget(position, isEnemy) {
+	        value: function setTarget(position) {
+	            var isEnemy = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+	
 	            this.isEnemy = isEnemy;
 	            var angle = Math.random() * 360 / 180 * 3.14;
 	            this.targetPosition.x = position.x + Math.sin(angle) * 50;
@@ -40709,7 +41188,7 @@
 	
 	            if (this.life <= 0) {
 	                this.dead();
-	                //return false;
+	                return 'DEAD';
 	            }
 	
 	            this.updateLifeBar();
@@ -41518,7 +41997,7 @@
 	var StandardBullet = function (_Entity) {
 	    _inherits(StandardBullet, _Entity);
 	
-	    function StandardBullet(game, velocity, lifeTime, power) {
+	    function StandardBullet(game, velocity, lifeTime, power, src) {
 	        _classCallCheck(this, StandardBullet);
 	
 	        var _this = _possibleConstructorReturn(this, (StandardBullet.__proto__ || Object.getPrototypeOf(StandardBullet)).call(this));
@@ -41527,8 +42006,12 @@
 	        _this.lifeTime = lifeTime;
 	        _this.velocity = velocity;
 	        _this.power = power;
+	        _this.src = src;
 	
-	        _this.build();
+	        _this.disapearTimerMax = 20;
+	        _this.disapearTimer = _this.disapearTimerMax;
+	        _this.disapearing = false;
+	        // this.build();
 	
 	        return _this;
 	    }
@@ -41600,10 +42083,6 @@
 	
 	            this.radius = 10;
 	            this.externalRadius = 0;
-	
-	            this.disapearTimerMax = 20;
-	            this.disapearTimer = this.disapearTimerMax;
-	            this.disapearing = false;
 	        }
 	    }, {
 	        key: 'bulletAttackCollision',
@@ -41699,6 +42178,8 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
 	var _pixi = __webpack_require__(1);
 	
 	var _pixi2 = _interopRequireDefault(_pixi);
@@ -41730,21 +42211,26 @@
 	var TowerBullet = function (_StandardBullet) {
 	        _inherits(TowerBullet, _StandardBullet);
 	
-	        function TowerBullet(game, velocity, lifeTime, power, team) {
+	        function TowerBullet(game, velocity, lifeTime, power, team, src) {
 	                _classCallCheck(this, TowerBullet);
 	
-	                var _this = _possibleConstructorReturn(this, (TowerBullet.__proto__ || Object.getPrototypeOf(TowerBullet)).call(this, game, velocity, lifeTime));
+	                var _this = _possibleConstructorReturn(this, (TowerBullet.__proto__ || Object.getPrototypeOf(TowerBullet)).call(this, game, velocity, lifeTime, src));
 	
+	                _this.game = game;
+	                _this.lifeTime = lifeTime;
+	                _this.velocity = velocity;
 	                _this.power = power;
+	                _this.src = src;
+	
 	                _this.team = team;
 	
-	                // this.build();
 	                return _this;
 	        }
 	
 	        _createClass(TowerBullet, [{
-	                key: 'buid',
-	                value: function buid() {
+	                key: 'build',
+	                value: function build() {
+	
 	                        this.base = new _pixi2.default.Container();
 	                        this.roundBase = new _pixi2.default.Graphics();
 	                        this.roundBase.beginFill(0);
@@ -41757,18 +42243,17 @@
 	                        this.addChild(this.base);
 	                        this.animationContainer = new _pixi2.default.Container();
 	                        this.animationContainer.x = 0;
-	                        this.animationContainer.y = -135;
+	                        this.animationContainer.y = -75;
 	                        this.addChild(this.animationContainer);
 	
 	                        // this.sprite = new PIXI.Sprite(PIXI.Texture.fromFrame('cherry.png'))    
 	                        // this.sprite.anchor.set(0.6);
 	
-	                        var idCherry = Math.floor(Math.random() * 2) + 1;
 	
 	                        this.animationModel = [];
 	                        this.animationModel.push({
 	                                label: 'idle',
-	                                src: 'cherryBullet' + idCherry + '00',
+	                                src: this.src + '00',
 	                                totalFrames: 1,
 	                                startFrame: 0,
 	                                animationSpeed: 0.4,
@@ -41780,7 +42265,7 @@
 	
 	                        this.animationModel.push({
 	                                label: 'explode',
-	                                src: 'cherryBullet' + idCherry + '00',
+	                                src: this.src + '00',
 	                                totalFrames: 6,
 	                                startFrame: 0,
 	                                animationSpeed: 0.4,
@@ -41798,7 +42283,7 @@
 	
 	                        this.standardScale = 1;
 	                        this.speedScale = 1;
-	                        this.starterScale = 0.5;
+	                        this.starterScale = 2;
 	                        this.gravity = 3800;
 	                        // this.scale.set(0);
 	                        this.kill2 = false;
@@ -41822,6 +42307,15 @@
 	                                }
 	                        }
 	                        return false;
+	                }
+	        }, {
+	                key: 'update',
+	                value: function update(delta) {
+	                        _get(TowerBullet.prototype.__proto__ || Object.getPrototypeOf(TowerBullet.prototype), 'update', this).call(this, delta);
+	
+	                        if (this.animationContainer.y < 0) {
+	                                this.animationContainer.y += 100 * delta;
+	                        }
 	                }
 	        }]);
 	
@@ -42372,12 +42866,12 @@
 	    _createClass(Tower, [{
 	        key: 'reset',
 	        value: function reset() {
-	            this.addLifeBar({ x: 20, y: -180 }, { w: 200, h: 15 }, this.team == 0 ? 0x0000FF : 0x00FF00);
+	            this.addLifeBar({ x: 20, y: -280 }, { w: 200, h: 10 }, this.team == 0 ? 0x0000FF : 0x00FF00);
 	
 	            this.waitingNext = 5 * Math.random() + 1;
 	            this.sinScale = Math.random();
-	            this.maxLife = 5000;
-	            this.life = 5000;
+	            this.maxLife = 3000;
+	            this.life = this.maxLife;
 	
 	            this.enemiesList = [];
 	            // this.build();
@@ -42390,7 +42884,7 @@
 	
 	            this.attacking = false;
 	            this.attackTimer = -1;
-	            this.attackSpeed = 1.5;
+	            this.attackSpeed = 2.5;
 	
 	            this.updateable = true;
 	        }
@@ -42400,7 +42894,7 @@
 	            this.removeLifeBar();
 	
 	            if (this.finalBase) {
-	                this.game.gameOver();
+	                this.game.gameOver(this.team == 0 ? 1 : 0);
 	            }
 	            this.killed = true;
 	            this.updateable = false;
@@ -42466,27 +42960,96 @@
 	    }, {
 	        key: 'build',
 	        value: function build() {
+	
+	            // console.log(this.name);
 	            this.finalBase = false;
 	            if (this.name.indexOf('Base') !== -1) {
 	                this.finalBase = true;
+	
+	                // console.log('FINAL BASE');
 	            }
 	            // console.log(this.name, this.finalBase);
 	            var team = this.team + 1; // Math.floor(Math.random()*2) + 1;
 	            // console.log(team);
-	            this.animationModel = [];
-	            this.animationModel.push({
-	                label: 'static',
-	                src: 'tower' + team + '/idle/tower',
-	                totalFrames: 1,
-	                startFrame: 0,
-	                animationSpeed: 0.4,
-	                movieClip: null,
-	                position: { x: 10, y: 0 },
-	                anchor: { x: 0.5, y: 1 },
-	                loop: false,
-	                haveCallback: false,
-	                singleFrame: true
-	            });
+	            if (team == 1) {
+	                this.animationModel = [];
+	                this.animationModel.push({
+	                    label: 'idle',
+	                    src: 'tower' + team + '/idle/tower',
+	                    totalFrames: 1,
+	                    startFrame: 0,
+	                    animationSpeed: 0.4,
+	                    movieClip: null,
+	                    position: { x: 10, y: 0 },
+	                    anchor: { x: 0.5, y: 1 },
+	                    loop: false,
+	                    haveCallback: false,
+	                    singleFrame: true
+	                });
+	                this.animationModel.push({
+	                    label: 'attack',
+	                    src: 'tower' + team + '/idle/tower',
+	                    totalFrames: 1,
+	                    startFrame: 0,
+	                    animationSpeed: 0.4,
+	                    movieClip: null,
+	                    position: { x: 10, y: 0 },
+	                    anchor: { x: 0.5, y: 1 },
+	                    loop: false,
+	                    haveCallback: true,
+	                    singleFrame: true
+	                });
+	                this.animationModel.push({
+	                    label: 'attackOut',
+	                    src: 'tower' + team + '/idle/tower',
+	                    totalFrames: 1,
+	                    startFrame: 0,
+	                    animationSpeed: 0.4,
+	                    movieClip: null,
+	                    position: { x: 10, y: 0 },
+	                    anchor: { x: 0.5, y: 1 },
+	                    loop: false,
+	                    haveCallback: true,
+	                    singleFrame: true
+	                });
+	            } else {
+	                this.animationModel = [];
+	                this.animationModel.push({
+	                    label: 'idle',
+	                    src: 'vegetables/tower1/idle/idle00',
+	                    totalFrames: 16,
+	                    startFrame: 0,
+	                    animationSpeed: 0.4,
+	                    movieClip: null,
+	                    position: { x: 10, y: 0 },
+	                    anchor: { x: 0.5, y: 1 },
+	                    loop: true
+	                });
+	                this.animationModel.push({
+	                    label: 'attack',
+	                    src: 'vegetables/tower1/attack/attack00',
+	                    totalFrames: 8,
+	                    startFrame: 0,
+	                    animationSpeed: 0.4,
+	                    movieClip: null,
+	                    position: { x: 10, y: 0 },
+	                    anchor: { x: 0.5, y: 1 },
+	                    loop: false,
+	                    haveCallback: true
+	                });
+	                this.animationModel.push({
+	                    label: 'attackOut',
+	                    src: 'vegetables/tower1/attack/attack00',
+	                    totalFrames: 15,
+	                    startFrame: 8,
+	                    animationSpeed: 0.3,
+	                    movieClip: null,
+	                    position: { x: 10, y: 0 },
+	                    anchor: { x: 0.5, y: 1 },
+	                    loop: false,
+	                    haveCallback: true
+	                });
+	            }
 	            // this.animationModel.push({
 	            //     label:'idle',
 	            //     src:'pine'+idRock+'00',
@@ -42501,10 +43064,11 @@
 	            // });
 	
 	            this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
+	            this.animationManager.finishCallback = this.finishAnimation.bind(this);
 	
 	            this.animationManager.hideAll();
 	            this.animationManager.stopAll();
-	            this.animationManager.changeState('static');
+	            this.animationManager.changeState('idle');
 	
 	            this.collidable = true;
 	
@@ -42524,22 +43088,51 @@
 	            // this.debugCollision()
 	        }
 	    }, {
+	        key: 'prepareAttack',
+	        value: function prepareAttack(entity) {
+	            if (this.animationManager.state == 'attack') {
+	                return;
+	            }
+	            // console.log('PREPAREINGGANGNA AGTTACK');
+	            this.currentTarget = entity;
+	
+	            // console.log(this.animationManager.state);
+	
+	            this.animationManager.changeState('attack', true);
+	        }
+	    }, {
 	        key: 'attack',
-	        value: function attack(entity) {
-	            if (this.team == entity.team) {
+	        value: function attack() {
+	            if (!this.currentTarget || this.team == this.currentTarget.team) {
 	                return;
 	            }
 	            this.attackTimer = this.attackSpeed;
 	
-	            var bulletPosition = { x: this.x, y: this.y - this.getRadius() };
+	            var bulletPosition = { x: this.x, y: this.y };
 	
-	            var angle = Math.atan2(entity.y - bulletPosition.y, entity.x - bulletPosition.x);
+	            var angle = Math.atan2(this.currentTarget.y - bulletPosition.y, this.currentTarget.x - bulletPosition.x);
 	
-	            var bulletSpeed = { x: Math.cos(angle) * 900, y: Math.sin(angle) * 900 };
+	            var bulletSpeed = { x: Math.cos(angle) * 1200, y: Math.sin(angle) * 1200 };
 	
 	            var power = 60;
 	
-	            this.game.addTowerBullet(bulletPosition, bulletSpeed, 0.5, power, this.team);
+	            var id = Math.floor(Math.random() * 2) + 1;
+	            this.game.addTowerBullet(bulletPosition, bulletSpeed, 0.5, power, this.team, 'vegetables/tower1/bullet' + id + '/bullet' + id);
+	
+	            this.currentTarget = null;
+	        }
+	    }, {
+	        key: 'finishAnimation',
+	        value: function finishAnimation() {
+	            if (this.animationManager.state == 'attack') {
+	                this.attack();
+	                this.animationManager.changeState('attackOut', true);
+	                return;
+	            }
+	            if (this.animationManager.state == 'attackOut') {
+	                this.animationManager.ableToChangeAnimation = true;
+	                this.animationManager.changeState('idle');
+	            }
 	        }
 	    }, {
 	        key: 'update',
@@ -42548,6 +43141,8 @@
 	                return;
 	            }
 	            _get(Tower.prototype.__proto__ || Object.getPrototypeOf(Tower.prototype), 'update', this).call(this, delta);
+	
+	            this.animationManager.updateAnimations();
 	
 	            if (this.attackTimer > 0) {
 	                this.attackTimer -= delta;
@@ -42563,9 +43158,9 @@
 	                    //console.log(this.name, entityCollisions);
 	                    // console.log(entityCollisions.length);
 	                    if (entityCollisions.length > 1 && entityCollisions[0].entity.type == 'hero') {
-	                        this.attack(entityCollisions[1].entity);
+	                        this.prepareAttack(entityCollisions[1].entity);
 	                    } else {
-	                        this.attack(entityCollisions[0].entity);
+	                        this.prepareAttack(entityCollisions[0].entity);
 	                    }
 	                }
 	            }
@@ -43036,7 +43631,7 @@
 	                        if (this.currentWave >= this.waves[this.currentWave2].length) {
 	                                this.actionTimer = this.waves[this.currentWave2][0];
 	
-	                                console.log('next Wave in', this.actionTimer);
+	                                // console.log('next Wave in', this.actionTimer);
 	                                // this.actionTimer = this.spawnTime;
 	                                this.action = this.startSpawn;
 	                                return;
@@ -43489,6 +44084,471 @@
 	}(_Entity3.default);
 	
 	exports.default = UISpawner;
+
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(148);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _EnemyModel = __webpack_require__(150);
+	
+	var _EnemyModel2 = _interopRequireDefault(_EnemyModel);
+	
+	var _StandardEnemy2 = __webpack_require__(152);
+	
+	var _StandardEnemy3 = _interopRequireDefault(_StandardEnemy2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Bomber = function (_StandardEnemy) {
+	    _inherits(Bomber, _StandardEnemy);
+	
+	    function Bomber(game, team) {
+	        _classCallCheck(this, Bomber);
+	
+	        var _this = _possibleConstructorReturn(this, (Bomber.__proto__ || Object.getPrototypeOf(Bomber)).call(this));
+	        // 
+	        // console.log('tanker');
+	
+	
+	        _this.type = 'enemy';
+	
+	        _this.game = game;
+	        _this.team = team;
+	
+	        _this.base = new _pixi2.default.Container();
+	        _this.roundBase = new _pixi2.default.Graphics();
+	        _this.roundBase.beginFill(0xffffff);
+	        _this.roundBase.drawCircle(0, 0, 60);
+	        _this.roundBase.scale.y = 0.4;
+	        _this.roundBase.alpha = 0.1;
+	        _this.roundBase.x = 0;
+	        _this.base.addChild(_this.roundBase);
+	
+	        _this.addChild(_this.base);
+	        _this.animationContainer = new _pixi2.default.Container();
+	        _this.animationContainer.x = -5;
+	        _this.animationContainer.y = 0;
+	        _this.addChild(_this.animationContainer);
+	
+	        _this.actionTimer = -1;
+	        _this.action = null;
+	
+	        var enemyStats = {
+	            level: 1,
+	            hp: 300,
+	            stamina: 40,
+	            speed: 60,
+	            magicPower: 13,
+	            battlePower: 250,
+	            defense: 20,
+	            magicDefense: 120,
+	            xp: 20
+	        };
+	
+	        _this.enemyModel = new _EnemyModel2.default('bomber', enemyStats);
+	
+	        _this.actionTimer = -1;
+	        _this.action = null;
+	
+	        _this.dynamicModel = {
+	            attackSpeed: 3,
+	            invencibleTimer: 0.1
+	        };
+	
+	        // this.build();
+	
+	        // this.sprite.scale.set(this.starterScale)
+	        return _this;
+	    }
+	
+	    _createClass(Bomber, [{
+	        key: 'build',
+	        value: function build() {
+	            var enemieType = 'Chilli';
+	            // if(this.team == 0){
+	            //     enemieType = Math.random() <0.5?'Candy1':'Candy2';
+	            // }else{
+	            //     enemieType = Math.random() <0.5?'Tomato':'Potato';
+	            // }
+	            this.animationModel = [];
+	            this.animationModel.push({
+	                label: 'idle',
+	                src: enemieType + '/idle/idle00',
+	                totalFrames: 15,
+	                startFrame: 0,
+	                animationSpeed: 0.4,
+	                movieClip: null,
+	                position: { x: 0, y: 0 },
+	                anchor: { x: 0.5, y: 1 }
+	            });
+	
+	            this.animationModel.push({
+	                label: 'killBack',
+	                src: enemieType + '/dead1/dead00',
+	                totalFrames: 13,
+	                startFrame: 0,
+	                animationSpeed: 0.65,
+	                movieClip: null,
+	                position: { x: -100, y: 3 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	
+	            this.animationModel.push({
+	                label: 'killFront',
+	                src: enemieType + '/dead1/dead00',
+	                totalFrames: 13,
+	                startFrame: 0,
+	                animationSpeed: 0.65,
+	                movieClip: null,
+	                position: { x: -100, y: 3 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	
+	            this.animationModel.push({
+	                label: 'hurt',
+	                src: enemieType + '/hurt/hurt00',
+	                totalFrames: 10,
+	                startFrame: 0,
+	                animationSpeed: 0.6,
+	                movieClip: null,
+	                position: { x: -15, y: 0 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	
+	            this.animationModel.push({
+	                label: 'attackIn',
+	                src: enemieType + '/attack/attack00',
+	                totalFrames: 13,
+	                startFrame: 0,
+	                animationSpeed: 0.2,
+	                movieClip: null,
+	                position: { x: 10, y: 0 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	
+	            this.animationModel.push({
+	                label: 'charged',
+	                src: enemieType + '/attack/attack00',
+	                totalFrames: 13,
+	                startFrame: 13,
+	                animationSpeed: 0.2,
+	                movieClip: null,
+	                position: { x: 10, y: 0 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: false
+	            });
+	
+	            this.animationModel.push({
+	                label: 'attackOut',
+	                src: enemieType + '/attack/attack00',
+	                totalFrames: 21,
+	                startFrame: 14,
+	                animationSpeed: 0.6,
+	                movieClip: null,
+	                position: { x: 10, y: 0 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	
+	            this.animationModel.push({
+	                label: 'walk',
+	                src: enemieType + '/walk/walk00',
+	                totalFrames: 16,
+	                startFrame: 0,
+	                animationSpeed: 0.6,
+	                movieClip: null,
+	                position: { x: 2, y: 0 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: true
+	            });
+	
+	            this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
+	            this.animationManager.finishCallback = this.finishAnimation.bind(this);
+	
+	            // this.animationContainer.addChild(this.sprite);
+	
+	            this.speed = { x: 100, y: 100 };
+	            this.velocity = { x: 0, y: 0 };
+	            this.spriteVelocity = { x: 0, y: 0 };
+	
+	            this.standardScale = 1;
+	            this.speedScale = 1;
+	            this.starterScale = 0.75;
+	            this.gravity = 15;
+	            // this.scale.set(0);
+	            this.kill2 = false;
+	
+	            this.animationManager.hideAll();
+	            this.animationManager.stopAll();
+	            this.animationManager.changeState('idle');
+	            this.radius = 120 + Math.random() * 10;
+	            this.externalRadius = 160;
+	            this.debugCollision();
+	
+	            // this.debugCollision();
+	            this.reset();
+	            this.start();
+	
+	            this.charging = false;
+	
+	            // this.animationManager.showJust(['idle','killFront'])
+	            //console.log(this.attackSpeed);
+	        }
+	    }, {
+	        key: 'hit',
+	        value: function hit(power, forceSide) {
+	
+	            console.log(this.attacking);
+	            if (this.life < 0 || this.invencible > 0) {
+	                // || this.attacking){
+	                return false;
+	            }
+	
+	            var calcPower = this.enemyModel.getHurt(power);
+	
+	            // this.wait();
+	
+	            this.invencible = this.dynamicModel.invencibleTimer;
+	
+	            this.hitting = true;
+	            this.hitTime = 0.3;
+	
+	            this.life -= calcPower;
+	
+	            // console.log(this.life);
+	
+	
+	            if (!this.charging) {
+	                console.log(this.charging);
+	                this.animationManager.changeState('hurt', true);
+	            }
+	
+	            if (forceSide) {
+	                this.side = forceSide;
+	            }
+	
+	            if (this.life <= 0) {
+	                this.dead();
+	                return 'DEAD';
+	            }
+	
+	            this.updateLifeBar();
+	            return true;
+	        }
+	    }, {
+	        key: 'finishAnimation',
+	        value: function finishAnimation() {
+	            if (this.animationManager.state == 'attackOut') {
+	                this.kill = true;
+	                // this.ableToMove = true;
+	                //this.prepareAttack();
+	                return;
+	            }
+	            if (this.animationManager.state == 'hurt') {
+	                // this.ableToMove = true;
+	                this.prepareAttack();
+	                return;
+	            }
+	            if (this.animationManager.state == 'attackIn') {
+	                // this.animationManager.changeState('attackOut', true);
+	                this.charged();
+	                // this.attack();
+	                return;
+	            }
+	            if (this.animationManager.state == 'killFront' || this.animationManager.state == 'killBack') {
+	                this.killed = true;
+	                return;
+	            }
+	
+	            // this.updateWaypointsSame();
+	            this.animationManager.changeState('idle', true);
+	            // this.attacking = false;
+	            this.preparingAttack = false;
+	        }
+	    }, {
+	        key: 'charged',
+	        value: function charged() {
+	            this.animationManager.changeState('charged', true);
+	            this.completeCharge = true;
+	            this.chargeTime = 2;
+	            this.chargeScale = 0.5;
+	        }
+	    }, {
+	        key: 'attack',
+	        value: function attack() {
+	            if (this.animationManager.state == 'attackOut') {
+	                return;
+	            }
+	            this.animationManager.changeState('attackOut');
+	        }
+	    }, {
+	        key: 'prepareAttack',
+	        value: function prepareAttack() {
+	
+	            this.animationManager.changeState('attackIn', true);
+	            this.charging = true;
+	        }
+	    }, {
+	        key: 'endHit',
+	        value: function endHit() {
+	            this.hitting = false;
+	            this.hitTime = -1;
+	
+	            // this.animationManager.changeState('attackIn', true);
+	        }
+	    }, {
+	        key: 'start',
+	        value: function start() {
+	            this.updateable = true;
+	            //this.move();
+	            //this.setTarget(this.waypoints[this.waypointID]);
+	        }
+	    }, {
+	        key: 'update',
+	        value: function update(delta) {
+	
+	            if (this.disapearing) {
+	                this.disapearTimer -= delta;
+	                if (this.disapearTimer <= 0) {
+	                    this.kill = true;
+	                }
+	                var value = this.disapearTimer / this.disapearTimerMax;
+	                this.alpha = value;
+	                this.animationContainer.scale.set(value * 0.5 + 0.5);
+	            }
+	
+	            if (this.killed || !this.updateable) {
+	                return;
+	            }
+	
+	            if (this.completeCharge) {
+	                if (this.chargeTime > 0) {
+	                    this.chargeTime -= delta;
+	                    this.animationContainer.scale.x += this.chargeScale * delta;
+	                    this.animationContainer.scale.y += this.chargeScale * delta;
+	                    this.animationContainer.rotation = Math.random() * 0.1; // * 10 - 5
+	                    // console.log(this.animationContainer.scale.x);
+	                } else {
+	                    this.attack();
+	                    this.completeCharge = false;
+	                }
+	            }
+	            // console.log(this.followTarget);
+	
+	            if (this.invencible >= 0) {
+	                this.invencible -= delta;
+	            }
+	
+	            // this.skipCollision --;
+	            // if(this.skipCollision <= 0){
+	            //     this.skipCollision = Math.random() * 3 + 2;
+	            //     if(!this.attacking){
+	            //         let entityCollisions = this.game.getCollisionList(this,['tower','player','enemy'], true);
+	            //         // console.log(entityCollisions);
+	            //         if(entityCollisions && entityCollisions.length){
+	            //             if(entityCollisions[0].ableToHit || entityCollisions[0].entity.type == 'tower'){
+	            //                 if(entityCollisions[0].trueLeft){
+	            //                     this.side = 1;
+	            //                 }else{
+	            //                     this.side = -1;
+	            //                 }
+	            //                 this.prepareAttack(entityCollisions[0]);
+	            //             }
+	            //         }
+	            //     }
+	            // }
+	
+	            if (this.attackTimer > 0) {
+	                this.attackTimer -= delta;
+	                if (this.attackTimer <= 0) {
+	                    this.attacking = false;
+	                }
+	            }
+	
+	            // console.log(this.velocity);
+	            if (this.actionTimer > 0) {
+	                this.actionTimer -= delta;
+	                if (this.actionTimer <= 0) {
+	                    this.action();
+	                }
+	            }
+	
+	            this.animationManager.updateAnimations();
+	
+	            if (this.hitTime > 0) {
+	                this.hitTime -= delta;
+	                if (this.hitTime <= 0) {
+	                    this.endHit();
+	                }
+	            }
+	            // console.log(this.attacking);
+	            if (this.isEnemy && this.followTarget || this.followTarget && !this.attacking) {
+	                if (_utils2.default.distance(this.targetPosition.x, this.targetPosition.y, this.x, this.y) < this.getRadius()) {
+	                    if (!this.isEnemy) {
+	                        this.updateWaypoints();
+	                    }
+	                    //this.followTarget = false;
+	                    this.wait();
+	                } else {
+	                    // console.log('MOVE');
+	                    this.move();
+	                }
+	            }
+	
+	            this.updateBaseColor();
+	            if (this.hitting) {
+	                return;
+	            }
+	
+	            if (this.game.worldCollision(this.x, this.y)) {
+	                this.moveBack(delta);
+	                return;
+	            }
+	            // console.log(this.velocity);
+	            this.x += this.velocity.x * delta * this.speedScale;
+	            this.y += this.velocity.y * delta * this.speedScale;
+	        }
+	    }]);
+	
+	    return Bomber;
+	}(_StandardEnemy3.default);
+	
+	exports.default = Bomber;
 
 /***/ }
 /******/ ]);
