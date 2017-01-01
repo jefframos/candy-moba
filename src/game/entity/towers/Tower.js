@@ -288,7 +288,7 @@ export default class Tower extends Entity {
         }
         this.attackTimer = this.attackSpeed;
 
-        let bulletPosition = {x:this.x, y: this.y };
+        let bulletPosition = {x:this.x, y: this.y};
 
         let angle = Math.atan2(this.currentTarget.y - bulletPosition.y, this.currentTarget.x - bulletPosition.x);
 

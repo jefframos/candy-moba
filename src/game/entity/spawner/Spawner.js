@@ -74,8 +74,8 @@ export default class Spawner extends Entity {
 
         this.currentEntity = 0;
         this.waves = [
-            [30,'standard', 'standard', 'standard','standard'],
-            [45,'tanker', 'tanker', 'standard'],
+            [30,'bomber', 'standard', 'standard', 'standard','standard'],
+            [45,'bomber','tanker', 'tanker', 'standard'],
         ];
 
     }

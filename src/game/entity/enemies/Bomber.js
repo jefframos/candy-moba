@@ -35,7 +35,7 @@ export default class Bomber extends StandardEnemy {
         this.action = null;
         
         let enemyStats = {
-            level:1,
+            level:3,
             hp:300,
             stamina:40,
             speed:60,
@@ -114,7 +114,20 @@ export default class Bomber extends StandardEnemy {
             startFrame:0,
             animationSpeed:0.6,
             movieClip:null,
-            position:{x:-15,y:0},
+            position:{x:-30,y:0},
+            anchor:{x:0.5,y:1},
+            loop:false,
+            haveCallback:true,
+        });
+
+        this.animationModel.push({
+            label:'hurt1',
+            src:enemieType+'/hurt/hurt00',
+            totalFrames:10,
+            startFrame:0,
+            animationSpeed:0.6,
+            movieClip:null,
+            position:{x:-30,y:0},
             anchor:{x:0.5,y:1},
             loop:false,
             haveCallback:true,
@@ -127,7 +140,7 @@ export default class Bomber extends StandardEnemy {
             startFrame:0,
             animationSpeed:0.2,
             movieClip:null,
-            position:{x:10,y:0},
+            position:{x:10,y:9},
             anchor:{x:0.5,y:1},
             loop:false,
             haveCallback:true,
@@ -137,22 +150,22 @@ export default class Bomber extends StandardEnemy {
             label:'charged',
             src:enemieType+'/attack/attack00',
             totalFrames:13,
-            startFrame:13,
+            startFrame:12,
             animationSpeed:0.2,
             movieClip:null,
-            position:{x:10,y:0},
+            position:{x:10,y:9},
             anchor:{x:0.5,y:1},
-            loop:false
+            loop:true
         });
 
         this.animationModel.push({
             label:'attackOut',
             src:enemieType+'/attack/attack00',
-            totalFrames:21,
+            totalFrames:22,
             startFrame:14,
             animationSpeed:0.6,
             movieClip:null,
-            position:{x:10,y:0},
+            position:{x:10,y:9},
             anchor:{x:0.5,y:1},
             loop:false,
             haveCallback:true,
@@ -161,7 +174,7 @@ export default class Bomber extends StandardEnemy {
           this.animationModel.push({
             label:'walk',
             src:enemieType+'/walk/walk00',
-            totalFrames:16,
+            totalFrames:19,
             startFrame:0,
             animationSpeed:0.6,
             movieClip:null,
@@ -189,9 +202,9 @@ export default class Bomber extends StandardEnemy {
         this.animationManager.hideAll();
         this.animationManager.stopAll();
         this.animationManager.changeState('idle');
-        this.radius = 120 + Math.random() * 10;
+        this.radius = 100;
         this.externalRadius = 160;
-        this.debugCollision();
+        // this.debugCollision();
 
 
         // this.debugCollision();
@@ -200,13 +213,12 @@ export default class Bomber extends StandardEnemy {
 
         this.charging = false;
 
-// this.animationManager.showJust(['idle','killFront'])
+ // this.animationManager.showJust(['idle','attackIn'])
         //console.log(this.attackSpeed);
     }
 
     hit(power, forceSide) {
 
-        console.log(this.attacking);
         if(this.life < 0 || this.invencible > 0){// || this.attacking){
             return false;
         }
@@ -228,9 +240,10 @@ export default class Bomber extends StandardEnemy {
         // console.log(this.life);
 
 
-        if(!this.charging){
-            console.log(this.charging);
+        if(this.life <= this.maxLife/2 && !this.charging){
             this.animationManager.changeState('hurt', true);
+        }else{
+            this.animationManager.changeState('hurt1');
         }
 
         
@@ -248,9 +261,21 @@ export default class Bomber extends StandardEnemy {
         return true;
     }
 
+    explode ( ) {
+        this.removeLifeBar();
+        let entityCollisions = this.game.getExternalColisionList(this,['enemy', 'player', 'tower'], true);
+
+        for (var i = 0; i < entityCollisions.length; i++) {
+            entityCollisions[i].entity.hit(this.enemyModel.getDemage());
+        }
+    }
     finishAnimation ( ) {
+    
         if(this.animationManager.state == 'attackOut'){
-            this.kill = true;
+            if(!this.disapearing){
+                this.explode();
+            }
+            this.disapearing = true;
             // this.ableToMove = true;
             //this.prepareAttack();
             return
@@ -282,12 +307,13 @@ export default class Bomber extends StandardEnemy {
         this.animationManager.changeState('charged', true);
         this.completeCharge = true;
         this.chargeTime = 2;
-        this.chargeScale = 0.5;
+        this.chargeScale = 0.2;
     }
     attack(){
         if(this.animationManager.state == 'attackOut'){
             return
         }
+        this.rotation = 0;
         this.animationManager.changeState('attackOut');
     }
     prepareAttack(){
@@ -307,21 +333,24 @@ export default class Bomber extends StandardEnemy {
 
     start ( ) {
         this.updateable = true;
-        //this.move();
-        //this.setTarget(this.waypoints[this.waypointID]);
+        if(this.waypoints && this.waypoints[this.waypointID]){
+            this.move();
+            this.setTarget(this.waypoints[this.waypointID]);
+        }
     }
 
 
     update ( delta ) {
 
         if(this.disapearing){
+            this.collidable = false;
             this.disapearTimer -= delta;
             if(this.disapearTimer <= 0){
                 this.kill = true;
             }
             let value = this.disapearTimer / this.disapearTimerMax;
             this.alpha = value;
-            this.animationContainer.scale.set(value * 0.5 + 0.5)
+            //this.animationContainer.scale.set(value * 0.5 + 0.5)
         }
 
         if(this.killed || !this.updateable){
@@ -333,7 +362,7 @@ export default class Bomber extends StandardEnemy {
                 this.chargeTime -= delta;
                 this.animationContainer.scale.x += this.chargeScale * delta;
                 this.animationContainer.scale.y += this.chargeScale * delta;
-                this.animationContainer.rotation = Math.random() * 0.1// * 10 - 5
+                this.rotation = Math.random() * 0.1// * 10 - 5
                 // console.log(this.animationContainer.scale.x);
             }else{
                 this.attack();
@@ -341,30 +370,14 @@ export default class Bomber extends StandardEnemy {
             }
 
         }
+
+
         // console.log(this.followTarget);
         
         if(this.invencible >= 0){
             this.invencible -= delta;
         }
 
-        // this.skipCollision --;
-        // if(this.skipCollision <= 0){
-        //     this.skipCollision = Math.random() * 3 + 2;
-        //     if(!this.attacking){
-        //         let entityCollisions = this.game.getCollisionList(this,['tower','player','enemy'], true);
-        //         // console.log(entityCollisions);
-        //         if(entityCollisions && entityCollisions.length){
-        //             if(entityCollisions[0].ableToHit || entityCollisions[0].entity.type == 'tower'){
-        //                 if(entityCollisions[0].trueLeft){
-        //                     this.side = 1;
-        //                 }else{
-        //                     this.side = -1;
-        //                 }
-        //                 this.prepareAttack(entityCollisions[0]);
-        //             }
-        //         }
-        //     }
-        // }
 
         if(this.attackTimer > 0){
             this.attackTimer -= delta;
@@ -382,6 +395,11 @@ export default class Bomber extends StandardEnemy {
         }
 
         this.animationManager.updateAnimations();
+
+
+        if(this.charging){
+            return
+        }
 
         if(this.hitTime > 0){
             this.hitTime -= delta;

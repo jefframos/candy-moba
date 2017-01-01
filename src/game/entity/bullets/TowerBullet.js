@@ -35,7 +35,8 @@ export default class TowerBullet extends StandardBullet {
         this.addChild(this.base);
         this.animationContainer = new PIXI.Container();
         this.animationContainer.x = 0
-        this.animationContainer.y = -75
+        this.animationContainer.y = -55
+        // this.animationContainer.y = -75
         this.addChild(this.animationContainer);
 
         // this.sprite = new PIXI.Sprite(PIXI.Texture.fromFrame('cherry.png'))    
@@ -84,7 +85,7 @@ export default class TowerBullet extends StandardBullet {
         this.animationManager.stopAll();
         this.animationManager.changeState('idle');
 
-        this.radius = 10;
+        this.radius = 8;
         this.externalRadius = 0;
     }
 
@@ -103,7 +104,7 @@ export default class TowerBullet extends StandardBullet {
         super.update(delta);
 
         if(this.animationContainer.y < 0){
-            this.animationContainer.y += 100 * delta;
+            //this.animationContainer.y += 100 * delta;
         }
     }
 

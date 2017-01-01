@@ -477,7 +477,7 @@ export default class PrototypeScreen extends Screen{
 		}
 
 		// console.log();
-		let wholeScale = (config.width / 2) / this.worldBounds.w
+		let wholeScale = 0.8//(config.width / 2) / this.worldBounds.w
 		this.camera.zoom(wholeScale, 1, 0.5);
 		// this.camera.zoom(0.35, 1, 0.2);
 		this.camera.follow(this.cupcake);
@@ -491,6 +491,8 @@ export default class PrototypeScreen extends Screen{
 			tempEnemy = new StandardEnemy(this, team);
 		}else if(type == 'tanker'){
 			tempEnemy = new Tanker(this, team);
+		}else if(type == 'bomber'){
+			tempEnemy = new Bomber(this, team);
 		}else{
 			tempEnemy = new NestEntity(this, team);
 		}

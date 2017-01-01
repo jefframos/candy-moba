@@ -90,7 +90,7 @@ export default class Cupcake extends Entity {
         this.base = new PIXI.Container();
         this.roundBase = new PIXI.Graphics();
         this.roundBase.beginFill(0xFFFFFF);
-        this.roundBase.drawCircle(0,0,100,100);
+        this.roundBase.drawCircle(0,0,50,50);
         this.roundBase.scale.y = 0.4
         this.roundBase.alpha = 0.1;
         this.roundBase.x = 0;
@@ -98,7 +98,7 @@ export default class Cupcake extends Entity {
 
         this.addChild(this.base);
         this.animationContainer = new PIXI.Container();
-        this.animationContainer.x = 25
+        this.animationContainer.x = 25/2
         this.addChild(this.animationContainer);
         // {
         //     let type = 'cupcake';
@@ -723,7 +723,7 @@ export default class Cupcake extends Entity {
         this.life = this.maxLife;
         //this.scale.set(this.standardScale)
 
-        this.addLifeBar({x:0, y:-250}, {w:120, h:15}, this.team == 0?0x0000FF:0x00FF00);
+        this.addLifeBar({x:0, y:-150}, {w:120, h:10}, this.team == 0?0x0000FF:0x00FF00);
 
     }
 
@@ -1008,7 +1008,7 @@ export default class Cupcake extends Entity {
         }
         if(this.rangeAttacking){
             ////console.log('RANGING');
-            let bulletPosition = {x:this.position.x + (150  * this.side) * Math.abs(this.scale.x), y: this.position.y};
+            let bulletPosition = {x:this.position.x + (150/2  * this.side) * Math.abs(this.scale.x), y: this.position.y};
             let demage = this.heroModel.getDemage('range')
             // console.log(demage);
             this.game.addBullet(bulletPosition, {x:800 * this.side, y:this.rangeSpeedY}, 0.1, demage);
