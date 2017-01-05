@@ -4,15 +4,16 @@ import AnimationManager  from './../utils/AnimationManager';
 import Entity  from './../Entity';
 export default class StandardBullet extends Entity {
 
-    constructor(game, velocity, lifeTime, power, src) {
+    constructor(game, params) {
 
         super();
 
         this.game = game;
-        this.lifeTime = lifeTime;
-        this.velocity = velocity;
-        this.power = power;
-        this.src = src;
+        this.lifetime = params.lifetime;
+        this.velocity = params.velocity;
+        this.power = params.power;
+        this.src = params.src;
+        this.team = params.team;
 
         
         this.disapearTimerMax = 20;
@@ -45,7 +46,7 @@ export default class StandardBullet extends Entity {
         this.animationModel = [];
         this.animationModel.push({
             label:'idle',
-            src:'cupcake/bullet/cherryBullet'+idCherry+'00',
+            src:this.src +idCherry+'00',
             totalFrames:1,
             startFrame:0,
             animationSpeed:0.4,
@@ -57,7 +58,7 @@ export default class StandardBullet extends Entity {
 
         this.animationModel.push({
             label:'explode',
-            src:'cupcake/bullet/cherryBullet'+idCherry+'00',
+            src:this.src +idCherry+'00',
             totalFrames:6,
             startFrame:0,
             animationSpeed:0.4,
@@ -90,7 +91,7 @@ export default class StandardBullet extends Entity {
     }
 
     bulletAttackCollision() {
-        let collisionList = this.game.getCollisionList(this,'enemy');
+        let collisionList = this.game.getCollisionList(this,['enemy', 'tower', 'player'], true);
         if(collisionList){
             for (var i = 0; i < collisionList.length; i++) {
                 if((collisionList[i].trueLeft && this.velocity.x > 0)||
@@ -132,8 +133,8 @@ export default class StandardBullet extends Entity {
 
 
         if(!this.killTimer && this.bulletAttackCollision()){
-            this.animationContainer.rotation = 3.14/2;
-            this.animationManager.changeState('explode');
+            //this.animationContainer.rotation = 3.14/2;
+            //this.animationManager.changeState('explode');
             this.base.visible = false;
             this.collidable = false;
             
@@ -141,7 +142,7 @@ export default class StandardBullet extends Entity {
             this.killTimer = 0.2;
         }
 
-        if(this.lifeTime <= 0){
+        if(this.lifetime <= 0){
             this.spriteVelocity.y += this.gravity * delta;
             this.animationContainer.y += this.spriteVelocity.y * delta;
             
@@ -153,7 +154,7 @@ export default class StandardBullet extends Entity {
                 this.disapearing = true;
             }
         }else{
-            this.lifeTime -= delta;
+            this.lifetime -= delta;
         }
 
         if(!this.killTimer){

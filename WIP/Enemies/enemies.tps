@@ -726,6 +726,143 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">Pumpkin/attack/attack0001.png</key>
+            <key type="filename">Pumpkin/attack/attack0002.png</key>
+            <key type="filename">Pumpkin/attack/attack0003.png</key>
+            <key type="filename">Pumpkin/attack/attack0004.png</key>
+            <key type="filename">Pumpkin/attack/attack0005.png</key>
+            <key type="filename">Pumpkin/attack/attack0006.png</key>
+            <key type="filename">Pumpkin/attack/attack0007.png</key>
+            <key type="filename">Pumpkin/attack/attack0008.png</key>
+            <key type="filename">Pumpkin/attack/attack0009.png</key>
+            <key type="filename">Pumpkin/attack/attack0010.png</key>
+            <key type="filename">Pumpkin/attack/attack0011.png</key>
+            <key type="filename">Pumpkin/attack/attack0012.png</key>
+            <key type="filename">Pumpkin/attack/attack0013.png</key>
+            <key type="filename">Pumpkin/attack/attack0014.png</key>
+            <key type="filename">Pumpkin/attack/attack0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>55,33,110,67</rect>
+                <key>scale9Paddings</key>
+                <rect>55,33,110,67</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Pumpkin/dead1/dead0001.png</key>
+            <key type="filename">Pumpkin/dead1/dead0002.png</key>
+            <key type="filename">Pumpkin/dead1/dead0003.png</key>
+            <key type="filename">Pumpkin/dead1/dead0004.png</key>
+            <key type="filename">Pumpkin/dead1/dead0005.png</key>
+            <key type="filename">Pumpkin/dead1/dead0006.png</key>
+            <key type="filename">Pumpkin/dead1/dead0007.png</key>
+            <key type="filename">Pumpkin/dead1/dead0008.png</key>
+            <key type="filename">Pumpkin/dead1/dead0009.png</key>
+            <key type="filename">Pumpkin/dead1/dead0010.png</key>
+            <key type="filename">Pumpkin/dead1/dead0011.png</key>
+            <key type="filename">Pumpkin/dead1/dead0012.png</key>
+            <key type="filename">Pumpkin/dead1/dead0013.png</key>
+            <key type="filename">Pumpkin/dead1/dead0014.png</key>
+            <key type="filename">Pumpkin/dead1/dead0015.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>51,31,101,62</rect>
+                <key>scale9Paddings</key>
+                <rect>51,31,101,62</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Pumpkin/hurt/hurt0001.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0002.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0003.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0004.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0005.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0006.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0007.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0008.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0009.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0010.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0011.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0012.png</key>
+            <key type="filename">Pumpkin/hurt/hurt0013.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>37,31,73,61</rect>
+                <key>scale9Paddings</key>
+                <rect>37,31,73,61</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Pumpkin/idle/idle0001.png</key>
+            <key type="filename">Pumpkin/idle/idle0002.png</key>
+            <key type="filename">Pumpkin/idle/idle0003.png</key>
+            <key type="filename">Pumpkin/idle/idle0004.png</key>
+            <key type="filename">Pumpkin/idle/idle0005.png</key>
+            <key type="filename">Pumpkin/idle/idle0006.png</key>
+            <key type="filename">Pumpkin/idle/idle0007.png</key>
+            <key type="filename">Pumpkin/idle/idle0008.png</key>
+            <key type="filename">Pumpkin/idle/idle0009.png</key>
+            <key type="filename">Pumpkin/idle/idle0010.png</key>
+            <key type="filename">Pumpkin/idle/idle0011.png</key>
+            <key type="filename">Pumpkin/idle/idle0012.png</key>
+            <key type="filename">Pumpkin/idle/idle0013.png</key>
+            <key type="filename">Pumpkin/idle/idle0014.png</key>
+            <key type="filename">Pumpkin/idle/idle0015.png</key>
+            <key type="filename">Pumpkin/idle/idle0016.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>36,30,72,61</rect>
+                <key>scale9Paddings</key>
+                <rect>36,30,72,61</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">Pumpkin/walk/walk0001.png</key>
+            <key type="filename">Pumpkin/walk/walk0002.png</key>
+            <key type="filename">Pumpkin/walk/walk0003.png</key>
+            <key type="filename">Pumpkin/walk/walk0004.png</key>
+            <key type="filename">Pumpkin/walk/walk0005.png</key>
+            <key type="filename">Pumpkin/walk/walk0006.png</key>
+            <key type="filename">Pumpkin/walk/walk0007.png</key>
+            <key type="filename">Pumpkin/walk/walk0008.png</key>
+            <key type="filename">Pumpkin/walk/walk0009.png</key>
+            <key type="filename">Pumpkin/walk/walk0010.png</key>
+            <key type="filename">Pumpkin/walk/walk0011.png</key>
+            <key type="filename">Pumpkin/walk/walk0012.png</key>
+            <key type="filename">Pumpkin/walk/walk0013.png</key>
+            <key type="filename">Pumpkin/walk/walk0014.png</key>
+            <key type="filename">Pumpkin/walk/walk0015.png</key>
+            <key type="filename">Pumpkin/walk/walk0016.png</key>
+            <key type="filename">Pumpkin/walk/walk0017.png</key>
+            <key type="filename">Pumpkin/walk/walk0018.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>34,32,67,64</rect>
+                <key>scale9Paddings</key>
+                <rect>34,32,67,64</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">Rock/attack/attack0001.png</key>
             <key type="filename">Rock/attack/attack0002.png</key>
             <key type="filename">Rock/attack/attack0003.png</key>

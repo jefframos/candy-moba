@@ -57,7 +57,7 @@ export default class Spawner extends Entity {
         this.spawnTime = 30;
 
         this.spawnQuant = 7//this.team == 1?8:5;
-        this.spawDistance = 1;
+        this.spawDistance = 1.5;
 
         this.currentWave = 0;
         this.currentWave2 = 0;
@@ -74,8 +74,8 @@ export default class Spawner extends Entity {
 
         this.currentEntity = 0;
         this.waves = [
-            [30,'bomber', 'standard', 'standard', 'standard','standard'],
-            [45,'bomber','tanker', 'tanker', 'standard'],
+            [30, 'standard', 'standard', 'standard','bomber'],
+            [45,'tanker', 'standard', 'ranger', 'ranger', 'ranger'],
         ];
 
     }

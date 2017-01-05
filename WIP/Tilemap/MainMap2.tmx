@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="left-up" width="88" height="26" tilewidth="100" tileheight="100" nextobjectid="113">
+<map version="1.0" orientation="orthogonal" renderorder="left-up" width="88" height="26" tilewidth="100" tileheight="100" nextobjectid="114">
  <tileset firstgid="1" name="Base" tilewidth="3002" tileheight="1201" tilecount="2" columns="0">
   <tile id="2">
    <image width="3002" height="1201" source="../Ref/Untitled-1.png"/>
@@ -155,11 +155,11 @@
   </object>
  </objectgroup>
  <objectgroup name="Ways">
-  <object id="84" x="0" y="0" visible="0">
-   <polyline points="6880,800 7112,584 7312,384 7848,360 8216,496 8456,712 8520,1040 8072,1208 7616,1256 7312,1232 6944,1000 6912,944"/>
-  </object>
   <object id="96" name="DEBUG" x="0" y="0" visible="0">
    <polyline points="4144,1200 4160,5552 11168,5536 11120,1248 7568,464 4224,1120"/>
+  </object>
+  <object id="113" x="0" y="0">
+   <polyline points="704,1184 520,1248 456,1448 656,1704 1016,1616 1056,1512 2184,1424 3328,1392 4264,1384 5424,1352 6944,1400 7576,1504 7776,1696 8144,1712 8312,1360 8056,1144 7824,1184 7320,1104 6800,1088 5960,1024 5040,1008 4032,1016 3024,1032 2112,1056 1136,1128 832,1216"/>
   </object>
  </objectgroup>
  <objectgroup name="bkp" visible="0">

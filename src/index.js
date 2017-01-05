@@ -9,6 +9,7 @@ import PrototypeScreen from './game/screen/PrototypeScreen';
 PIXI.loader
 	.add('./assets/Enemies/enemies0.json')
 	.add('./assets/Enemies/enemies1.json')
+	.add('./assets/Enemies/enemies2.json')
 	// .add('./assets/Cupcake/cupcake0.json')
 	// .add('./assets/Cupcake/cupcake1.json')
 	// .add('./assets/Cupcake/cupcake2.json')

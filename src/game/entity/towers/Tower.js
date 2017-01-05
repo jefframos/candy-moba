@@ -297,7 +297,7 @@ export default class Tower extends Entity {
         let power = 60;
 
         let id = Math.floor(Math.random()*2)+1;
-        this.game.addTowerBullet(bulletPosition, bulletSpeed, 0.5, power, this.team, 'vegetables/tower1/bullet'+id+'/bullet'+id);
+        this.game.addTowerBullet({pos:bulletPosition, velocity:bulletSpeed, lifetime:0.5, power:power, team:this.team, src:'vegetables/tower1/bullet'+id+'/bullet'+id});
 
         this.currentTarget = null
     }

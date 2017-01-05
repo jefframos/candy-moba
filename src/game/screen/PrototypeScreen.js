@@ -10,8 +10,10 @@ import StandardEnemy from '../entity/enemies/StandardEnemy';
 import NestEntity from '../entity/enemies/NestEntity';
 import Tanker from '../entity/enemies/Tanker';
 import Bomber from '../entity/enemies/Bomber';
+import Ranger from '../entity/enemies/Ranger';
 import StandardBullet from '../entity/bullets/StandardBullet';
 import TowerBullet from '../entity/bullets/TowerBullet';
+import EnemyBullet from '../entity/bullets/EnemyBullet';
 import Rock from '../entity/environment/Rock';
 import Pine from '../entity/environment/Pine';
 import Bush from '../entity/environment/Bush';
@@ -256,14 +258,14 @@ export default class PrototypeScreen extends Screen{
 		this.addOnUpdateList(this.cupcake)
 
 
-		this.bomber = new Bomber(this, -1);
-		this.bomber.x = cupPos.x + 150
-		this.bomber.y = cupPos.y + 150
-		this.bomber.build()
-		this.bomber.setWaypoints([{x:cupPos.x + 150, y:cupPos.y + 150}])
-		this.entityContainer.addChild(this.bomber)
-		this.addOnUpdateList(this.bomber)
-		this.enemyList.push(this.bomber);
+		// this.bomber = new Ranger(this, -1);
+		// this.bomber.x = cupPos.x + 350
+		// this.bomber.y = cupPos.y + 350
+		// this.bomber.build()
+		// this.bomber.setWaypoints([{x:cupPos.x + 150, y:cupPos.y + 150}])
+		// this.entityContainer.addChild(this.bomber)
+		// this.addOnUpdateList(this.bomber)
+		// this.enemyList.push(this.bomber);
 
 
 		for (var i = 0; i < config.spawnerList.length; i++) {
@@ -491,6 +493,8 @@ export default class PrototypeScreen extends Screen{
 			tempEnemy = new StandardEnemy(this, team);
 		}else if(type == 'tanker'){
 			tempEnemy = new Tanker(this, team);
+		}else if(type == 'ranger'){
+			tempEnemy = new Ranger(this, team);
 		}else if(type == 'bomber'){
 			tempEnemy = new Bomber(this, team);
 		}else{
@@ -660,7 +664,12 @@ export default class PrototypeScreen extends Screen{
 		 				let left = Math.abs(angle) > 150 && entity.side == 1;
 		 				let right = Math.abs(angle) < 30 && entity.side == -1;
 
-		 				collideList.push({entity:colEnt, angle:angle, dist:dist, ableToHit: ableToHit, left:left, right:right});
+		 				let trueLeft = colEnt.x > entity.x;//Math.abs(angle) > 150;
+		 				let trueRight = colEnt.x < entity.x;// Math.abs(angle) < 30;
+
+		 				collideList.push({entity:colEnt, angle:angle, dist:dist, ableToHit: ableToHit, left:left, right:right,
+								trueLeft:trueLeft,
+		 						trueRight:trueRight});
 		 			}
 		 		}
 	 		}
@@ -831,27 +840,32 @@ export default class PrototypeScreen extends Screen{
 			this.cupcake.speedNormal();
 		}
 	}
-	addBullet(pos, vel, life, power){
-		let bullet = new StandardBullet(this, vel, life, power);
+	addBullet(params){
+		var bullet = null;
+		if(params.type == 'enemy'){
+			bullet = new EnemyBullet(this, params);
+		}else{
+			bullet = new StandardBullet(this, params);
+		}
 		bullet.build();
 		this.entityContainer.addChild(bullet)
 		this.addOnUpdateList(bullet)
-		bullet.position.x = pos.x
-		bullet.position.y = pos.y
+		bullet.position.x = params.pos.x
+		bullet.position.y = params.pos.y
 
 		this.bulletList.push(bullet);
 
 		this.setScales(bullet);
 
 	}
-	addTowerBullet(pos, vel, life, power, team, src){
-		console.log(src);
-		let bullet = new TowerBullet(this, vel, life, power, team, src);
+	addTowerBullet(params){
+		// console.log(src);
+		let bullet = new TowerBullet(this, params);
 		bullet.build();
 		this.entityContainer.addChild(bullet)
 		this.addOnUpdateList(bullet)
-		bullet.position.x = pos.x
-		bullet.position.y = pos.y
+		bullet.position.x = params.pos.x
+		bullet.position.y = params.pos.y
 
 		this.bulletList.push(bullet);
 

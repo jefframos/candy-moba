@@ -5,19 +5,11 @@ import Entity  from './../Entity';
 import StandardBullet  from './StandardBullet';
 export default class TowerBullet extends StandardBullet {
 
-    constructor(game, velocity, lifeTime, power, team, src) {
+    constructor(game, params) {
 
-        super(game,velocity,lifeTime, src);
-
-        
-        this.game = game;
-        this.lifeTime = lifeTime;
-        this.velocity = velocity;
-        this.power = power;
-        this.src = src;
+        super(game,params);
 
         
-        this.team = team;
 
     }
 
@@ -87,6 +79,8 @@ export default class TowerBullet extends StandardBullet {
 
         this.radius = 8;
         this.externalRadius = 0;
+
+        // this.debugCollision()
     }
 
     bulletAttackCollision() {
@@ -104,7 +98,7 @@ export default class TowerBullet extends StandardBullet {
         super.update(delta);
 
         if(this.animationContainer.y < 0){
-            //this.animationContainer.y += 100 * delta;
+            this.animationContainer.y += 100 * delta;
         }
     }
 

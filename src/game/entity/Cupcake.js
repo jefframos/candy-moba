@@ -768,7 +768,7 @@ export default class Cupcake extends Entity {
     }
     areaAttackCollision() {
         this.areaAttackTimer = -1;
-        let collisionList = this.game.getExternalColisionList(this,'enemy', true);
+        let collisionList = this.game.getExternalColisionList(this,['enemy', 'tower'], true);
         if(collisionList){
             for (var i = 0; i < collisionList.length; i++) {
                 // if(collisionList[i].front || collisionList[i].back){
@@ -780,7 +780,7 @@ export default class Cupcake extends Entity {
         }
     }
     dashAttackCollision() {
-        let collisionList = this.game.getCollisionList(this,'enemy', true);
+        let collisionList = this.game.getCollisionList(this,['enemy', 'tower'], true);
         if(collisionList){
             for (var i = 0; i < collisionList.length; i++) {
                 //if(collisionList[i].right || collisionList[i].left){
@@ -795,7 +795,7 @@ export default class Cupcake extends Entity {
         return false
     }
     meleeAttackCollision() {
-        let collisionList = this.game.getCollisionList(this,'enemy', true);
+        let collisionList = this.game.getCollisionList(this,['tower','enemy'], true);
         if(collisionList){
             for (var i = 0; i < collisionList.length; i++) {
                 if(collisionList[i].right || collisionList[i].left){
@@ -1011,7 +1011,7 @@ export default class Cupcake extends Entity {
             let bulletPosition = {x:this.position.x + (150/2  * this.side) * Math.abs(this.scale.x), y: this.position.y};
             let demage = this.heroModel.getDemage('range')
             // console.log(demage);
-            this.game.addBullet(bulletPosition, {x:800 * this.side, y:this.rangeSpeedY}, 0.1, demage);
+            this.game.addBullet({pos:bulletPosition, velocity:{x:800 * this.side, y:this.rangeSpeedY}, lifetime:0.1,team:this.team, power:demage, src:'cupcake/bullet/cherryBullet'});
             this.animationManager.changeState('rangeAttackEnd');
             return;
         }

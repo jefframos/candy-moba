@@ -28229,7 +28229,7 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	PIXI.loader.add('./assets/Enemies/enemies0.json').add('./assets/Enemies/enemies1.json')
+	PIXI.loader.add('./assets/Enemies/enemies0.json').add('./assets/Enemies/enemies1.json').add('./assets/Enemies/enemies2.json')
 	// .add('./assets/Cupcake/cupcake0.json')
 	// .add('./assets/Cupcake/cupcake1.json')
 	// .add('./assets/Cupcake/cupcake2.json')
@@ -28565,6 +28565,10 @@
 	
 	var _Bomber2 = _interopRequireDefault(_Bomber);
 	
+	var _Ranger = __webpack_require__(167);
+	
+	var _Ranger2 = _interopRequireDefault(_Ranger);
+	
 	var _StandardBullet = __webpack_require__(156);
 	
 	var _StandardBullet2 = _interopRequireDefault(_StandardBullet);
@@ -28572,6 +28576,10 @@
 	var _TowerBullet = __webpack_require__(157);
 	
 	var _TowerBullet2 = _interopRequireDefault(_TowerBullet);
+	
+	var _EnemyBullet = __webpack_require__(168);
+	
+	var _EnemyBullet2 = _interopRequireDefault(_EnemyBullet);
 	
 	var _Rock = __webpack_require__(158);
 	
@@ -28854,14 +28862,15 @@
 				this.entityContainer.addChild(this.cupcake);
 				this.addOnUpdateList(this.cupcake);
 	
-				this.bomber = new _Bomber2.default(this, -1);
-				this.bomber.x = cupPos.x + 150;
-				this.bomber.y = cupPos.y + 150;
-				this.bomber.build();
-				this.bomber.setWaypoints([{ x: cupPos.x + 150, y: cupPos.y + 150 }]);
-				this.entityContainer.addChild(this.bomber);
-				this.addOnUpdateList(this.bomber);
-				this.enemyList.push(this.bomber);
+				// this.bomber = new Ranger(this, -1);
+				// this.bomber.x = cupPos.x + 350
+				// this.bomber.y = cupPos.y + 350
+				// this.bomber.build()
+				// this.bomber.setWaypoints([{x:cupPos.x + 150, y:cupPos.y + 150}])
+				// this.entityContainer.addChild(this.bomber)
+				// this.addOnUpdateList(this.bomber)
+				// this.enemyList.push(this.bomber);
+	
 	
 				for (var i = 0; i < _config2.default.spawnerList.length; i++) {
 					var spawnerData = _config2.default.spawnerList[i];
@@ -29096,6 +29105,8 @@
 					tempEnemy = new _StandardEnemy2.default(this, team);
 				} else if (type == 'tanker') {
 					tempEnemy = new _Tanker2.default(this, team);
+				} else if (type == 'ranger') {
+					tempEnemy = new _Ranger2.default(this, team);
 				} else if (type == 'bomber') {
 					tempEnemy = new _Bomber2.default(this, team);
 				} else {
@@ -29265,7 +29276,12 @@
 								var left = Math.abs(angle) > 150 && entity.side == 1;
 								var right = Math.abs(angle) < 30 && entity.side == -1;
 	
-								collideList.push({ entity: colEnt, angle: angle, dist: dist, ableToHit: ableToHit, left: left, right: right });
+								var trueLeft = colEnt.x > entity.x; //Math.abs(angle) > 150;
+								var trueRight = colEnt.x < entity.x; // Math.abs(angle) < 30;
+	
+								collideList.push({ entity: colEnt, angle: angle, dist: dist, ableToHit: ableToHit, left: left, right: right,
+									trueLeft: trueLeft,
+									trueRight: trueRight });
 							}
 						}
 					}
@@ -29433,13 +29449,18 @@
 			}
 		}, {
 			key: 'addBullet',
-			value: function addBullet(pos, vel, life, power) {
-				var bullet = new _StandardBullet2.default(this, vel, life, power);
+			value: function addBullet(params) {
+				var bullet = null;
+				if (params.type == 'enemy') {
+					bullet = new _EnemyBullet2.default(this, params);
+				} else {
+					bullet = new _StandardBullet2.default(this, params);
+				}
 				bullet.build();
 				this.entityContainer.addChild(bullet);
 				this.addOnUpdateList(bullet);
-				bullet.position.x = pos.x;
-				bullet.position.y = pos.y;
+				bullet.position.x = params.pos.x;
+				bullet.position.y = params.pos.y;
 	
 				this.bulletList.push(bullet);
 	
@@ -29447,14 +29468,14 @@
 			}
 		}, {
 			key: 'addTowerBullet',
-			value: function addTowerBullet(pos, vel, life, power, team, src) {
-				console.log(src);
-				var bullet = new _TowerBullet2.default(this, vel, life, power, team, src);
+			value: function addTowerBullet(params) {
+				// console.log(src);
+				var bullet = new _TowerBullet2.default(this, params);
 				bullet.build();
 				this.entityContainer.addChild(bullet);
 				this.addOnUpdateList(bullet);
-				bullet.position.x = pos.x;
-				bullet.position.y = pos.y;
+				bullet.position.x = params.pos.x;
+				bullet.position.y = params.pos.y;
 	
 				this.bulletList.push(bullet);
 	
@@ -39248,7 +39269,7 @@
 	        key: 'areaAttackCollision',
 	        value: function areaAttackCollision() {
 	            this.areaAttackTimer = -1;
-	            var collisionList = this.game.getExternalColisionList(this, 'enemy', true);
+	            var collisionList = this.game.getExternalColisionList(this, ['enemy', 'tower'], true);
 	            if (collisionList) {
 	                for (var i = 0; i < collisionList.length; i++) {
 	                    // if(collisionList[i].front || collisionList[i].back){
@@ -39262,7 +39283,7 @@
 	    }, {
 	        key: 'dashAttackCollision',
 	        value: function dashAttackCollision() {
-	            var collisionList = this.game.getCollisionList(this, 'enemy', true);
+	            var collisionList = this.game.getCollisionList(this, ['enemy', 'tower'], true);
 	            if (collisionList) {
 	                for (var i = 0; i < collisionList.length; i++) {
 	                    //if(collisionList[i].right || collisionList[i].left){
@@ -39279,7 +39300,7 @@
 	    }, {
 	        key: 'meleeAttackCollision',
 	        value: function meleeAttackCollision() {
-	            var collisionList = this.game.getCollisionList(this, 'enemy', true);
+	            var collisionList = this.game.getCollisionList(this, ['tower', 'enemy'], true);
 	            if (collisionList) {
 	                for (var i = 0; i < collisionList.length; i++) {
 	                    if (collisionList[i].right || collisionList[i].left) {
@@ -39508,7 +39529,7 @@
 	                var bulletPosition = { x: this.position.x + 150 / 2 * this.side * Math.abs(this.scale.x), y: this.position.y };
 	                var demage = this.heroModel.getDemage('range');
 	                // console.log(demage);
-	                this.game.addBullet(bulletPosition, { x: 800 * this.side, y: this.rangeSpeedY }, 0.1, demage);
+	                this.game.addBullet({ pos: bulletPosition, velocity: { x: 800 * this.side, y: this.rangeSpeedY }, lifetime: 0.1, team: this.team, power: demage, src: 'cupcake/bullet/cherryBullet' });
 	                this.animationManager.changeState('rangeAttackEnd');
 	                return;
 	            }
@@ -41135,6 +41156,7 @@
 	
 	            if (this.entityToAttack.entity.type == 'tower') {
 	                this.entityToAttack.entity.addEnemy(this);
+	                this.currentTower = this.entityToAttack.entity;
 	            }
 	        }
 	    }, {
@@ -41160,7 +41182,7 @@
 	        }
 	    }, {
 	        key: 'hit',
-	        value: function hit(power, forceSide) {
+	        value: function hit(power, forceSide, entity) {
 	            // console.log(this.attacking);
 	            if (this.life < 0 || this.invencible > 0) {
 	                // || this.attacking){
@@ -41254,6 +41276,11 @@
 	                this.invencible -= delta;
 	            }
 	
+	            if (this.currentTower && this.currentTower.type != 'base' && this.currentTower.life <= 0) {
+	                this.updateWaypoints();
+	                this.currentTower = null;
+	            }
+	
 	            this.skipCollision--;
 	            if (this.skipCollision <= 0) {
 	                this.skipCollision = Math.random() * 3 + 2;
@@ -41298,6 +41325,11 @@
 	            }
 	            // console.log(this.attacking);
 	            if (this.isEnemy && this.followTarget || this.followTarget && !this.attacking) {
+	                // if(this.isEnemy){
+	                //     this.speedScale = 1.5;
+	                // }else{
+	                //     this.speedScale = 1;
+	                // }
 	                if (_utils2.default.distance(this.targetPosition.x, this.targetPosition.y, this.x, this.y) < this.getRadius()) {
 	                    if (!this.isEnemy) {
 	                        this.updateWaypoints();
@@ -42036,12 +42068,12 @@
 	
 	        var enemyStats = {
 	            level: 3,
-	            hp: 300,
+	            hp: 500,
 	            stamina: 40,
 	            speed: 60,
 	            magicPower: 13,
 	            battlePower: 250,
-	            defense: 20,
+	            defense: 50,
 	            magicDefense: 120,
 	            xp: 20
 	        };
@@ -42053,7 +42085,7 @@
 	
 	        _this.dynamicModel = {
 	            attackSpeed: 3,
-	            invencibleTimer: 0.1
+	            invencibleTimer: 0.2
 	        };
 	
 	        // this.build();
@@ -42204,8 +42236,8 @@
 	            this.animationManager.hideAll();
 	            this.animationManager.stopAll();
 	            this.animationManager.changeState('idle');
-	            this.radius = 100;
-	            this.externalRadius = 160;
+	            this.radius = 80;
+	            this.externalRadius = 200;
 	            // this.debugCollision();
 	
 	
@@ -42222,7 +42254,7 @@
 	        key: 'hit',
 	        value: function hit(power, forceSide) {
 	
-	            if (this.life < 0 || this.invencible > 0) {
+	            if (this.life < 0 || this.invencible > 0 || this.attacking) {
 	                // || this.attacking){
 	                return false;
 	            }
@@ -42240,11 +42272,12 @@
 	
 	            // console.log(this.life);
 	
-	
-	            if (this.life <= this.maxLife / 2 && !this.charging) {
-	                this.animationManager.changeState('hurt', true);
-	            } else {
-	                this.animationManager.changeState('hurt1');
+	            if (!this.completeCharge) {
+	                if (this.life <= this.maxLife * 0.75 && !this.charging) {
+	                    this.animationManager.changeState('hurt', true);
+	                } else {
+	                    this.animationManager.changeState('hurt1');
+	                }
 	            }
 	
 	            if (forceSide) {
@@ -42308,15 +42341,19 @@
 	        value: function charged() {
 	            this.animationManager.changeState('charged', true);
 	            this.completeCharge = true;
-	            this.chargeTime = 2;
+	            this.chargeTime = 1;
 	            this.chargeScale = 0.2;
 	        }
 	    }, {
 	        key: 'attack',
 	        value: function attack() {
+	            this.attacking = true;
 	            if (this.animationManager.state == 'attackOut') {
 	                return;
 	            }
+	
+	            this.velocity = { x: 0, y: 0 };
+	
 	            this.rotation = 0;
 	            this.animationManager.changeState('attackOut');
 	        }
@@ -42365,6 +42402,7 @@
 	
 	            if (this.completeCharge) {
 	                if (this.chargeTime > 0) {
+	                    this.velocity = { x: 0, y: 0 };
 	                    this.chargeTime -= delta;
 	                    this.animationContainer.scale.x += this.chargeScale * delta;
 	                    this.animationContainer.scale.y += this.chargeScale * delta;
@@ -42482,16 +42520,17 @@
 	var StandardBullet = function (_Entity) {
 	    _inherits(StandardBullet, _Entity);
 	
-	    function StandardBullet(game, velocity, lifeTime, power, src) {
+	    function StandardBullet(game, params) {
 	        _classCallCheck(this, StandardBullet);
 	
 	        var _this = _possibleConstructorReturn(this, (StandardBullet.__proto__ || Object.getPrototypeOf(StandardBullet)).call(this));
 	
 	        _this.game = game;
-	        _this.lifeTime = lifeTime;
-	        _this.velocity = velocity;
-	        _this.power = power;
-	        _this.src = src;
+	        _this.lifetime = params.lifetime;
+	        _this.velocity = params.velocity;
+	        _this.power = params.power;
+	        _this.src = params.src;
+	        _this.team = params.team;
 	
 	        _this.disapearTimerMax = 20;
 	        _this.disapearTimer = _this.disapearTimerMax;
@@ -42527,7 +42566,7 @@
 	            this.animationModel = [];
 	            this.animationModel.push({
 	                label: 'idle',
-	                src: 'cupcake/bullet/cherryBullet' + idCherry + '00',
+	                src: this.src + idCherry + '00',
 	                totalFrames: 1,
 	                startFrame: 0,
 	                animationSpeed: 0.4,
@@ -42539,7 +42578,7 @@
 	
 	            this.animationModel.push({
 	                label: 'explode',
-	                src: 'cupcake/bullet/cherryBullet' + idCherry + '00',
+	                src: this.src + idCherry + '00',
 	                totalFrames: 6,
 	                startFrame: 0,
 	                animationSpeed: 0.4,
@@ -42572,7 +42611,7 @@
 	    }, {
 	        key: 'bulletAttackCollision',
 	        value: function bulletAttackCollision() {
-	            var collisionList = this.game.getCollisionList(this, 'enemy');
+	            var collisionList = this.game.getCollisionList(this, ['enemy', 'tower', 'player'], true);
 	            if (collisionList) {
 	                for (var i = 0; i < collisionList.length; i++) {
 	                    if (collisionList[i].trueLeft && this.velocity.x > 0 || collisionList[i].trueRight && this.velocity.x < 0) {
@@ -42613,8 +42652,8 @@
 	            }
 	
 	            if (!this.killTimer && this.bulletAttackCollision()) {
-	                this.animationContainer.rotation = 3.14 / 2;
-	                this.animationManager.changeState('explode');
+	                //this.animationContainer.rotation = 3.14/2;
+	                //this.animationManager.changeState('explode');
 	                this.base.visible = false;
 	                this.collidable = false;
 	
@@ -42622,7 +42661,7 @@
 	                this.killTimer = 0.2;
 	            }
 	
-	            if (this.lifeTime <= 0) {
+	            if (this.lifetime <= 0) {
 	                this.spriteVelocity.y += this.gravity * delta;
 	                this.animationContainer.y += this.spriteVelocity.y * delta;
 	
@@ -42634,7 +42673,7 @@
 	                    this.disapearing = true;
 	                }
 	            } else {
-	                this.lifeTime -= delta;
+	                this.lifetime -= delta;
 	            }
 	
 	            if (!this.killTimer) {
@@ -42696,20 +42735,10 @@
 	var TowerBullet = function (_StandardBullet) {
 	        _inherits(TowerBullet, _StandardBullet);
 	
-	        function TowerBullet(game, velocity, lifeTime, power, team, src) {
+	        function TowerBullet(game, params) {
 	                _classCallCheck(this, TowerBullet);
 	
-	                var _this = _possibleConstructorReturn(this, (TowerBullet.__proto__ || Object.getPrototypeOf(TowerBullet)).call(this, game, velocity, lifeTime, src));
-	
-	                _this.game = game;
-	                _this.lifeTime = lifeTime;
-	                _this.velocity = velocity;
-	                _this.power = power;
-	                _this.src = src;
-	
-	                _this.team = team;
-	
-	                return _this;
+	                return _possibleConstructorReturn(this, (TowerBullet.__proto__ || Object.getPrototypeOf(TowerBullet)).call(this, game, params));
 	        }
 	
 	        _createClass(TowerBullet, [{
@@ -42780,6 +42809,8 @@
 	
 	                        this.radius = 8;
 	                        this.externalRadius = 0;
+	
+	                        // this.debugCollision()
 	                }
 	        }, {
 	                key: 'bulletAttackCollision',
@@ -42800,7 +42831,7 @@
 	                        _get(TowerBullet.prototype.__proto__ || Object.getPrototypeOf(TowerBullet.prototype), 'update', this).call(this, delta);
 	
 	                        if (this.animationContainer.y < 0) {
-	                                //this.animationContainer.y += 100 * delta;
+	                                this.animationContainer.y += 100 * delta;
 	                        }
 	                }
 	        }]);
@@ -43603,7 +43634,7 @@
 	            var power = 60;
 	
 	            var id = Math.floor(Math.random() * 2) + 1;
-	            this.game.addTowerBullet(bulletPosition, bulletSpeed, 0.5, power, this.team, 'vegetables/tower1/bullet' + id + '/bullet' + id);
+	            this.game.addTowerBullet({ pos: bulletPosition, velocity: bulletSpeed, lifetime: 0.5, power: power, team: this.team, src: 'vegetables/tower1/bullet' + id + '/bullet' + id });
 	
 	            this.currentTarget = null;
 	        }
@@ -44062,7 +44093,7 @@
 	                _this.spawnTime = 30;
 	
 	                _this.spawnQuant = 7; //this.team == 1?8:5;
-	                _this.spawDistance = 1;
+	                _this.spawDistance = 1.5;
 	
 	                _this.currentWave = 0;
 	                _this.currentWave2 = 0;
@@ -44077,7 +44108,7 @@
 	                _this.currentEntities = [];
 	
 	                _this.currentEntity = 0;
-	                _this.waves = [[30, 'bomber', 'standard', 'standard', 'standard', 'standard'], [45, 'bomber', 'tanker', 'tanker', 'standard']];
+	                _this.waves = [[30, 'standard', 'standard', 'standard', 'bomber'], [45, 'tanker', 'standard', 'ranger', 'ranger', 'ranger']];
 	
 	                return _this;
 	        }
@@ -44570,6 +44601,524 @@
 	}(_Entity3.default);
 	
 	exports.default = UISpawner;
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(148);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _EnemyModel = __webpack_require__(150);
+	
+	var _EnemyModel2 = _interopRequireDefault(_EnemyModel);
+	
+	var _StandardEnemy2 = __webpack_require__(152);
+	
+	var _StandardEnemy3 = _interopRequireDefault(_StandardEnemy2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Ranger = function (_StandardEnemy) {
+	    _inherits(Ranger, _StandardEnemy);
+	
+	    function Ranger(game, team) {
+	        _classCallCheck(this, Ranger);
+	
+	        var _this = _possibleConstructorReturn(this, (Ranger.__proto__ || Object.getPrototypeOf(Ranger)).call(this));
+	        // 
+	        // console.log('tanker');
+	
+	
+	        _this.type = 'enemy';
+	
+	        _this.game = game;
+	        _this.team = team;
+	
+	        _this.base = new _pixi2.default.Container();
+	        _this.roundBase = new _pixi2.default.Graphics();
+	        _this.roundBase.beginFill(0xffffff);
+	        _this.roundBase.drawCircle(0, 0, 60);
+	        _this.roundBase.scale.y = 0.4;
+	        _this.roundBase.alpha = 0.1;
+	        _this.roundBase.x = 0;
+	        _this.base.addChild(_this.roundBase);
+	
+	        _this.addChild(_this.base);
+	        _this.animationContainer = new _pixi2.default.Container();
+	        _this.animationContainer.x = -5;
+	        _this.animationContainer.y = 0;
+	        _this.addChild(_this.animationContainer);
+	
+	        _this.actionTimer = -1;
+	        _this.action = null;
+	
+	        var enemyStats = {
+	            level: 1,
+	            hp: 50,
+	            stamina: 20,
+	            speed: 60,
+	            magicPower: 13,
+	            battlePower: 80,
+	            defense: 10,
+	            magicDefense: 120,
+	            xp: 20
+	        };
+	
+	        _this.enemyModel = new _EnemyModel2.default('pump', enemyStats);
+	
+	        _this.actionTimer = -1;
+	        _this.action = null;
+	
+	        _this.dynamicModel = {
+	            attackSpeed: 3,
+	            invencibleTimer: 0.1
+	        };
+	
+	        // this.build();
+	
+	        // this.sprite.scale.set(this.starterScale)
+	        return _this;
+	    }
+	
+	    _createClass(Ranger, [{
+	        key: 'build',
+	        value: function build() {
+	            var enemieType = 'Pumpkin';
+	            // if(this.team == 0){
+	            //     enemieType = Math.random() <0.5?'Candy1':'Candy2';
+	            // }else{
+	            //     enemieType = Math.random() <0.5?'Tomato':'Potato';
+	            // }
+	            this.animationModel = [];
+	            this.animationModel.push({
+	                label: 'idle',
+	                src: enemieType + '/idle/idle00',
+	                totalFrames: 16,
+	                startFrame: 0,
+	                animationSpeed: 0.4,
+	                movieClip: null,
+	                position: { x: 10, y: 0 },
+	                anchor: { x: 0.5, y: 1 }
+	            });
+	
+	            this.animationModel.push({
+	                label: 'killBack',
+	                src: enemieType + '/dead1/dead00',
+	                totalFrames: 15,
+	                startFrame: 0,
+	                animationSpeed: 0.65,
+	                movieClip: null,
+	                position: { x: 10, y: 0 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	
+	            this.animationModel.push({
+	                label: 'killFront',
+	                src: enemieType + '/dead1/dead00',
+	                totalFrames: 15,
+	                startFrame: 0,
+	                animationSpeed: 0.65,
+	                movieClip: null,
+	                position: { x: 10, y: 0 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	
+	            this.animationModel.push({
+	                label: 'hurt',
+	                src: enemieType + '/hurt/hurt00',
+	                totalFrames: 13,
+	                startFrame: 0,
+	                animationSpeed: 0.6,
+	                movieClip: null,
+	                position: { x: 5, y: 1 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	
+	            this.animationModel.push({
+	                label: 'attackIn',
+	                src: enemieType + '/attack/attack00',
+	                totalFrames: 8,
+	                startFrame: 0,
+	                animationSpeed: 0.6,
+	                movieClip: null,
+	                position: { x: 38, y: 0 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	
+	            this.animationModel.push({
+	                label: 'attackOut',
+	                src: enemieType + '/attack/attack00',
+	                totalFrames: 15,
+	                startFrame: 8,
+	                animationSpeed: 0.6,
+	                movieClip: null,
+	                position: { x: 38, y: 0 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: false,
+	                haveCallback: true
+	            });
+	
+	            this.animationModel.push({
+	                label: 'walk',
+	                src: enemieType + '/walk/walk00',
+	                totalFrames: 18,
+	                startFrame: 0,
+	                animationSpeed: 0.6,
+	                movieClip: null,
+	                position: { x: 12, y: 0 },
+	                anchor: { x: 0.5, y: 1 },
+	                loop: true
+	            });
+	
+	            this.animationManager = new _AnimationManager2.default(this.animationModel, this.animationContainer);
+	            this.animationManager.finishCallback = this.finishAnimation.bind(this);
+	
+	            // this.animationContainer.addChild(this.sprite);
+	
+	            this.speed = { x: 100, y: 100 };
+	            this.velocity = { x: 0, y: 0 };
+	            this.spriteVelocity = { x: 0, y: 0 };
+	
+	            this.standardScale = 1;
+	            this.speedScale = 1;
+	            this.starterScale = 0.7;
+	            this.gravity = 15;
+	            // this.scale.set(0);
+	            this.kill2 = false;
+	
+	            this.animationManager.hideAll();
+	            this.animationManager.stopAll();
+	            this.animationManager.changeState('idle');
+	            this.radius = 80 + Math.random() * 10;
+	            this.externalRadius = 400 + Math.random() * 30;
+	            // this.debugCollision();
+	
+	
+	            // this.debugCollision();
+	            this.reset();
+	            this.start();
+	
+	            // this.animationManager.showJust(['idle', 'killFront'])
+	            //console.log(this.attackSpeed);
+	        }
+	    }, {
+	        key: 'attack',
+	        value: function attack() {
+	            if (!this.currentTarget || this.team == this.currentTarget.team) {
+	                return;
+	            }
+	            this.attackTimer = this.attackSpeed;
+	
+	            var bulletPosition = { x: this.x, y: this.y };
+	
+	            var angle = Math.atan2(this.currentTarget.y - bulletPosition.y, this.currentTarget.x - bulletPosition.x);
+	
+	            // console.log(angle);
+	            var bulletSpeed = { x: Math.cos(angle) * 900, y: Math.sin(angle) * 900 };
+	
+	            var power = 60;
+	
+	            var id = Math.floor(Math.random() * 2) + 1;
+	            var obj = { type: 'enemy', pos: bulletPosition, velocity: bulletSpeed, lifetime: 0.5, power: power, team: this.team, src: 'cupcake/bullet/cherryBullet' };
+	            this.game.addBullet(obj);
+	
+	            // console.log(obj);
+	
+	            this.attacking = true;
+	
+	            this.currentTarget = null;
+	        }
+	    }, {
+	        key: 'prepareAttack',
+	        value: function prepareAttack(entity) {
+	            if (this.animationManager.state == 'attack') {
+	                return;
+	            }
+	            this.currentTarget = entity.entity;
+	
+	            _get(Ranger.prototype.__proto__ || Object.getPrototypeOf(Ranger.prototype), 'prepareAttack', this).call(this, entity);
+	            // this.attacking = true;
+	        }
+	    }, {
+	        key: 'update',
+	        value: function update(delta) {
+	
+	            if (this.disapearing) {
+	                this.disapearTimer -= delta;
+	                if (this.disapearTimer <= 0) {
+	                    this.kill = true;
+	                }
+	                var value = this.disapearTimer / this.disapearTimerMax;
+	                this.alpha = value;
+	                this.animationContainer.scale.set(value * 0.5 + 0.5);
+	            }
+	
+	            if (this.killed || !this.updateable) {
+	                return;
+	            }
+	            // console.log(this.followTarget);
+	
+	            if (this.invencible >= 0) {
+	                this.invencible -= delta;
+	            }
+	
+	            this.skipCollision--;
+	            if (this.skipCollision <= 0) {
+	                this.skipCollision = Math.random() * 3 + 2;
+	                if (!this.attacking) {
+	                    var entityCollisions = this.game.getExternalColisionList(this, ['player', 'tower', 'enemy'], true);
+	                    // console.log(entityCollisions);
+	                    if (entityCollisions && entityCollisions.length) {
+	                        //if(entityCollisions[0].ableToHit || entityCollisions[0].entity.type == 'tower'){
+	                        if (entityCollisions[0].trueLeft) {
+	                            this.side = 1;
+	                        } else {
+	                            this.side = -1;
+	                        }
+	                        this.prepareAttack(entityCollisions[0]);
+	                        //}
+	                    }
+	                }
+	            }
+	
+	            if (this.attackTimer > 0) {
+	                this.attackTimer -= delta;
+	                if (this.attackTimer <= 0) {
+	                    this.attacking = false;
+	                }
+	            }
+	
+	            // console.log(this.velocity);
+	            if (this.actionTimer > 0) {
+	                this.actionTimer -= delta;
+	                if (this.actionTimer <= 0) {
+	                    this.action();
+	                }
+	            }
+	
+	            this.animationManager.updateAnimations();
+	
+	            if (this.hitTime > 0) {
+	                this.hitTime -= delta;
+	                if (this.hitTime <= 0) {
+	                    this.endHit();
+	                }
+	            }
+	
+	            this.updateBaseColor();
+	            if (this.hitting) {
+	                return;
+	            }
+	
+	            if (this.game.worldCollision(this.x, this.y)) {
+	                this.moveBack(delta);
+	                return;
+	            }
+	            // console.log(this.velocity);
+	            this.x += this.velocity.x * delta * this.speedScale;
+	            this.y += this.velocity.y * delta * this.speedScale;
+	            // console.log(this.attacking);
+	            if (this.isEnemy && this.followTarget || this.followTarget && !this.attacking) {
+	                if (_utils2.default.distance(this.targetPosition.x, this.targetPosition.y, this.x, this.y) < this.getRadius()) {
+	                    if (!this.isEnemy) {
+	                        this.updateWaypoints();
+	                    }
+	                    //this.followTarget = false;
+	                    this.wait();
+	                } else {
+	                    // console.log('MOVE');
+	                    this.move();
+	                }
+	            }
+	        }
+	    }, {
+	        key: 'start',
+	        value: function start() {
+	            this.updateable = true;
+	            if (this.waypoints && this.waypoints[this.waypointID]) {
+	                this.move();
+	                this.setTarget(this.waypoints[this.waypointID]);
+	            }
+	        }
+	    }]);
+	
+	    return Ranger;
+	}(_StandardEnemy3.default);
+	
+	exports.default = Ranger;
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _pixi = __webpack_require__(1);
+	
+	var _pixi2 = _interopRequireDefault(_pixi);
+	
+	var _utils = __webpack_require__(143);
+	
+	var _utils2 = _interopRequireDefault(_utils);
+	
+	var _AnimationManager = __webpack_require__(148);
+	
+	var _AnimationManager2 = _interopRequireDefault(_AnimationManager);
+	
+	var _Entity = __webpack_require__(151);
+	
+	var _Entity2 = _interopRequireDefault(_Entity);
+	
+	var _StandardBullet2 = __webpack_require__(156);
+	
+	var _StandardBullet3 = _interopRequireDefault(_StandardBullet2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var EnemyBullet = function (_StandardBullet) {
+	    _inherits(EnemyBullet, _StandardBullet);
+	
+	    function EnemyBullet(game, params) {
+	        _classCallCheck(this, EnemyBullet);
+	
+	        return _possibleConstructorReturn(this, (EnemyBullet.__proto__ || Object.getPrototypeOf(EnemyBullet)).call(this, game, params));
+	    }
+	
+	    // build(){
+	
+	    //     this.base = new PIXI.Container();
+	    //     this.roundBase = new PIXI.Graphics();
+	    //     this.roundBase.beginFill(0);
+	    //     this.roundBase.drawCircle(0,0,20);
+	    //     this.roundBase.scale.y = 0.4
+	    //     this.roundBase.alpha = 0.1;
+	    //     this.roundBase.x = 0;
+	    //     this.base.addChild(this.roundBase);
+	
+	    //     this.addChild(this.base);
+	    //     this.animationContainer = new PIXI.Container();
+	    //     this.animationContainer.x = 0
+	    //     this.animationContainer.y = -55
+	    //     // this.animationContainer.y = -75
+	    //     this.addChild(this.animationContainer);
+	
+	    //     // this.sprite = new PIXI.Sprite(PIXI.Texture.fromFrame('cherry.png'))    
+	    //     // this.sprite.anchor.set(0.6);
+	
+	
+	    //     this.animationModel = [];
+	    //     this.animationModel.push({
+	    //         label:'idle',
+	    //         src:this.src+'00',
+	    //         totalFrames:1,
+	    //         startFrame:0,
+	    //         animationSpeed:0.4,
+	    //         movieClip:null,
+	    //         position:{x:0,y:0},
+	    //         anchor:{x:0.5,y:0.5},
+	    //         loop:false
+	    //     });
+	
+	    //     this.animationModel.push({
+	    //         label:'explode',
+	    //         src:this.src+'00',
+	    //         totalFrames:6,
+	    //         startFrame:0,
+	    //         animationSpeed:0.4,
+	    //         movieClip:null,
+	    //         position:{x:0,y:0},
+	    //         anchor:{x:0.5,y:0.5},
+	    //         loop:false
+	    //     });
+	
+	    //     this.animationManager = new AnimationManager(this.animationModel, this.animationContainer);
+	
+	    //     // this.animationContainer.addChild(this.sprite);
+	
+	    //     this.spriteVelocity = {x:0,y:0};
+	
+	    //     this.standardScale = 1;
+	    //     this.speedScale = 1;
+	    //     this.starterScale = 2;
+	    //     this.gravity = 3800;
+	    //     // this.scale.set(0);
+	    //     this.kill2 = false
+	
+	    //     this.animationManager.hideAll();
+	    //     this.animationManager.stopAll();
+	    //     this.animationManager.changeState('idle');
+	
+	    //     this.radius = 8;
+	    //     this.externalRadius = 0;
+	
+	    //     // this.debugCollision()
+	    // }
+	
+	    _createClass(EnemyBullet, [{
+	        key: 'bulletAttackCollision',
+	        value: function bulletAttackCollision() {
+	            var collisionList = this.game.getCollisionList(this, ['enemy', 'tower', 'player'], true);
+	            if (collisionList) {
+	                for (var i = 0; i < collisionList.length; i++) {
+	                    if (collisionList[i].entity.hit(this.power)) {
+	                        return true;
+	                    }
+	                }
+	            }
+	            return false;
+	        }
+	    }]);
+	
+	    return EnemyBullet;
+	}(_StandardBullet3.default);
+	
+	exports.default = EnemyBullet;
 
 /***/ }
 /******/ ]);

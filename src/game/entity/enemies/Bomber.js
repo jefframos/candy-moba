@@ -36,12 +36,12 @@ export default class Bomber extends StandardEnemy {
         
         let enemyStats = {
             level:3,
-            hp:300,
+            hp:500,
             stamina:40,
             speed:60,
             magicPower:13,
             battlePower:250,
-            defense:20,
+            defense:50,
             magicDefense:120,
             xp:20
         }
@@ -54,7 +54,7 @@ export default class Bomber extends StandardEnemy {
         
         this.dynamicModel = {
             attackSpeed: 3,
-            invencibleTimer:0.1
+            invencibleTimer:0.2
         }
 
         // this.build();
@@ -202,8 +202,8 @@ export default class Bomber extends StandardEnemy {
         this.animationManager.hideAll();
         this.animationManager.stopAll();
         this.animationManager.changeState('idle');
-        this.radius = 100;
-        this.externalRadius = 160;
+        this.radius = 80;
+        this.externalRadius = 200;
         // this.debugCollision();
 
 
@@ -219,7 +219,7 @@ export default class Bomber extends StandardEnemy {
 
     hit(power, forceSide) {
 
-        if(this.life < 0 || this.invencible > 0){// || this.attacking){
+        if(this.life < 0 || this.invencible > 0 || this.attacking){// || this.attacking){
             return false;
         }
 
@@ -239,11 +239,12 @@ export default class Bomber extends StandardEnemy {
 
         // console.log(this.life);
 
-
-        if(this.life <= this.maxLife/2 && !this.charging){
-            this.animationManager.changeState('hurt', true);
-        }else{
-            this.animationManager.changeState('hurt1');
+        if(!this.completeCharge){
+            if(this.life <= this.maxLife * 0.75 && !this.charging){
+                this.animationManager.changeState('hurt', true);
+            }else{
+                this.animationManager.changeState('hurt1');
+            }
         }
 
         
@@ -306,13 +307,17 @@ export default class Bomber extends StandardEnemy {
     charged(){
         this.animationManager.changeState('charged', true);
         this.completeCharge = true;
-        this.chargeTime = 2;
+        this.chargeTime = 1;
         this.chargeScale = 0.2;
     }
     attack(){
+        this.attacking = true;
         if(this.animationManager.state == 'attackOut'){
             return
         }
+
+        this.velocity = {x:0,y:0};
+
         this.rotation = 0;
         this.animationManager.changeState('attackOut');
     }
@@ -359,6 +364,7 @@ export default class Bomber extends StandardEnemy {
 
         if(this.completeCharge){
             if(this.chargeTime > 0){
+                this.velocity = {x:0,y:0};
                 this.chargeTime -= delta;
                 this.animationContainer.scale.x += this.chargeScale * delta;
                 this.animationContainer.scale.y += this.chargeScale * delta;

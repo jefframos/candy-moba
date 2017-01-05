@@ -348,6 +348,7 @@ export default class StandardEnemy extends Entity {
         
         if(this.entityToAttack.entity.type == 'tower'){
             this.entityToAttack.entity.addEnemy(this);
+            this.currentTower = this.entityToAttack.entity;
         }
         
     }
@@ -371,7 +372,7 @@ export default class StandardEnemy extends Entity {
         // this.attacking = false;
         this.preparingAttack = false;
     }
-    hit(power, forceSide) {
+    hit(power, forceSide, entity) {
         // console.log(this.attacking);
         if(this.life < 0 || this.invencible > 0){// || this.attacking){
             return false;
@@ -458,6 +459,11 @@ export default class StandardEnemy extends Entity {
             this.invencible -= delta;
         }
 
+        if(this.currentTower && this.currentTower.type !='base' && this.currentTower.life <= 0){
+            this.updateWaypoints();
+            this.currentTower = null;
+        }
+
         this.skipCollision --;
         if(this.skipCollision <= 0){
             this.skipCollision = Math.random() * 3 + 2;
@@ -502,6 +508,11 @@ export default class StandardEnemy extends Entity {
         }
         // console.log(this.attacking);
         if((this.isEnemy && this.followTarget) || this.followTarget && !this.attacking){
+            // if(this.isEnemy){
+            //     this.speedScale = 1.5;
+            // }else{
+            //     this.speedScale = 1;
+            // }
             if(utils.distance(this.targetPosition.x, this.targetPosition.y, this.x, this.y) < this.getRadius()){
                 if(!this.isEnemy){
                     this.updateWaypoints();
